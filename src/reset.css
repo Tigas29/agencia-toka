@@ -1,0 +1,153 @@
+/* Reset e base */
+* {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  scroll-behavior: smooth;
+  box-sizing: border-box;
+}
+
+body {
+  scroll-behavior: smooth;
+  font-family: 'Inter', 'Nunito', sans-serif;
+  font-display: swap;
+  background-color: var(--dark);
+  color: var(--white);
+  height: auto;
+}
+
+ul,
+li,
+a {
+  list-style: none;
+  text-decoration: none;
+  color: inherit;
+}
+
+img {
+  width: inherit;
+  display: block;
+}
+
+input,
+textarea,
+button {
+  border: none;
+  padding: 0;
+  font-family: inherit;
+}
+
+a,
+button {
+  cursor: pointer;
+}
+
+::-webkit-scrollbar {
+  width: 3px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: var(--orange);
+  border-radius: 2px;
+}
+
+:root {
+  --orange: #FFA136;
+  --white: #FFFFFF;
+  --dark: #212121;
+  --black: #000;
+  --gray: #2f2f2f;
+}
+
+/* Tipografia responsiva */
+h1 {
+  font-size: 2.8rem;
+}
+
+h2 {
+  font-size: 2.6rem;
+}
+
+h3 {
+  font-size: 2.4rem;
+}
+
+h4,
+summary,
+p {
+  font-size: 1.5rem;
+}
+
+@media screen and (max-width: 1220px) {
+  h1 {
+    font-size: 2.6rem;
+  }
+
+  h2 {
+    font-size: 2.4rem;
+  }
+
+  h3 {
+    font-size: 2.2rem;
+  }
+}
+
+@media screen and (max-width: 1000px) {
+  h1 {
+    font-size: 2.5rem;
+  }
+
+  h2 {
+    font-size: 2.3rem;
+  }
+
+  h3 {
+    font-size: 2.1rem;
+  }
+
+  h4,
+  summary,
+  p {
+    font-size: 1.4rem;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  h1 {
+    font-size: 1.8rem;
+  }
+
+  h2 {
+    font-size: 1.6rem;
+  }
+
+  h3 {
+    font-size: 1.2rem;
+  }
+
+  h4,
+  summary,
+  p {
+    font-size: 1.3rem;
+  }
+}
+
+@media screen and (max-width: 320px) {
+  h1 {
+    font-size: 1.5rem;
+  }
+
+  h2 {
+    font-size: 1.3rem;
+  }
+
+  h3 {
+    font-size: 1.2rem;
+  }
+
+  h4,
+  summary,
+  p {
+    font-size: 1.1rem;
+  }
+}
