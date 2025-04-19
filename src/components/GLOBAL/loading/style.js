@@ -13,7 +13,7 @@ export const Container = styled.div`
     width: 64px;
     height: 64px;
     border: 8px solid;
-    border-color: #3b4ae2 transparent #3b4ae2 transparent;
+    border-color: rgb(226, 159, 59) transparent rgb(226, 159, 59) transparent;
     border-radius: 50%;
     animation: spin-anim 1.2s linear infinite;
   }

@@ -1,10 +1,12 @@
 import styled from "styled-components";
+
 const Media = {
   PhoneLarge: "@media(max-width:610px)",
   Laptop: "@media(max-width:1150px)",
   Tablet: "@media(max-width:1000px)",
   PhoneSmall: "@media(max-width:450px)",
 };
+
 export const Container = styled.div`
   margin: auto;
   display: flex;
@@ -13,8 +15,8 @@ export const Container = styled.div`
   justify-content: center;
   width: 80%;
   background-color: inherit;
-  background: inherit;
   height: 70vh;
+
   ${Media.Tablet} {
     width: 90%;
   }
@@ -26,7 +28,6 @@ export const Container = styled.div`
     justify-content: center;
     padding: 20px;
     width: 100%;
-    background-color: inherit;
   }
 `;
 
@@ -34,6 +35,7 @@ export const ContainerBackground = styled.div`
   width: 100%;
   height: 100vh;
   background-color: #1b1b1b;
+
   .box {
     display: flex;
     flex-direction: column;
@@ -41,7 +43,6 @@ export const ContainerBackground = styled.div`
     justify-content: center;
     padding: 20px;
     width: 100%;
-    background-color: inherit;
   }
 `;
 
@@ -65,7 +66,6 @@ export const Question = styled.div`
 
   p {
     font-size: 2rem;
-    font-style: normal;
     font-weight: 700;
     text-transform: uppercase;
     margin-bottom: 20px;
@@ -85,23 +85,17 @@ export const Options = styled.div`
   button {
     padding: 10px 20px;
     font-size: 16px;
-    border: 1px solid #dbbe6d;
+    border: 1px solid var(--orange);
     background: transparent;
     cursor: pointer;
     border-radius: 5px;
     color: white;
 
     &.active {
-      background-color: #dbbe6d;
+      background-color: var(--orange);
       color: white;
     }
   }
-`;
-
-export const Message = styled.div`
-  text-align: center;
-  margin-top: 20px;
-  font-size: 16px;
 `;
 
 export const InputContainer = styled.div`
@@ -111,7 +105,6 @@ export const InputContainer = styled.div`
 
   label {
     font-size: 1.5rem;
-    font-style: normal;
     font-weight: 400;
     margin-bottom: 20px;
     color: var(--off-white);
@@ -121,15 +114,46 @@ export const InputContainer = styled.div`
     }
   }
 
-  input {
+  input,
+  select {
     width: 50%;
     padding: 10px;
     font-size: 16px;
     border-bottom: 1px solid #ccc;
     background-color: transparent;
     color: var(--off-white);
+
     ${Media.Tablet} {
       width: 80%;
+    }
+  }
+`;
+
+export const RevenueOptions = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  width: 100%;
+
+  button {
+    width: 100%;
+    text-align: left;
+    padding: 12px 20px;
+    border-radius: 5px;
+    border: 1px solid var(--orange);
+    background: transparent;
+    font-size: 1rem;
+    color: white;
+    cursor: pointer;
+    transition: 0.2s ease;
+
+    &:hover {
+      background-color: rgba(219, 171, 109, 0.1);
+    }
+
+    &.selected {
+      background-color: var(--orange);
+      color: #1b1b1b;
     }
   }
 `;
@@ -156,6 +180,7 @@ export const Navigation = styled.div`
   position: absolute;
   bottom: 3rem;
   right: 1rem;
+
   button {
     width: 50px;
     height: 50px;
@@ -163,7 +188,7 @@ export const Navigation = styled.div`
     border-radius: 10px;
     border: none;
     cursor: pointer;
-    background-color: #dbbe6d;
+    background-color: var(--orange);
     color: white;
 
     &:disabled {
@@ -172,11 +197,11 @@ export const Navigation = styled.div`
     }
 
     &.back {
-      background-color: rgb(167, 149, 99);
+      background-color: var(--orange);
     }
 
     &.next {
-      background-color: #dbbe6d;
+      background-color: var(--orange);
     }
   }
 
@@ -189,6 +214,7 @@ export const Navigation = styled.div`
     }
   }
 `;
+
 export const EndMessage = styled.div`
   display: flex;
   align-items: center;
@@ -196,9 +222,9 @@ export const EndMessage = styled.div`
   height: 100vh;
   text-align: center;
   font-size: 1.5rem;
-  font-weight: regular;
   color: var(--off-white);
 `;
+
 export const Buttons = styled.div`
   display: flex;
   justify-content: center;
@@ -210,7 +236,7 @@ export const Buttons = styled.div`
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    background-color: #dbbe6d;
+    background-color: var(--orange);
     color: white;
 
     &:disabled {

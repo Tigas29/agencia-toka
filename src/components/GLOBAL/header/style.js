@@ -18,6 +18,18 @@ export const Container = styled.main`
   transform: translateX(-50%);
   margin: auto;
   padding-top: 1rem;
+  z-index: 999;
+
+  transition: background 0.3s ease, backdrop-filter 0.3s ease, padding 0.3s ease,
+    margin-top 0.3s ease, border-radius 0.3s ease;
+
+  &.scrolled {
+    background: rgba(255, 156, 57, 0.14);
+    backdrop-filter: blur(5px);
+    border-radius: 12px;
+    padding: 0.5rem;
+    margin-top: 1rem;
+  }
 
   ${Media.Tablet} {
     width: 95%;

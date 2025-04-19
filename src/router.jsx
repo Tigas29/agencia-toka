@@ -9,9 +9,9 @@ export function Router() {
   return (
     <Suspense fallback={<Loading />}>
       <Routes>
-        <Route path="/" element={<Wpp />} />
+        <Route path="/wpp" element={<Wpp />} />
         <Route path="/clienteForm" element={<ClientForm />} />
-        <Route path="/homepage" element={<Home />} />
+        <Route path="/" element={<Home />} />
       </Routes>
     </Suspense>
   );

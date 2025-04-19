@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
-
+import { BiRightArrowAlt } from "react-icons/bi";
 const Media = {
   Tablet: "@media(max-width:1000px)",
 };
@@ -40,7 +40,20 @@ const Container = styled.button`
     }
 
     .icon {
-      font-size: 1rem;
+      display: flex;
+      font-size: 1.4rem;
+      color: var(--white);
+    }
+    ${Media.Tablet} {
+      padding: 0.5rem 1.2rem;
+
+      p {
+        font-size: 0.95rem;
+      }
+
+      .icon {
+        font-size: 1.2rem;
+      }
     }
   }
 `;
@@ -53,7 +66,7 @@ const Button = ({ text, showIcon = true, to = "/clienteForm" }) => {
 
   return (
     <Container onClick={handleClick} aria-label={`Botão para ${text}`}>
-      {showIcon && <span className="icon">→</span>}
+      {showIcon && <BiRightArrowAlt className="icon" />}
       <p>{text}</p>
     </Container>
   );
