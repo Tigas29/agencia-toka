@@ -19,7 +19,12 @@ export const Container = styled.section`
     flex-direction: column;
     gap: 4rem;
     align-items: center;
-    text-align: left;
+    text-align: center;
+
+    ${Media.Tablet} {
+      text-align: left;
+      align-items: flex-start;
+    }
   }
 
   .intro {
@@ -31,6 +36,7 @@ export const Container = styled.section`
       font-size: 0.85rem;
       margin-bottom: 0.5rem;
       color: var(--black);
+      font-family: "Inter";
     }
 
     h2 {
@@ -38,8 +44,11 @@ export const Container = styled.section`
       font-size: 2.2rem;
       line-height: 1.3;
       color: var(--black);
+      font-family: "Nunito";
+
       ${Media.Phone} {
         font-size: 1.7rem;
+        text-align: left;
       }
 
       span {
@@ -48,6 +57,7 @@ export const Container = styled.section`
         display: block;
         margin-top: 0.5rem;
         opacity: 0.9;
+        font-family: "Inter";
 
         ${Media.Phone} {
           font-size: 1rem;
@@ -57,6 +67,7 @@ export const Container = styled.section`
 
     .subtitle {
       color: var(--black);
+      font-family: "Inter";
     }
 
     .desc {
@@ -64,6 +75,7 @@ export const Container = styled.section`
       margin-top: 1rem;
       line-height: 1.6;
       color: var(--black);
+      font-family: "Inter";
 
       strong {
         color: var(--orange);
@@ -98,21 +110,36 @@ export const Container = styled.section`
         color: var(--black);
 
         h3 {
-          font-size: 1.5rem;
+          font-size: 1.65rem;
           font-weight: 700;
           color: var(--black);
+          font-family: "Nunito";
+
+          ${Media.Phone} {
+            font-size: 1.5rem;
+          }
         }
 
         h4 {
-          font-size: 1.1rem;
+          font-size: 1.2rem;
           margin-top: 0.4rem;
           font-weight: 500;
+          font-family: "Nunito";
+
+          ${Media.Phone} {
+            font-size: 1.1rem;
+          }
         }
 
         p {
           margin-top: 0.5rem;
-          font-size: 0.95rem;
+          font-size: 1.05rem;
           opacity: 0.85;
+          font-family: "Inter";
+
+          ${Media.Phone} {
+            font-size: 0.95rem;
+          }
         }
       }
 
@@ -171,17 +198,26 @@ export const Container = styled.section`
     display: flex;
     flex-direction: column;
     gap: 1rem;
-    text-align: left;
+    text-align: center;
     margin-top: 3rem;
+
+    ${Media.Tablet} {
+      text-align: left;
+      align-items: flex-start;
+    }
 
     p {
       font-size: 0.95rem;
       opacity: 0.85;
       line-height: 1.6;
+      font-family: "Inter";
     }
   }
 
   .footerText {
     color: var(--black);
+    font-family: "Inter";
+    width: 95%;
+    max-width: 75rem;
   }
 `;

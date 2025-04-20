@@ -33,6 +33,7 @@ export const Container = styled.section`
       font-size: 0.85rem;
       margin-bottom: 0.5rem;
       color: var(--black);
+      font-family: "Inter";
     }
 
     h2 {
@@ -40,6 +41,7 @@ export const Container = styled.section`
       font-weight: 600;
       margin-bottom: 1rem;
       color: var(--black);
+      font-family: "Nunito";
     }
 
     .desc {
@@ -48,6 +50,7 @@ export const Container = styled.section`
       line-height: 1.6;
       max-width: 22rem;
       color: var(--black);
+      font-family: "Inter";
     }
   }
 
@@ -73,6 +76,7 @@ export const Container = styled.section`
           font-weight: 500;
           color: var(--black);
           cursor: pointer;
+          font-family: "Inter";
 
           span {
             font-size: 1.5rem;
@@ -87,6 +91,10 @@ export const Container = styled.section`
           opacity: 0;
           transition: all 0.3s ease;
           pointer-events: none;
+
+          p {
+            font-family: "Inter";
+          }
         }
 
         .answer.active {

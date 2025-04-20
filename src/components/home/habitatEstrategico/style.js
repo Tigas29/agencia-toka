@@ -41,7 +41,7 @@ export const Container = styled.section`
 
     ${Media.Tablet} {
       flex-direction: column;
-      text-align: center;
+      text-align: left;
       padding: 2rem;
     }
 
@@ -49,6 +49,7 @@ export const Container = styled.section`
       font-size: 1.6rem;
       font-weight: 500;
       line-height: 1.4;
+      font-family: "Nunito";
 
       ${Media.Phone} {
         font-size: 1.4rem;
@@ -59,6 +60,7 @@ export const Container = styled.section`
       font-size: 1rem;
       line-height: 1.6;
       opacity: 0.85;
+      font-family: "Inter";
 
       ${Media.Phone} {
         font-size: 0.95rem;

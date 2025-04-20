@@ -8,6 +8,7 @@ const Media = {
   Tablet: "@media(max-width:1000px)",
   PhoneSmall: "@media(max-width:450px)",
 };
+
 export const Container = styled.main`
   width: 100%;
   height: 50vh;
@@ -15,6 +16,7 @@ export const Container = styled.main`
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
+
   ${Media.Tablet} {
     background-image: url(${bgMob});
   }
@@ -29,18 +31,28 @@ export const Container = styled.main`
     gap: 0.8rem;
     height: 80%;
     margin: auto;
+
     ${Media.Tablet} {
       width: 95%;
       max-width: 95rem;
+      padding-top: 2rem;
+      align-items: flex-start;
+      text-align: left;
     }
+
     h1 {
       font-family: "Nunito";
       font-style: normal;
       font-weight: 400;
       color: var(--white);
+
       span {
         color: var(--orange);
         text-transform: capitalize;
+      }
+
+      ${Media.Tablet} {
+        text-align: left;
       }
     }
 
@@ -49,10 +61,16 @@ export const Container = styled.main`
       font-style: normal;
       font-weight: 400;
       color: rgba(255, 255, 255, 0.8);
+
+      ${Media.Tablet} {
+        text-align: left;
+      }
     }
+
     p:nth-child(1) {
       color: var(--white);
       font-weight: 500;
+
       ${Media.Tablet} {
         font-size: 1.4rem;
       }

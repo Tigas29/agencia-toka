@@ -11,7 +11,7 @@ const Media = {
 
 export const Container = styled.section`
   width: 100%;
-  height: 30vh;
+  height: 30rem;
   background-image: url(${bgPc});
   background-size: cover;
   background-repeat: no-repeat;

@@ -32,6 +32,10 @@ export const Container = styled.section`
     align-items: flex-start;
     gap: 1.5rem;
 
+    ${Media.Tablet} {
+      text-align: left;
+    }
+
     .label {
       text-transform: uppercase;
       opacity: 0.7;
@@ -40,6 +44,7 @@ export const Container = styled.section`
       width: 100%;
       max-width: 30rem;
       font-size: 0.9rem;
+      font-family: "Inter";
 
       ${Media.Phone} {
         font-size: 0.8rem;
@@ -49,9 +54,11 @@ export const Container = styled.section`
     h2 {
       font-weight: 700;
       font-size: 2.4rem;
+      font-family: "Nunito";
 
       ${Media.Tablet} {
         font-size: 2rem;
+        text-align: left;
       }
 
       ${Media.Phone} {
@@ -67,6 +74,7 @@ export const Container = styled.section`
       p {
         font-weight: 600;
         font-size: 1rem;
+        font-family: "Inter";
 
         ${Media.Phone} {
           font-size: 0.9rem;
@@ -104,6 +112,7 @@ export const Container = styled.section`
       display: flex;
       flex-direction: column;
       gap: 1rem;
+      text-align: left;
 
       .title {
         text-transform: uppercase;
@@ -112,6 +121,7 @@ export const Container = styled.section`
         opacity: 0.7;
         font-weight: 600;
         font-size: 0.9rem;
+        font-family: "Inter";
 
         ${Media.Phone} {
           font-size: 0.8rem;
@@ -121,6 +131,7 @@ export const Container = styled.section`
       h3 {
         font-weight: 700;
         font-size: 1.4rem;
+        font-family: "Nunito";
 
         ${Media.Phone} {
           font-size: 1.2rem;
@@ -132,6 +143,7 @@ export const Container = styled.section`
         line-height: 1.6;
         opacity: 0.9;
         font-size: 1rem;
+        font-family: "Inter";
 
         ${Media.Phone} {
           font-size: 0.95rem;

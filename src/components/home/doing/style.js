@@ -26,18 +26,29 @@ export const Container = styled.section`
     text-align: center;
     max-width: 45rem;
 
+    ${Media.Tablet} {
+      text-align: left;
+      align-items: flex-start;
+    }
+
     .label {
       text-transform: uppercase;
       opacity: 0.6;
       font-size: 0.9rem;
       margin-bottom: 0.5rem;
       padding-bottom: 0.5rem;
+      font-family: "Inter";
+
+      ${Media.Phone} {
+        font-size: 0.8rem;
+      }
     }
 
     h2 {
       font-weight: 700;
       font-size: 2.4rem;
       line-height: 1.3;
+      font-family: "Nunito";
 
       ${Media.Tablet} {
         font-size: 2rem;
@@ -52,6 +63,7 @@ export const Container = styled.section`
         display: block;
         font-size: 1.4rem;
         margin-top: 0.4rem;
+        font-family: "Inter";
 
         ${Media.Phone} {
           font-size: 1.1rem;
@@ -64,6 +76,7 @@ export const Container = styled.section`
       opacity: 0.85;
       margin-top: 1.2rem;
       line-height: 1.6;
+      font-family: "Inter";
 
       ${Media.Phone} {
         font-size: 1rem;
@@ -83,6 +96,7 @@ export const Container = styled.section`
 
     ${Media.Tablet} {
       flex-direction: column;
+      align-items: flex-start;
     }
 
     .card {
@@ -103,6 +117,11 @@ export const Container = styled.section`
         139.303px 208.406px 99.8156px rgba(255, 156, 57, 0.01);
       border-radius: 35.1px;
 
+      ${Media.Tablet} {
+        align-items: flex-start;
+        text-align: left;
+      }
+
       &:hover {
         transform: translateY(-5px);
       }
@@ -120,6 +139,7 @@ export const Container = styled.section`
       h3 {
         font-size: 1.3rem;
         font-weight: 700;
+        font-family: "Nunito";
 
         &.highlight {
           color: #ff9c39;
@@ -130,6 +150,8 @@ export const Container = styled.section`
         font-size: 1rem;
         line-height: 1.6;
         opacity: 0.85;
+        font-family: "Inter";
+
         strong {
           font-weight: 600;
         }
@@ -138,11 +160,13 @@ export const Container = styled.section`
           font-size: 0.95rem;
         }
       }
+
       .icon {
         position: relative;
         width: 100%;
         display: block;
         margin: auto;
+
         img {
           position: relative;
           display: block;
