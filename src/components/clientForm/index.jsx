@@ -3,7 +3,6 @@ import * as Styled from "./style";
 
 const revenueOptions = [
   "Até R$10 mil/mês",
-  "Entre R$10 mil e R$50 mil/mês",
   "Entre R$50 mil e R$200 mil/mês",
   "Mais de R$200 mil/mês",
 ];
@@ -42,34 +41,19 @@ const FormContainer = () => {
   }, [step, formData.segment]);
 
   const validateForm = () => {
-    if (step === 1 && !formData.name) {
-      setError("Por favor, insira seu nome.");
-      return false;
-    }
-    if (step === 2 && !/\S+@\S+\.\S+/.test(formData.email)) {
-      setError("Por favor, insira um e-mail válido.");
-      return false;
-    }
-    if (step === 3 && !/^[0-9]{10,15}$/.test(formData.phone)) {
-      setError("Por favor, insira um telefone válido.");
-      return false;
-    }
-    if (step === 4 && !formData.company) {
-      setError("Por favor, insira o nome da empresa.");
-      return false;
-    }
-    if (step === 5 && !formData.revenue) {
-      setError("Selecione uma faixa de faturamento.");
-      return false;
-    }
-    if (step === 6 && !formData.segment) {
-      setError("Selecione um segmento.");
-      return false;
-    }
-    if (step === 6 && formData.segment === "Outro" && !formData.otherSegment) {
-      setError("Por favor, especifique o segmento.");
-      return false;
-    }
+    if (step === 1 && !formData.name) return setError("Insira seu nome.");
+    if (step === 2 && !/\S+@\S+\.\S+/.test(formData.email))
+      return setError("Insira um e-mail válido.");
+    if (step === 3 && !/^[0-9]{10,15}$/.test(formData.phone))
+      return setError("Insira um telefone válido.");
+    if (step === 4 && !formData.company)
+      return setError("Insira o nome da empresa.");
+    if (step === 5 && !formData.revenue)
+      return setError("Selecione o faturamento.");
+    if (step === 6 && !formData.segment)
+      return setError("Selecione o segmento.");
+    if (step === 6 && formData.segment === "Outro" && !formData.otherSegment)
+      return setError("Informe o segmento.");
     setError("");
     return true;
   };
@@ -82,19 +66,19 @@ const FormContainer = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     if (!validateForm()) return;
-
     setIsSubmitting(true);
 
     const data = {
-      nome: formData.name,
-      email: formData.email,
-      telefone: formData.phone,
-      empresa: formData.company,
+      nome_da_empresa: formData.company,
+      telefone_de_contato: formData.phone,
+      email_de_contato: formData.email,
+      observa_es: "Preenchido pelo site",
+      observa_es_2: "--",
       faturamento: formData.revenue,
       segmento:
         formData.segment === "Outro" ? formData.otherSegment : formData.segment,
+      fonte: "Outros",
     };
 
     try {
@@ -102,7 +86,8 @@ const FormContainer = () => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: "Bearer ", // token deixado em branco
+          Authorization:
+            "Bearer eyJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJQaXBlZnkiLCJpYXQiOjE3MjUzODg0NzUsImp0aSI6Ijc0YTYyYTJiLTg4NzEtNDZiNy05MmRiLTdmNWMxMDUxYmE5OCIsInN1YiI6MzAzMjEzNDM3LCJ1c2VyIjp7ImlkIjozMDMyMTM0MzcsImVtYWlsIjoidGlhZ29hbG1laWRhc2FudG9zMDRAZ21haWwuY29tIn19.jJdEiAbINcjf0YmaNJMumP-B5iUaaff_EA8XgESCP-WSFEyyJmGgseOG_victBzPPlcO2vKv9o9O9JNn1mPNng",
         },
         body: JSON.stringify({
           query: `
@@ -117,15 +102,26 @@ const FormContainer = () => {
             }
           `,
           variables: {
-            pipe_id: 304487644,
-            phase_id: "327107253",
+            pipe_id: 306193587,
+            phase_id: "337326403",
             fields: [
-              { field_id: "nome", field_value: data.nome },
-              { field_id: "email", field_value: data.email },
-              { field_id: "telefone", field_value: data.telefone },
-              { field_id: "empresa", field_value: data.empresa },
+              {
+                field_id: "nome_da_empresa",
+                field_value: data.nome_da_empresa,
+              },
+              {
+                field_id: "telefone_de_contato",
+                field_value: data.telefone_de_contato,
+              },
+              {
+                field_id: "email_de_contato",
+                field_value: data.email_de_contato,
+              },
+              { field_id: "observa_es", field_value: data.observa_es },
+              { field_id: "observa_es_2", field_value: data.observa_es_2 },
               { field_id: "faturamento", field_value: data.faturamento },
               { field_id: "segmento", field_value: data.segmento },
+              { field_id: "fonte", field_value: data.fonte },
             ],
           },
         }),
@@ -133,13 +129,12 @@ const FormContainer = () => {
 
       const result = await response.json();
       if (result.errors) {
-        alert("Erro ao enviar o formulário.");
+        alert("Erro ao enviar formulário.");
         return;
       }
-
       setShowFinalMessage(true);
-    } catch (error) {
-      alert("Erro na integração. Tente novamente.");
+    } catch (err) {
+      alert("Erro ao conectar com o Pipefy.");
     } finally {
       setIsSubmitting(false);
     }
@@ -262,7 +257,6 @@ const FormContainer = () => {
                         </button>
                       ))}
                     </Styled.RevenueOptions>
-
                     {formData.segment === "Outro" && (
                       <input
                         ref={otherSegmentRef}
