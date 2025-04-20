@@ -12,14 +12,22 @@ export default function Footer() {
     <Styled.Container>
       <div className="content">
         <div className="socials">
-          <a href="#" target="_blank" rel="noopener noreferrer">
+          <a
+            href="https://www.linkedin.com/in/tiagosantos-dev/"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             <FaLinkedinIn className="icon" />
             LinkedIn
           </a>
-          <a href="#" target="_blank" rel="noopener noreferrer">
+          {/* <a href="#" target="_blank" rel="noopener noreferrer">
             <FaXTwitter className="icon" />X (Twitter)
-          </a>
-          <a href="#" target="_blank" rel="noopener noreferrer">
+          </a> */}
+          <a
+            href="https://www.instagram.com/agenciatoka_/s"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             <FiInstagram className="icon" />
             Instagram
           </a>
