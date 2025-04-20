@@ -17,15 +17,16 @@ export default function HowWorks() {
           <p className="subtitle">com clareza e estratégia desde o início.</p>
           <p className="desc">
             Preencheu nosso formulário? <strong>Em até 2h</strong> nossa equipe
-            entra em contato com você. A partir daí, <br />
-            seguimos um processo validado para impulsionar o crescimento do seu
-            negócio.
+            entra em contato com você. A partir daí,seguimos um processo
+            validado para impulsionar o crescimento do seu negócio.
           </p>
         </div>
 
         <div className="steps">
           <div className="step highlight">
-            <img src={img1} alt="Diagnóstico" />
+            <div className="whiteBox">
+              <img src={img1} alt="Diagnóstico" />
+            </div>
             <div className="text">
               <h3>Diagnóstico</h3>
               <h4>Mapeamos seus desafios e oportunidades.</h4>
@@ -45,11 +46,15 @@ export default function HowWorks() {
                 personalizada.
               </p>
             </div>
-            <img src={img2} alt="Estratégia" />
+            <div className="whiteBox">
+              <img src={img2} alt="Estratégia" />
+            </div>
           </div>
 
           <div className="step">
-            <img src={img3} alt="Implementação" />
+            <div className="whiteBox">
+              <img src={img3} alt="Implementação" />
+            </div>
             <div className="text">
               <h3>Implementação</h3>
               <h4>Transformamos plano em ação.</h4>
@@ -69,7 +74,9 @@ export default function HowWorks() {
                 personalizada.
               </p>
             </div>
-            <img src={img4} alt="Otimização" />
+            <div className="whiteBox">
+              <img src={img4} alt="Otimização" />
+            </div>
           </div>
         </div>
 
@@ -77,12 +84,10 @@ export default function HowWorks() {
           <p>
             Para empresas que querem crescer de verdade, explicamos cada etapa
             do nosso método ponta a ponta com clareza, transparência e
-            profundidade. <br />
-            Porque crescimento sério exige mais do que uma sequência de
-            entregas. <br />
-            Exige visão, estratégia e execução alinhadas com o seu momento e
-            potencial. <br />
-            Se você busca esse tipo de parceria, vamos conversar.
+            profundidade. Porque crescimento sério exige mais do que uma
+            sequência de entregas. Exige visão, estratégia e execução alinhadas
+            com o seu momento e potencial. Se você busca esse tipo de parceria,
+            vamos conversar.
           </p>
         </div>
 
