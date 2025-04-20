@@ -18,6 +18,7 @@ export const Container = styled.main`
   background-size: cover;
 
   ${Media.Tablet} {
+    height: 30rem;
     background-image: url(${bgMob});
   }
 
@@ -35,7 +36,6 @@ export const Container = styled.main`
     ${Media.Tablet} {
       width: 95%;
       max-width: 95rem;
-      padding-top: 2rem;
       align-items: flex-start;
       text-align: left;
     }
