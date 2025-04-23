@@ -6,14 +6,14 @@ const faqList = [
     id: 1,
     pergunta: "Quanto tempo leva para entregar um projeto completo?",
     resposta:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus fermentum sem vel sapien blandit, at laoreet lorem ultricies.",
+      "O tempo pode variar conforme o nível de complexidade e volume do projeto. Mas nossos processos são otimizados para entregar com a maior agilidade possível, sem abrir mão da excelência na qualidade.",
   },
   {
     id: 2,
     pergunta:
       "Preciso contratar tudo ou posso fechar só uma parte (tipo só design)?",
     resposta:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur vel lorem vitae magna ullamcorper sollicitudin.",
+      "Nós podemos entrar apenas com um serviço, sim — principalmente quando você já tem pessoas tocando outras frentes. A Toka entra sempre para somar, seja cuidando de tudo ou sendo uma peça estratégica da engrenagem.",
   },
   {
     id: 3,
