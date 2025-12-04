@@ -13,7 +13,7 @@ export default function Footer() {
       <div className="content">
         <div className="socials">
           <a
-            href="https://www.linkedin.com/in/tiagosantos-dev/"
+            href="https://www.linkedin.com/company/toka-marketing/"
             target="_blank"
             rel="noopener noreferrer"
           >
@@ -24,7 +24,7 @@ export default function Footer() {
             <FaXTwitter className="icon" />X (Twitter)
           </a> */}
           <a
-            href="https://www.instagram.com/agenciatoka_/s"
+            href="https://www.instagram.com/toka.mkt/"
             target="_blank"
             rel="noopener noreferrer"
           >

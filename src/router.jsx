@@ -6,6 +6,8 @@ const Home = lazy(() => import("./pages/home/index"));
 const Wpp = lazy(() => import("./pages/wpp/index"));
 const ClientForm = lazy(() => import("./pages/clientForm/index"));
 const QuizForm = lazy(() => import("./pages/quizForm/index"));
+const Lp = lazy(() => import("./pages/Lp/index"));
+
 export function Router() {
   return (
     <Suspense fallback={<Loading />}>
@@ -13,6 +15,7 @@ export function Router() {
         <Route path="/wpp" element={<Wpp />} />
         <Route path="/clienteForm" element={<ClientForm />} />
         <Route path="/quizForm-fisio" element={<QuizForm />} />
+        <Route path="/LandingPage" element={<Lp />} />
         <Route path="/" element={<Home />} />
       </Routes>
     </Suspense>
