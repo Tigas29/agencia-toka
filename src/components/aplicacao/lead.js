@@ -6,7 +6,11 @@
  * nenhum fica preso por falta de variável de ambiente.
  */
 
-const WEBHOOK_URL = import.meta.env.VITE_TOKA_WEBHOOK_URL || "";
+/**
+ * Endpoint próprio, no mesmo domínio: a função em api/lead.js entrega
+ * no Kommo. O token do CRM fica lá, nunca aqui.
+ */
+const ENDPOINT = "/api/lead";
 
 /** Destino dos reprovados. Enquanto a live não existir, cai na home. */
 export const URL_LIVE = import.meta.env.VITE_TOKA_URL_LIVE || "/";
@@ -66,36 +70,34 @@ export const gerarLeadId = () =>
 // ── Envio ────────────────────────────────────────────────────────────
 
 /**
- * @param {object} payload
- * @param {boolean} usarBeacon  true no envio parcial, para o disparo
- *                              sobreviver ao fechamento da aba.
+ * Id do card no Kommo, devolvido pelo envio parcial e reenviado no
+ * final, para o mesmo card ser atualizado em vez de duplicado.
  */
-export async function enviarLead(payload, usarBeacon = false) {
-  if (!WEBHOOK_URL) {
-    console.warn(
-      "[toka/aplicacao] VITE_TOKA_WEBHOOK_URL não configurada. Payload não enviado:",
-      payload
-    );
-    return false;
-  }
+let kommoLeadId = null;
 
-  const corpo = JSON.stringify(payload);
+export const getKommoLeadId = () => kommoLeadId;
+export const setKommoLeadId = (id) => {
+  if (id) kommoLeadId = id;
+};
 
-  if (usarBeacon && typeof navigator?.sendBeacon === "function") {
-    const enviou = navigator.sendBeacon(
-      WEBHOOK_URL,
-      new Blob([corpo], { type: "application/json" })
-    );
-    if (enviou) return true;
-  }
+/**
+ * `keepalive` é o que faz o disparo sobreviver ao fechamento da aba,
+ * sem abrir mão de ler a resposta. É por isso que aqui não há
+ * `sendBeacon`: ele entregaria igual, mas devolveria só um booleano, e
+ * o envio parcial precisa do id do card que a resposta traz.
+ */
+export async function enviarLead(payload) {
+  const corpo = JSON.stringify({ ...payload, kommo_lead_id: kommoLeadId });
 
   try {
-    await fetch(WEBHOOK_URL, {
+    const resposta = await fetch(ENDPOINT, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: corpo,
       keepalive: true,
     });
+    const dados = await resposta.json().catch(() => null);
+    setKommoLeadId(dados?.kommo_lead_id);
     return true;
   } catch (erro) {
     console.error("[toka/aplicacao] falha ao enviar lead:", erro);

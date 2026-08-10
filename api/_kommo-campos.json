@@ -1,0 +1,83 @@
+{
+  "_gerado_por": "scripts/kommo-criar-campos.mjs",
+  "campos": {
+    "investimento_marketing": 2445854,
+    "procedimento_principal": 2448182,
+    "registro_profissional": 2448184,
+    "urgencia": 2448186,
+    "faturamento_mensal": 2448188,
+    "volume_blefaro_mes": 2448190,
+    "estrutura_atendimento": 2448192,
+    "vende_protocolo_completo": 2448194,
+    "score_rotulo": 2448196,
+    "motivo_reprovacao": 2448198,
+    "score": 2448200,
+    "instagram": 2448202,
+    "site_atual": 2448204,
+    "desafio_principal": 2448206,
+    "lead_id": 2448208
+  },
+  "enums": {
+    "procedimento_principal": {
+      "Blefaroplastia": 1842474,
+      "Outras cirurgias faciais (rinoplastia, lifting, otoplastia)": 1842476,
+      "Rejuvenescimento periorbital não cirúrgico (toxina, preenchimento, laser)": 1842478,
+      "Cirurgia plástica corporal": 1842480,
+      "Harmonização facial injetável": 1842482,
+      "Outro": 1842484
+    },
+    "registro_profissional": {
+      "Médico com RQE em Cirurgia Plástica": 1842486,
+      "Médico oftalmologista com atuação em oculoplástica": 1842488,
+      "Médico de outra especialidade que realiza blefaroplastia": 1842490,
+      "Não sou médico": 1842492
+    },
+    "urgencia": {
+      "Quero resolver imediatamente": 1842494,
+      "Quero resolver nos próximos dias": 1842496,
+      "Quero resolver nas próximas semanas": 1842498,
+      "Estou só pesquisando": 1842500
+    },
+    "faturamento_mensal": {
+      "Ainda não faturo": 1842502,
+      "Até R$10 mil": 1842504,
+      "R$10 mil a R$15 mil": 1842506,
+      "R$15 mil a R$30 mil": 1842508,
+      "R$30 mil a R$50 mil": 1842510,
+      "R$50 mil a R$100 mil": 1842512,
+      "R$100 mil a R$200 mil": 1842514,
+      "R$200 mil a R$500 mil": 1842516,
+      "Mais de R$500 mil": 1842518
+    },
+    "volume_blefaro_mes": {
+      "Nenhuma ainda": 1842520,
+      "1 a 2": 1842522,
+      "3 a 5": 1842524,
+      "6 a 10": 1842526,
+      "Mais de 10": 1842528
+    },
+    "estrutura_atendimento": {
+      "Opero em centro cirúrgico ou clínica própria": 1842530,
+      "Opero em hospital ou clínica parceira": 1842532,
+      "Sou médico contratado de uma rede ou franquia": 1842534,
+      "Sou dono de uma rede ou franquia de clínicas": 1842536
+    },
+    "vende_protocolo_completo": {
+      "Já vendo o protocolo completo com regularidade": 1842538,
+      "Ainda vendo só a blefaroplastia isolada": 1842540
+    },
+    "score_rotulo": {
+      "frio": 1842542,
+      "morno": 1842544,
+      "quente": 1842546
+    },
+    "motivo_reprovacao": {
+      "nao_e_medico": 1842548,
+      "nicho_incompativel": 1842550,
+      "faturamento_abaixo_do_corte": 1842552,
+      "volume_abaixo_do_corte": 1842554,
+      "dono_de_rede": 1842556,
+      "nao_vende_protocolo_completo": 1842558
+    }
+  }
+}

@@ -15,6 +15,8 @@ import {
   carregarProgresso,
   enviarLead,
   gerarLeadId,
+  getKommoLeadId,
+  setKommoLeadId,
   limparProgresso,
   linkWhatsApp,
   salvarProgresso,
@@ -53,6 +55,8 @@ export default function Aplicacao() {
       setRespostas(salvo.respostas || {});
       setPasso(Math.min(salvo.passo || 0, fields.length - 1));
       milestoneEnviado.current = Boolean(salvo.milestoneEnviado);
+      // sem isto, quem recarrega depois do milestone ganharia um card novo
+      setKommoLeadId(salvo.kommoLeadId);
       setTela("form");
     } else {
       leadId.current = gerarLeadId();
@@ -69,6 +73,7 @@ export default function Aplicacao() {
       passo,
       respostas,
       milestoneEnviado: milestoneEnviado.current,
+      kommoLeadId: getKommoLeadId(),
     });
   }, [tela, passo, respostas]);
 
@@ -115,7 +120,13 @@ export default function Aplicacao() {
       parcial: true,
     });
 
-    enviarLead(payload, true);
+    // o id do card chega depois do autosave já ter rodado, então gravamos
+    // de novo quando ele volta: quem recarregar não ganha um card novo
+    enviarLead(payload).then(() => {
+      const salvo = carregarProgresso();
+      if (salvo) salvarProgresso({ ...salvo, kommoLeadId: getKommoLeadId() });
+    });
+
     track("Lead", { etapa: "milestone_instagram" });
   }, []);
 

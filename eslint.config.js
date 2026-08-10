@@ -30,4 +30,11 @@ export default [
       ],
     },
   },
+  {
+    // funções da Vercel e scripts de manutenção rodam em Node, não no browser
+    files: ['api/**/*.{js,mjs}', 'scripts/**/*.{js,mjs}'],
+    languageOptions: {
+      globals: globals.node,
+    },
+  },
 ]
