@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { Link } from "react-router-dom";
 import * as S from "./style";
 import logo from "../../assets/logo.svg";
 import { WELCOME, SCREENS, activeFields } from "./spec";
@@ -10,7 +11,6 @@ import {
   validarCampo,
 } from "./engine";
 import {
-  URL_LIVE,
   capturarUtm,
   carregarProgresso,
   enviarLead,
@@ -255,14 +255,21 @@ export default function Aplicacao() {
         <S.Title $small>{t.title}</S.Title>
         <S.Body>{t.body}</S.Body>
         <S.Actions>
-          <S.Primary
-            as="a"
-            href={aprovado ? linkWhatsApp(respostas.nome) : URL_LIVE}
-            target={aprovado ? "_blank" : undefined}
-            rel="noreferrer"
-          >
-            {t.buttonText}
-          </S.Primary>
+          {aprovado ? (
+            <S.Primary
+              as="a"
+              href={linkWhatsApp(respostas.nome)}
+              target="_blank"
+              rel="noreferrer"
+            >
+              {t.buttonText}
+            </S.Primary>
+          ) : (
+            // rota interna: o reprovado segue para a página de agradecimento
+            <S.Primary as={Link} to="/obrigado">
+              {t.buttonText}
+            </S.Primary>
+          )}
         </S.Actions>
       </>,
       100

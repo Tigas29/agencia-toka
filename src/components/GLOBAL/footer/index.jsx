@@ -24,7 +24,7 @@ export default function Footer() {
             <FaXTwitter className="icon" />X (Twitter)
           </a> */}
           <a
-            href="https://www.instagram.com/toka.mkt/"
+            href="https://www.instagram.com/toka.med/"
             target="_blank"
             rel="noopener noreferrer"
           >

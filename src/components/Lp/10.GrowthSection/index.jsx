@@ -71,7 +71,7 @@ export default function GrowthSection() {
                   <img src={Linkedin} />
                 </span>
               </a>
-              <a href="https://www.instagram.com/toka.mkt/" target="_blank">
+              <a href="https://www.instagram.com/toka.med/" target="_blank">
                 <span className="socialIcon">
                   <img src={Instagram} />
                 </span>

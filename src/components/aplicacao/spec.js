@@ -293,8 +293,10 @@ export const SCREENS = {
   reprovado: {
     kicker: "Ainda não",
     title: "Ainda não é a hora de trabalharmos juntos.",
-    body: "O nosso programa foi desenhado para quem já vende o protocolo completo do olhar com regularidade. Forçar essa etapa não ajudaria você e não seria honesto da nossa parte.\n\nPara quem ainda opera blefaroplastia como procedimento isolado, montamos um material que mostra como sair da guerra de preço do procedimento avulso e estruturar a primeira oferta de protocolo completo.\n\nImportante: não é mentoria.",
-    buttonText: "Quero conhecer",
+    // Sem promessa de material enquanto a live não existir. O próximo
+    // passo real hoje é /obrigado, com o conteúdo do Instagram.
+    body: "O nosso programa foi desenhado para quem já vende o protocolo completo do olhar com regularidade. Forçar essa etapa não ajudaria você e não seria honesto da nossa parte.\n\nAntes de fechar esta página, tem uma coisa que vale os seus próximos dois minutos.",
+    buttonText: "Ver o próximo passo",
   },
 };
 

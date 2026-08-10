@@ -378,6 +378,17 @@ export const Hint = styled.p`
   }
 `;
 
+/** Nota discreta de rodapé. Diferente de Hint, aparece no celular. */
+export const Nota = styled.p`
+  font-size: 0.86rem;
+  line-height: 1.6;
+  color: rgba(208, 210, 215, 0.45);
+  margin-top: 34px;
+  padding-top: 22px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  max-width: 44ch;
+`;
+
 export const Error = styled.p`
   font-size: 0.88rem;
   color: var(--erro);
