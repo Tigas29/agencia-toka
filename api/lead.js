@@ -18,7 +18,7 @@ import MAPA from "./_kommo-campos.json" with { type: "json" };
 const SUBDOMAIN = process.env.KOMMO_SUBDOMAIN;
 const TOKEN = process.env.KOMMO_ACCESS_TOKEN;
 const PIPELINE = Number(process.env.KOMMO_PIPELINE_ID || 13786499);
-const STATUS_ENTRADA = Number(process.env.KOMMO_STATUS_ENTRADA || 107774835);
+const STATUS_ENTRADA = Number(process.env.KOMMO_STATUS_ENTRADA || 106373283);
 const STATUS_INVALIDO = Number(process.env.KOMMO_STATUS_INVALIDO || 109098891);
 
 /** Espelho opcional: se existir, recebe uma cópia crua do payload. */
