@@ -35,8 +35,9 @@ const REPROVACOES = [
       ),
   },
   {
+    // corte em R$10 mil/mês
     motivo: "faturamento_abaixo_do_corte",
-    testa: (r) => ["fat_zero", "fat_ate_15"].includes(r.faturamento_mensal),
+    testa: (r) => ["fat_zero", "fat_ate_10"].includes(r.faturamento_mensal),
   },
   {
     motivo: "volume_abaixo_do_corte",
@@ -75,7 +76,8 @@ export function calcularScore(respostas) {
     (choiceOf("faturamento_mensal", respostas.faturamento_mensal)?.score || 0) +
     (choiceOf("volume_blefaro_mes", respostas.volume_blefaro_mes)?.score || 0);
 
-  const rotulo = soma <= 2 ? "frio" : soma <= 5 ? "morno" : "quente";
+  // escala vai de 0 a 11 (faturamento 0-7 + volume 0-4)
+  const rotulo = soma <= 3 ? "frio" : soma <= 7 ? "morno" : "quente";
   return { score: soma, scoreRotulo: rotulo };
 }
 

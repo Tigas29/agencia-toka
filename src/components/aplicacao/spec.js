@@ -158,15 +158,19 @@ export const FIELDS = [
     type: "multiple_choice",
     required: true,
     title: "Qual foi o seu faturamento médio no último mês?",
+    // Corte em R$10 mil/mês, decisão do Tiago em 10/ago/2026.
+    // Para mexer no corte: virar o `qualifies` da faixa e ajustar a
+    // lista `faturamento_abaixo_do_corte` em engine.js.
     choices: [
       { id: "fat_zero", label: "Ainda não faturo", qualifies: false, score: 0 },
-      { id: "fat_ate_15", label: "Até R$15 mil", qualifies: false, score: 0 },
-      { id: "fat_15_30", label: "R$15 mil a R$30 mil", qualifies: true, score: 1 },
-      { id: "fat_30_50", label: "R$30 mil a R$50 mil", qualifies: true, score: 2 },
-      { id: "fat_50_100", label: "R$50 mil a R$100 mil", qualifies: true, score: 3 },
-      { id: "fat_100_200", label: "R$100 mil a R$200 mil", qualifies: true, score: 4 },
-      { id: "fat_200_500", label: "R$200 mil a R$500 mil", qualifies: true, score: 5 },
-      { id: "fat_mais_500", label: "Mais de R$500 mil", qualifies: true, score: 6 },
+      { id: "fat_ate_10", label: "Até R$10 mil", qualifies: false, score: 0 },
+      { id: "fat_10_15", label: "R$10 mil a R$15 mil", qualifies: true, score: 1 },
+      { id: "fat_15_30", label: "R$15 mil a R$30 mil", qualifies: true, score: 2 },
+      { id: "fat_30_50", label: "R$30 mil a R$50 mil", qualifies: true, score: 3 },
+      { id: "fat_50_100", label: "R$50 mil a R$100 mil", qualifies: true, score: 4 },
+      { id: "fat_100_200", label: "R$100 mil a R$200 mil", qualifies: true, score: 5 },
+      { id: "fat_200_500", label: "R$200 mil a R$500 mil", qualifies: true, score: 6 },
+      { id: "fat_mais_500", label: "Mais de R$500 mil", qualifies: true, score: 7 },
     ],
   },
   {
