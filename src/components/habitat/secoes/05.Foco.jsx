@@ -26,8 +26,10 @@ import {
  *    nada a quem está decidindo; o que convence é o que a Toka faz e em
  *    que ordem. Cada movimento abaixo é uma ação, com sujeito.
  *
- * O fecho é o "tudo se junta": as quatro, já explicadas uma a uma,
- * aparecem juntas na trilha compacta, com as catorze frentes embaixo.
+ * Não há tempo de fecho. A trilha no rodapé do palco se monta enquanto
+ * as fases passam, e quando a quarta termina ela já está inteira. Um
+ * quinto tempo só para reapresentar as quatro juntas era rolagem gasta
+ * com o que a pessoa acabou de ver.
  */
 
 const FASES = [
@@ -92,11 +94,11 @@ const FRENTES = [
 
 const CenaAlta = styled.section`
   position: relative;
-  height: ${(p) => (p.$estatico ? "auto" : alturaDaCena(FASES.length + 1, 60))};
+  height: ${(p) => (p.$estatico ? "auto" : alturaDaCena(FASES.length, 60))};
   z-index: 1;
 
   ${Media.TabletSmall} {
-    height: ${(p) => (p.$estatico ? "auto" : alturaDaCena(FASES.length + 1, 52))};
+    height: ${(p) => (p.$estatico ? "auto" : alturaDaCena(FASES.length, 52))};
   }
 `;
 
@@ -194,28 +196,25 @@ const Movimentos = styled(Bullets)`
   }
 `;
 
-const Fecho = styled.div`
-  text-align: center;
+/** O rodapé do palco: a trilha e, no fim, as catorze frentes. */
+const Rodape = styled.div`
+  margin-top: 48px;
+  padding-top: 30px;
+  border-top: 1px solid rgba(255, 255, 255, 0.07);
 
-  h2 {
-    font-family: "Poppins", sans-serif;
-    font-size: clamp(1.6rem, 3vw, 2.3rem);
-    font-weight: 600;
-    letter-spacing: -0.02em;
-    color: var(--white);
-    margin: 0 0 40px;
+  ${Media.PhoneLarge} {
+    margin-top: 26px;
+    padding-top: 20px;
   }
 `;
 
 const Frentes = styled.div`
-  margin-top: 52px;
-  padding-top: 30px;
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  margin-top: 30px;
 
   .rotulo {
     font-size: 0.94rem;
     color: var(--apagado);
-    margin: 0 0 18px;
+    margin: 0 0 14px;
   }
 
   ul {
@@ -225,7 +224,14 @@ const Frentes = styled.div`
     display: flex;
     flex-wrap: wrap;
     gap: 8px;
-    justify-content: center;
+  }
+
+  ${Media.PhoneLarge} {
+    margin-top: 20px;
+
+    .rotulo {
+      font-size: 0.86rem;
+    }
   }
 
   li {
@@ -250,12 +256,26 @@ export default function Foco() {
   const menosMovimento = useMenosMovimento();
   const cenaAltaRef = useRef(null);
   const quadrosRefs = useRef([]);
-  const fechoRef = useRef(null);
   const trilhaRef = useRef(null);
   const frentesRef = useRef(null);
 
   const escopo = useContextoGsap(() => {
-    if (menosMovimento || !cenaAltaRef.current) return;
+    if (menosMovimento) {
+      // A trilha inteira acesa, sem tween nenhum. `useMenosMovimento`
+      // começa em `false` e só vira `true` depois do primeiro efeito, e
+      // no meio disso o primeiro marco chegava a receber o estado "from"
+      // de um tween que nunca rodaria — ficava preso em opacidade 0.18.
+      const trilhaParada = trilhaRef.current;
+      if (trilhaParada?.marcos) {
+        gsap.set([...trilhaParada.marcos, ...trilhaParada.nomes], {
+          opacity: 1,
+          scale: 1,
+          clearProps: "all",
+        });
+      }
+      return;
+    }
+    if (!cenaAltaRef.current) return;
 
     const tl = gsap.timeline({
       defaults: { ease: EASE },
@@ -289,52 +309,58 @@ export default function Foco() {
         );
       });
 
-      tl.to(quadro, { opacity: 0, y: -16, duration: 0.3 }, i + 0.75);
+      // A última fica na tela até o fim da cena. As demais saem no
+      // mesmo instante em que a seguinte entra.
+      if (i < FASES.length - 1) {
+        tl.to(quadro, { opacity: 0, y: -16, duration: 0.3 }, i + 0.75);
+      }
     });
 
-    // ── O fecho: as quatro se juntam ─────────────────────────────────
-    // Mesmo cruzamento das fases: o fecho começa quando a última sai.
-    const inicioFecho = FASES.length - 0.25;
+    // ── A trilha se monta enquanto as fases passam ───────────────────
+    //
+    // Não existe mais um tempo dedicado a mostrar as quatro juntas. Cada
+    // marco acende no tempo da sua própria fase e fica aceso, e quando a
+    // quarta termina a trilha já está inteira. Rolagem gasta para
+    // reapresentar o que a pessoa acabou de ver era exatamente a queixa.
     const trilha = trilhaRef.current;
 
-    if (fechoRef.current) {
-      // O quadro do fecho mora empilhado sobre as fases. Sem esta
-      // entrada ele ficaria visível por trás delas desde o começo, que é
-      // exatamente a prévia que esta dobra veio eliminar.
-      tl.fromTo(
-        fechoRef.current,
-        { opacity: 0 },
-        { opacity: 1, duration: 0.2 },
-        inicioFecho - 0.05
-      ).fromTo(
-        fechoRef.current.querySelector("h2"),
-        { opacity: 0, y: 18 },
-        { opacity: 1, y: 0, duration: 0.25 },
-        inicioFecho
-      );
-    }
-
     if (trilha?.linha) {
+      // A linha cresce de ponta a ponta ao longo das quatro fases, em
+      // ritmo constante: ela é a barra de progresso da dobra.
       tl.fromTo(
         trilha.linha,
         { scaleX: 0 },
-        { scaleX: 1, duration: 0.5, ease: "none" },
-        inicioFecho + 0.2
-      )
-        .fromTo(
-          trilha.marcos,
-          { opacity: 0, scale: 0.7, transformOrigin: "center" },
-          { opacity: 1, scale: 1, duration: 0.3, stagger: 0.12 },
-          inicioFecho + 0.2
-        )
-        .fromTo(
-          trilha.nomes,
-          { opacity: 0, y: 8 },
-          { opacity: 1, y: 0, duration: 0.25, stagger: 0.12 },
-          inicioFecho + 0.32
+        { scaleX: 1, duration: FASES.length - 1, ease: "none" },
+        0.3
+      );
+
+      FASES.forEach((_fase, i) => {
+        // Aceso e cheio no tempo da fase; depois recua para meia luz,
+        // que é o que distingue "já passei por aqui" de "estou aqui".
+        tl.fromTo(
+          trilha.marcos[i],
+          { opacity: 0.18, scale: 0.8, transformOrigin: "center" },
+          { opacity: 1, scale: 1, duration: 0.3 },
+          Math.max(0, i - 0.15)
+        ).fromTo(
+          trilha.nomes[i],
+          { opacity: 0.18 },
+          { opacity: 1, duration: 0.3 },
+          Math.max(0, i - 0.15)
         );
+
+        if (i < FASES.length - 1) {
+          tl.to(
+            [trilha.marcos[i], trilha.nomes[i]],
+            { opacity: 0.5, duration: 0.3 },
+            i + 0.75
+          );
+        }
+      });
     }
 
+    // As catorze frentes entram junto com a última fase, sem tempo
+    // próprio: elas são o resumo do que já foi dito, não uma novidade.
     if (frentesRef.current) {
       tl.fromTo(
         [
@@ -342,8 +368,8 @@ export default function Foco() {
           ...frentesRef.current.querySelectorAll("li"),
         ],
         { opacity: 0, y: 10 },
-        { opacity: 1, y: 0, duration: 0.25, stagger: 0.045 },
-        inicioFecho + 0.7
+        { opacity: 1, y: 0, duration: 0.25, stagger: 0.03 },
+        FASES.length - 1 + 0.35
       );
     }
 
@@ -378,28 +404,25 @@ export default function Foco() {
               </Quadro>
             ))}
 
-            <Quadro
-              $estatico={menosMovimento}
-              ref={fechoRef}
-              style={menosMovimento ? undefined : { pointerEvents: "none" }}
-            >
-              <Fecho>
-                <h2>As quatro fases, uma operação&nbsp;só.</h2>
-                <TrilhaFoco ref={trilhaRef} />
-
-                <Frentes ref={frentesRef}>
-                  <p className="rotulo">
-                    Catorze frentes, um único responsável por todas.
-                  </p>
-                  <ul>
-                    {FRENTES.map((frente) => (
-                      <li key={frente}>{frente}</li>
-                    ))}
-                  </ul>
-                </Frentes>
-              </Fecho>
-            </Quadro>
           </Palcos>
+
+          {/* A trilha vive fora dos quadros: ela não pertence a nenhuma
+              fase, ela é o mapa das quatro. Fica no rodapé do palco,
+              acompanhando quem rola, e se completa junto com a última. */}
+          <Rodape>
+            <TrilhaFoco ref={trilhaRef} />
+
+            <Frentes ref={frentesRef}>
+              <p className="rotulo">
+                Catorze frentes, um único responsável por todas.
+              </p>
+              <ul>
+                {FRENTES.map((frente) => (
+                  <li key={frente}>{frente}</li>
+                ))}
+              </ul>
+            </Frentes>
+          </Rodape>
         </Inner>
       </Palco>
     </CenaAlta>

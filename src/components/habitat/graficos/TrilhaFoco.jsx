@@ -3,20 +3,23 @@ import styled from "styled-components";
 import { Media } from "../style";
 
 /**
- * A trilha compacta do fecho da dobra 4.
+ * A trilha de progresso da dobra 4, no rodapé do palco.
  *
- * Antes ela carregava a dobra inteira, com as quatro fases lado a lado e
- * os entregáveis de cada uma. O problema era justamente esse: quatro
- * colunas na tela ao mesmo tempo significam que três delas são prévia da
- * próxima, e a atenção nunca ficava numa coisa só. As fases passaram a
- * ocupar a tela uma por vez em `secoes/05.Foco.jsx`, e sobrou para esta
- * trilha o papel de fecho: o momento em que as quatro, já explicadas, se
- * juntam num desenho só.
+ * Ela já foi duas coisas antes desta. Primeiro carregava a dobra inteira,
+ * com as quatro fases lado a lado — e três delas eram prévia da próxima,
+ * então a atenção nunca ficava numa coisa só. Depois virou um fecho, um
+ * quinto tempo só para reapresentar as quatro juntas, e o Tiago apontou o
+ * custo disso: rolagem gasta para mostrar o que já tinha passado.
  *
- * Ela só sabe desenhar. Quem anima é o pai, pelos refs abaixo — a seção
- * que prende a tela é ancestral daqui, e o React atribui refs de baixo
- * para cima, então montar a timeline aqui pegaria esse ancestral ainda
- * nulo.
+ * Agora ela **se monta enquanto as fases acontecem**. Cada marco acende
+ * no tempo da sua fase e continua aceso, mais discreto. Quando a quarta
+ * termina, a trilha já está inteira, sem nenhuma rolagem a mais. De
+ * quebra ela responde uma pergunta que a dobra não respondia: no meio da
+ * terceira fase, quantas faltam.
+ *
+ * Só sabe desenhar. Quem anima é o pai, pelos refs abaixo — a seção que
+ * prende a tela é ancestral daqui, e o React atribui refs de baixo para
+ * cima, então montar a timeline aqui pegaria esse ancestral ainda nulo.
  */
 
 const ETAPAS = [
@@ -33,11 +36,12 @@ const Trilho = styled.div`
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 20px;
-  margin: 0 auto;
-  max-width: 44rem;
+  margin: 0;
+  max-width: 30rem;
 
   ${Media.PhoneLarge} {
-    gap: 10px;
+    gap: 8px;
+    max-width: 100%;
   }
 `;
 
@@ -48,7 +52,7 @@ const Trilho = styled.div`
  */
 const Linha = styled.div`
   position: absolute;
-  top: 27px;
+  top: 21px;
   left: 12.5%;
   right: 12.5%;
   height: 1px;
@@ -59,6 +63,10 @@ const Linha = styled.div`
     rgba(224, 182, 90, 0.1)
   );
   transform-origin: left center;
+
+  ${Media.PhoneLarge} {
+    top: 17px;
+  }
 `;
 
 const Etapa = styled.div`
@@ -67,16 +75,16 @@ const Etapa = styled.div`
 `;
 
 const Marco = styled.div`
-  width: 54px;
-  height: 54px;
-  margin: 0 auto 14px;
+  width: 42px;
+  height: 42px;
+  margin: 0 auto 10px;
   position: relative;
   z-index: 1;
 
   ${Media.PhoneLarge} {
-    width: 44px;
-    height: 44px;
-    margin-bottom: 10px;
+    width: 34px;
+    height: 34px;
+    margin-bottom: 0;
   }
 
   svg {
@@ -85,15 +93,21 @@ const Marco = styled.div`
   }
 `;
 
+/**
+ * O nome por extenso some no telemóvel. Lá a tela é curta, a trilha
+ * divide o palco com o texto da fase, e quatro nomes em fila roubam
+ * altura de quem está tentando ler. A letra basta para orientar, e o
+ * nome inteiro está em letras garrafais logo acima.
+ */
 const Nome = styled.p`
   font-family: "Poppins", sans-serif;
-  font-size: 0.94rem;
+  font-size: 0.84rem;
   font-weight: 500;
   color: var(--off-white);
   margin: 0;
 
   ${Media.PhoneLarge} {
-    font-size: 0.78rem;
+    display: none;
   }
 `;
 
