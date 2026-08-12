@@ -148,33 +148,6 @@ export const Inner = styled.div`
   position: relative;
 `;
 
-/**
- * O numeral de fundo que substituiu os rótulos do tipo "O DIAGNÓSTICO".
- * Contorno apenas, gigante, atrás do conteúdo. Marca em que ponto da
- * história a pessoa está sem pendurar uma etiqueta em cima do título.
- */
-export const Numeral = styled.span`
-  position: absolute;
-  top: -0.42em;
-  right: -0.06em;
-  font-family: "Poppins", sans-serif;
-  font-size: clamp(9rem, 22vw, 19rem);
-  font-weight: 700;
-  line-height: 0.8;
-  letter-spacing: -0.04em;
-  color: transparent;
-  -webkit-text-stroke: 1px rgba(224, 182, 90, 0.13);
-  pointer-events: none;
-  user-select: none;
-  z-index: 0;
-
-  ${Media.TabletSmall} {
-    top: -0.3em;
-    right: -0.02em;
-    font-size: clamp(7rem, 30vw, 11rem);
-  }
-`;
-
 export const H2 = styled.h2`
   font-family: "Poppins", sans-serif;
   font-size: clamp(1.75rem, 3.4vw, 2.6rem);

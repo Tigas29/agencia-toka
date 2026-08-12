@@ -1,13 +1,14 @@
 import { useRef } from "react";
 import styled from "styled-components";
-import { Bullets, Inner, Media, Numeral } from "../style";
+import { Bullets, Inner, Media } from "../style";
 import TrilhaFoco from "../graficos/TrilhaFoco";
 import {
   EASE,
   gsap,
+  alturaDaCena,
+  gatilhoDeCena,
   useContextoGsap,
   useMenosMovimento,
-  useParallaxNumeral,
 } from "../animacao";
 
 /**
@@ -91,11 +92,11 @@ const FRENTES = [
 
 const CenaAlta = styled.section`
   position: relative;
-  height: ${(p) => (p.$estatico ? "auto" : "520vh")};
+  height: ${(p) => (p.$estatico ? "auto" : alturaDaCena(FASES.length + 1, 60))};
   z-index: 1;
 
   ${Media.TabletSmall} {
-    height: ${(p) => (p.$estatico ? "auto" : "420vh")};
+    height: ${(p) => (p.$estatico ? "auto" : alturaDaCena(FASES.length + 1, 52))};
   }
 `;
 
@@ -247,26 +248,18 @@ const Frentes = styled.div`
 
 export default function Foco() {
   const menosMovimento = useMenosMovimento();
-  const numeralRef = useRef(null);
   const cenaAltaRef = useRef(null);
   const quadrosRefs = useRef([]);
   const fechoRef = useRef(null);
   const trilhaRef = useRef(null);
   const frentesRef = useRef(null);
 
-  useParallaxNumeral(numeralRef, menosMovimento);
-
   const escopo = useContextoGsap(() => {
     if (menosMovimento || !cenaAltaRef.current) return;
 
     const tl = gsap.timeline({
       defaults: { ease: EASE },
-      scrollTrigger: {
-        trigger: cenaAltaRef.current,
-        start: "top top",
-        end: "bottom bottom",
-        scrub: 0.5,
-      },
+      scrollTrigger: gatilhoDeCena(cenaAltaRef.current, 0.5),
     });
 
     // ── Uma fase por tempo ───────────────────────────────────────────
@@ -281,35 +274,27 @@ export default function Foco() {
       );
       const passo = 0.62 / pecas.length;
 
-      if (i > 0) {
-        pecas.forEach((peca, j) => {
-          tl.fromTo(
-            peca,
-            { opacity: 0, y: 18 },
-            { opacity: 1, y: 0, duration: passo * 0.9 },
-            i + passo * j
-          );
-        });
-      } else {
-        // O primeiro quadro já nasce montado no topo da cena; só as
-        // peças entram, a partir do zero.
-        pecas.forEach((peca, j) => {
-          tl.fromTo(
-            peca,
-            { opacity: 0, y: 18 },
-            { opacity: 1, y: 0, duration: passo * 0.9 },
-            passo * j
-          );
-        });
-      }
+      // 🔑 A fase entra a partir de `i - 0.25`, que é o mesmo instante em
+      // que a anterior começa a sair. Cruzamento, não sequência: com a
+      // saída terminando antes de a próxima começar sobrava rolagem em
+      // que a tela ficava em branco, e foi isso que o Tiago viu como
+      // "entra e fica várias rolagens vazio".
+      const entrada = i === 0 ? 0 : i - 0.25;
+      pecas.forEach((peca, j) => {
+        tl.fromTo(
+          peca,
+          { opacity: 0, y: 18 },
+          { opacity: 1, y: 0, duration: passo * 0.9 },
+          entrada + passo * j
+        );
+      });
 
-      // Sai inteiro antes de a próxima entrar. É o "sem prévia": em
-      // nenhum instante duas fases dividem a tela.
-      tl.to(quadro, { opacity: 0, y: -16, duration: 0.22 }, i + 0.86);
+      tl.to(quadro, { opacity: 0, y: -16, duration: 0.3 }, i + 0.75);
     });
 
     // ── O fecho: as quatro se juntam ─────────────────────────────────
-    const inicioFecho = FASES.length;
+    // Mesmo cruzamento das fases: o fecho começa quando a última sai.
+    const inicioFecho = FASES.length - 0.25;
     const trilha = trilhaRef.current;
 
     if (fechoRef.current) {
@@ -368,7 +353,6 @@ export default function Foco() {
     <CenaAlta ref={cenaAltaRef} $estatico={menosMovimento}>
       <Palco ref={escopo} $estatico={menosMovimento}>
         <Inner>
-          <Numeral ref={numeralRef}>04</Numeral>
 
           <Palcos $estatico={menosMovimento}>
             {FASES.map((fase, i) => (

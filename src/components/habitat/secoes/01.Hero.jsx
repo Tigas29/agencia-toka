@@ -1,14 +1,13 @@
 import { useRef } from "react";
 import styled from "styled-components";
 import logoToka from "../../../assets/landingpage/logo.svg";
-import { Cta, Inner, Mascara, Media, Microcopy, Numeral } from "../style";
+import { Cta, Inner, Mascara, Media, Microcopy } from "../style";
 import { Seta } from "../icones";
 import {
   EASE,
   gsap,
   useContextoGsap,
   useMenosMovimento,
-  useParallaxNumeral,
 } from "../animacao";
 
 /**
@@ -116,14 +115,11 @@ const BotaoTopo = styled.div`
 
 export default function Hero({ aoClicar }) {
   const menosMovimento = useMenosMovimento();
-  const numeralRef = useRef(null);
   const linhasRef = useRef([]);
   const seloRef = useRef(null);
   const aberturaRef = useRef(null);
   const acaoRef = useRef(null);
   const numerosRefs = useRef([]);
-
-  useParallaxNumeral(numeralRef, menosMovimento);
 
   const escopo = useContextoGsap(() => {
     if (menosMovimento) return;
@@ -183,7 +179,6 @@ export default function Hero({ aoClicar }) {
         </Topo>
 
         <Corpo>
-          <Numeral ref={numeralRef}>01</Numeral>
 
           <Selo ref={seloRef}>Habitat Estratégico©</Selo>
 

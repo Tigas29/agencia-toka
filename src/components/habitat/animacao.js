@@ -79,6 +79,41 @@ export const fatia = (p, de, ate) =>
   Math.min(1, Math.max(0, (p - de) / (ate - de)));
 
 /**
+ * Altura de uma cena presa, calculada a partir de quantos tempos ela
+ * tem, em vez de chutada.
+ *
+ * Chutar a altura foi a origem de uma queixa concreta: "a dobra 4 entra
+ * e fica várias rolagens vazia". Com altura demais para os tempos que a
+ * cena tem, sobra rolagem em que nada acontece e a página parece
+ * travada. Com altura de menos, as peças se atropelam.
+ *
+ * `unidade` é quanta tela cada tempo merece. Uma frase curta pede menos
+ * que um quadro com cinco peças, e é o único número a ajustar quando uma
+ * cena ficar apressada ou arrastada.
+ */
+export const alturaDaCena = (tempos, unidade = 46) =>
+  `${Math.round(tempos * unidade + 100)}vh`;
+
+/**
+ * O gatilho padrão de uma cena presa.
+ *
+ * 🔑 `start` **antes** de a seção prender, não em "top top". Com "top
+ * top" a timeline só começa quando o topo da seção alcança o topo da
+ * tela, e no caminho até lá a seção já está visível e ainda vazia — era
+ * exatamente a "entrada em branco" que o Tiago viu. Começando em
+ * "top 72%" o primeiro conteúdo já está na tela quando o palco prende.
+ *
+ * `end` em "bottom bottom" faz a timeline acabar no instante em que o
+ * sticky solta, sem sobra morta no fim.
+ */
+export const gatilhoDeCena = (elemento, scrub = 0.5) => ({
+  trigger: elemento,
+  start: "top 72%",
+  end: "bottom bottom",
+  scrub,
+});
+
+/**
  * Rolagem suave da página inteira, via Lenis, integrada ao ticker do
  * GSAP para o ScrollTrigger ler a posição real a cada frame. Nunca
  * assume o controle da rolagem: só suaviza o que o usuário já está
@@ -193,31 +228,3 @@ export function useRevelacaoPorScroll(
   return escopo;
 }
 
-/**
- * Parallax lento do numeral de fundo de cada dobra. Só desktop (guarda
- * de escopo: no telemóvel o numeral já ocupa espaço demais para se
- * mexer sem atropelar o texto). `matchMedia` do próprio GSAP cuida de
- * criar e destruir o tween conforme o viewport cruza o breakpoint.
- */
-export function useParallaxNumeral(ref, menosMovimento) {
-  useLayoutEffect(() => {
-    if (menosMovimento || !ref.current) return undefined;
-
-    const mm = gsap.matchMedia();
-    mm.add("(min-width: 1001px)", () => {
-      const tween = gsap.to(ref.current, {
-        yPercent: 16,
-        ease: "none",
-        scrollTrigger: {
-          trigger: ref.current.parentElement,
-          start: "top bottom",
-          end: "bottom top",
-          scrub: true,
-        },
-      });
-      return () => tween.kill();
-    });
-
-    return () => mm.revert();
-  }, [menosMovimento, ref]);
-}

@@ -1,166 +1,167 @@
 import { useRef } from "react";
 import styled from "styled-components";
-import {
-  Bullets,
-  Cta,
-  Fecho,
-  Inner,
-  Media,
-  Microcopy,
-  Numeral,
-  SectionTela,
-} from "../style";
+import { Cta, Inner, Media, Microcopy } from "../style";
+import Legenda, { CaixaDeLegendas } from "../Legenda";
 import { Seta } from "../icones";
 import {
   EASE,
+  alturaDaCena,
+  gatilhoDeCena,
   gsap,
   useContextoGsap,
   useMenosMovimento,
-  useParallaxNumeral,
 } from "../animacao";
 
 /**
- * Dobra 3 (antigo `04.Risco.jsx` — o nome do arquivo ficou, a posição na
- * página mudou depois da fusão de `02.Cena.jsx`). O bloco mais curto da
- * página, e o de maior contraste, porque é o que quebra a objeção
- * "mais uma promessa". Vem depois do mecanismo, de propósito: primeiro
- * a pessoa entende o que é, depois descobre que quem oferece topa ser
- * pago por ele.
+ * Dobra 3. O risco invertido, e a virada emocional da página: é aqui
+ * que a objeção "mais uma promessa" se quebra.
+ *
+ * Mesma regra do zoológico da dobra 2: uma frase por vez, a anterior
+ * sai. Os bullets acumulados de antes entregavam o argumento inteiro de
+ * uma vez, e este argumento em particular ganha em ser dito devagar.
  */
 
-/**
- * Sem faixa e sem borda. Uma linha de corte horizontal aqui devolveria à
- * página exatamente o que a reforma veio tirar: o olho encontra o limite
- * e conclui "acabou uma coisa, começou outra", e a narrativa contínua
- * vira de novo uma pilha de blocos. O destaque deste momento vem de um
- * halo dourado que nasce e morre dentro da própria seção, sem tocar as
- * vizinhas.
- */
-const Faixa = styled(SectionTela)`
-  padding: var(--respiro-curto) 0;
-  background: radial-gradient(
-    70% 100% at 12% 0%,
-    rgba(224, 182, 90, 0.09),
-    transparent 72%
-  );
+const FRASES = [
+  { texto: "Toda agência promete resultado." },
+  { texto: "Poucas topam ser pagas por ele.", peso: "virada" },
+  { texto: "A nossa remuneração é atrelada ao seu crescimento." },
+  { texto: "Tudo que não vira procedimento sai da mesa por conta própria." },
+  { texto: "Você não paga para testar. Paga pelo que funcionou." },
+  {
+    texto:
+      "Antes de existir resultado, a única prova que vale é onde a agência coloca o próprio dinheiro.",
+    peso: "virada",
+  },
+];
+
+const CenaAlta = styled.section`
+  position: relative;
+  height: ${(p) => (p.$estatico ? "auto" : alturaDaCena(FRASES.length + 1, 32))};
+  z-index: 1;
+
+  ${Media.TabletSmall} {
+    height: ${(p) => (p.$estatico ? "auto" : alturaDaCena(FRASES.length + 1, 28))};
+  }
+`;
+
+const Palco = styled.div`
+  position: ${(p) => (p.$estatico ? "static" : "sticky")};
+  top: 0;
+  min-height: ${(p) => (p.$estatico ? "0" : "100dvh")};
+  display: flex;
+  align-items: center;
+  padding: ${(p) => (p.$estatico ? "var(--respiro) 0" : "0")};
+  overflow: hidden;
 `;
 
 const Bloco = styled.div`
   max-width: 46rem;
   position: relative;
+`;
 
-  h2 {
-    font-family: "Poppins", sans-serif;
-    font-size: clamp(1.6rem, 3.2vw, 2.35rem);
-    font-weight: 600;
-    line-height: 1.16;
-    letter-spacing: -0.02em;
-    color: var(--white);
-    margin: 0 0 22px;
-  }
+const Titulo = styled.h2`
+  font-family: "Poppins", sans-serif;
+  font-size: clamp(1.7rem, 3.6vw, 2.7rem);
+  font-weight: 600;
+  line-height: 1.14;
+  letter-spacing: -0.025em;
+  color: var(--white);
+  margin: 0 0 40px;
+`;
 
-  p {
-    font-size: 1.02rem;
-    color: var(--off-white);
-    margin: 0 0 16px;
-  }
-
-  .fecho {
-    color: var(--gold);
-    font-family: "Poppins", sans-serif;
-    font-weight: 500;
-  }
-
-  .acao {
-    margin-top: 30px;
-  }
-
-  ${Media.PhoneLarge} {
-    p {
-      font-size: 0.98rem;
-    }
-  }
+const Acao = styled.div`
+  margin-top: 34px;
 `;
 
 export default function Risco({ aoClicar }) {
   const menosMovimento = useMenosMovimento();
-  const numeralRef = useRef(null);
-  const itensRef = useRef([]);
-
-  useParallaxNumeral(numeralRef, menosMovimento);
+  const cenaAltaRef = useRef(null);
+  const tituloRef = useRef(null);
+  const frasesRefs = useRef([]);
+  const acaoRef = useRef(null);
 
   const escopo = useContextoGsap(() => {
-    if (menosMovimento) return;
+    if (menosMovimento || !cenaAltaRef.current) return;
 
-    // Amarrado à rolagem, não ao relógio: cada peça entra conforme a
-    // pessoa rola, e parar de rolar congela a revelação. É o que
-    // diferencia ler rolando de parar para ler.
-    gsap.fromTo(
-      itensRef.current.filter(Boolean),
-      { opacity: 0, y: 20 },
-      {
-        opacity: 1,
-        y: 0,
-        ease: "none",
-        duration: 1,
-        stagger: 1,
-        scrollTrigger: {
-          trigger: escopo.current,
-          start: "top 72%",
-          end: "bottom 62%",
-          scrub: 0.5,
-        },
+    const tl = gsap.timeline({
+      defaults: { ease: EASE },
+      scrollTrigger: gatilhoDeCena(cenaAltaRef.current, 0.5),
+    });
+
+    tl.fromTo(
+      tituloRef.current,
+      { opacity: 0, y: 26, filter: "blur(7px)" },
+      { opacity: 1, y: 0, filter: "blur(0px)", duration: 0.4 },
+      0
+    );
+
+    // Cruzamento, não sequência: a frase sai no mesmo instante em que a
+    // seguinte entra. Deixar um vão entre as duas é o que faz a tela
+    // parecer vazia no meio da rolagem.
+    frasesRefs.current.filter(Boolean).forEach((frase, i) => {
+      const t = 0.7 + i;
+      tl.fromTo(
+        frase,
+        { opacity: 0, y: 30, filter: "blur(9px)" },
+        { opacity: 1, y: 0, filter: "blur(0px)", duration: 0.3 },
+        t
+      );
+      if (i < FRASES.length - 1) {
+        tl.to(
+          frase,
+          { opacity: 0, y: -26, filter: "blur(9px)", duration: 0.3 },
+          t + 1
+        );
       }
+    });
+
+    // O botão só entra depois da última frase: oferecer a ação antes de
+    // o argumento fechar é pedir a decisão sem ter dado o motivo.
+    tl.fromTo(
+      acaoRef.current,
+      { opacity: 0, y: 20 },
+      { opacity: 1, y: 0, duration: 0.35 },
+      0.7 + FRASES.length
     );
 
   }, [menosMovimento]);
 
-  const registrar = (i) => (el) => {
-    itensRef.current[i] = el;
-  };
-
   return (
-    <Faixa ref={escopo}>
-      <Inner>
-        <Bloco>
-          <Numeral ref={numeralRef}>03</Numeral>
+    <CenaAlta ref={cenaAltaRef} $estatico={menosMovimento}>
+      <Palco ref={escopo} $estatico={menosMovimento}>
+        <Inner>
+          <Bloco>
+            <Titulo ref={tituloRef}>
+              Se a sua clínica não crescer, nós não&nbsp;ganhamos.
+            </Titulo>
 
-          <h2 ref={registrar(0)}>
-            Se a sua clínica não crescer, nós não&nbsp;ganhamos.
-          </h2>
+            <CaixaDeLegendas $estatico={menosMovimento}>
+              {FRASES.map((frase, i) => (
+                <Legenda
+                  key={frase.texto}
+                  peso={frase.peso}
+                  estatico={menosMovimento}
+                  ref={(el) => {
+                    frasesRefs.current[i] = el;
+                  }}
+                >
+                  {frase.texto}
+                </Legenda>
+              ))}
+            </CaixaDeLegendas>
 
-          <p ref={registrar(1)}>
-            Toda agência promete resultado. Poucas topam ser pagas por ele.
-          </p>
-
-          <Bullets>
-            <li ref={registrar(2)}>
-              A nossa remuneração é atrelada ao seu crescimento
-            </li>
-            <li ref={registrar(3)}>
-              Tudo que não vira procedimento sai da mesa por conta própria
-            </li>
-            <li ref={registrar(4)}>
-              Você não paga para testar, você paga pelo que funcionou
-            </li>
-          </Bullets>
-
-          <Fecho ref={registrar(5)}>
-            Antes de existir resultado, a única prova que vale é onde a agência
-            coloca o próprio&nbsp;dinheiro.
-          </Fecho>
-
-          <div className="acao" ref={registrar(6)}>
-            <Cta onClick={aoClicar}>
-              Quero entender o modelo
-              <Seta />
-            </Cta>
-            <Microcopy>
-              Conversa direta, sem proposta genérica de gaveta.
-            </Microcopy>
-          </div>
-        </Bloco>
-      </Inner>
-    </Faixa>
+            <Acao ref={acaoRef}>
+              <Cta onClick={aoClicar}>
+                Quero entender o modelo
+                <Seta />
+              </Cta>
+              <Microcopy>
+                Conversa direta, sem proposta genérica de gaveta.
+              </Microcopy>
+            </Acao>
+          </Bloco>
+        </Inner>
+      </Palco>
+    </CenaAlta>
   );
 }

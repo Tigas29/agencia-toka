@@ -1,13 +1,12 @@
 import { useRef } from "react";
 import styled from "styled-components";
-import { H2, Inner, Media, Numeral, SectionTela, Texto } from "../style";
+import { H2, Inner, Media, SectionTela, Texto } from "../style";
 import fotoLuis from "../../../assets/habitat/dr-luis-felipe.webp";
 import {
   EASE,
   gsap,
   useContextoGsap,
   useMenosMovimento,
-  useParallaxNumeral,
 } from "../animacao";
 
 /**
@@ -286,13 +285,10 @@ const Linhas = styled.ul`
 
 export default function Prova() {
   const menosMovimento = useMenosMovimento();
-  const numeralRef = useRef(null);
   const numerosRefs = useRef([]);
   const colunasRefs = useRef([]);
   const cabecaRefs = useRef([]);
   const caseRef = useRef(null);
-
-  useParallaxNumeral(numeralRef, menosMovimento);
 
   const escopo = useContextoGsap(() => {
     if (menosMovimento || !escopo.current) return;
@@ -395,7 +391,6 @@ export default function Prova() {
   return (
     <Faixa ref={escopo}>
       <Inner>
-        <Numeral ref={numeralRef}>05</Numeral>
 
         <H2 ref={registrarCabeca(0)}>Cinco anos, um nicho&nbsp;só.</H2>
         <Texto ref={registrarCabeca(1)}>
