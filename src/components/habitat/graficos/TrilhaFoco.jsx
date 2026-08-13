@@ -45,45 +45,31 @@ const Trilho = styled.div`
   }
 `;
 
-/**
- * A linha que costura os marcos. Elemento real, não `::before`, porque o
- * GSAP precisa de uma referência de DOM para desenhá-la. Nasce inteira e
- * o script a rebobina: repouso primeiro, script depois.
- */
-const Linha = styled.div`
-  position: absolute;
-  top: 21px;
-  left: 12.5%;
-  right: 12.5%;
-  height: 1px;
-  background: linear-gradient(
-    90deg,
-    var(--gold-linha),
-    var(--gold-linha) 70%,
-    rgba(224, 182, 90, 0.1)
-  );
-  transform-origin: left center;
-
-  ${Media.PhoneLarge} {
-    top: 17px;
-  }
-`;
-
 const Etapa = styled.div`
   position: relative;
   text-align: center;
 `;
 
+/**
+ * Sem linha ligando os marcos. Ela existia para dar ideia de percurso,
+ * mas o próprio acender em sequência já faz isso, e o traço só somava
+ * ruído — ainda mais no telemóvel, onde a trilha é pequena e cada pixel
+ * de enfeite disputa espaço com o conteúdo.
+ *
+ * No telemóvel os marcos crescem em vez de encolher: sem os nomes por
+ * extenso, a letra é a única coisa que orienta, e ela precisa ser
+ * legível de relance.
+ */
 const Marco = styled.div`
-  width: 42px;
-  height: 42px;
+  width: 44px;
+  height: 44px;
   margin: 0 auto 10px;
   position: relative;
   z-index: 1;
 
   ${Media.PhoneLarge} {
-    width: 34px;
-    height: 34px;
+    width: 50px;
+    height: 50px;
     margin-bottom: 0;
   }
 
@@ -113,19 +99,16 @@ const Nome = styled.p`
 
 const TrilhaFoco = forwardRef(function TrilhaFoco(_props, refExterno) {
   const escopo = useRef(null);
-  const linhaRef = useRef(null);
   const marcosRefs = useRef([]);
   const nomesRefs = useRef([]);
 
   useImperativeHandle(refExterno, () => ({
-    linha: linhaRef.current,
     marcos: marcosRefs.current,
     nomes: nomesRefs.current,
   }));
 
   return (
     <Trilho ref={escopo}>
-      <Linha ref={linhaRef} />
       {ETAPAS.map((etapa, i) => (
         <Etapa key={etapa.nome}>
           <Marco

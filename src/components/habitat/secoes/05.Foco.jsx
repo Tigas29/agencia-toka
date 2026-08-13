@@ -324,16 +324,7 @@ export default function Foco() {
     // reapresentar o que a pessoa acabou de ver era exatamente a queixa.
     const trilha = trilhaRef.current;
 
-    if (trilha?.linha) {
-      // A linha cresce de ponta a ponta ao longo das quatro fases, em
-      // ritmo constante: ela é a barra de progresso da dobra.
-      tl.fromTo(
-        trilha.linha,
-        { scaleX: 0 },
-        { scaleX: 1, duration: FASES.length - 1, ease: "none" },
-        0.3
-      );
-
+    if (trilha?.marcos) {
       FASES.forEach((_fase, i) => {
         // Aceso e cheio no tempo da fase; depois recua para meia luz,
         // que é o que distingue "já passei por aqui" de "estou aqui".

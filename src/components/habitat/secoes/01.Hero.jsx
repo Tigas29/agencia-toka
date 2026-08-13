@@ -1,7 +1,7 @@
 import { useRef } from "react";
 import styled from "styled-components";
 import logoToka from "../../../assets/landingpage/logo.svg";
-import { Cta, Inner, Mascara, Media, Microcopy } from "../style";
+import { Cta, Inner, Mascara, Media } from "../style";
 import { Seta } from "../icones";
 import {
   EASE,
@@ -106,13 +106,6 @@ const Numeros = styled.div`
   }
 `;
 
-/** Some no telemóvel: lá o botão do herói já ocupa a largura toda. */
-const BotaoTopo = styled.div`
-  ${Media.TabletSmall} {
-    display: none;
-  }
-`;
-
 export default function Hero({ aoClicar }) {
   const menosMovimento = useMenosMovimento();
   const linhasRef = useRef([]);
@@ -171,11 +164,6 @@ export default function Hero({ aoClicar }) {
       <Inner>
         <Topo>
           <img src={logoToka} alt="Toka" />
-          <BotaoTopo>
-            <Cta $tamanho="medio" onClick={aoClicar}>
-              Ver se minha região está aberta
-            </Cta>
-          </BotaoTopo>
         </Topo>
 
         <Corpo>
@@ -208,10 +196,6 @@ export default function Hero({ aoClicar }) {
               Quero minha região exclusiva
               <Seta />
             </Cta>
-            <Microcopy>
-              Quatro campos. Depois a conversa segue no WhatsApp, com gente da
-              Toka olhando o seu caso.
-            </Microcopy>
           </div>
 
           <Numeros>
