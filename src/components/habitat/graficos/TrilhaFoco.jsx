@@ -40,7 +40,7 @@ const Trilho = styled.div`
   max-width: 30rem;
 
   ${Media.PhoneLarge} {
-    gap: 8px;
+    gap: 10px;
     max-width: 100%;
   }
 `;
@@ -58,7 +58,9 @@ const Etapa = styled.div`
  *
  * No telemóvel os marcos crescem em vez de encolher: sem os nomes por
  * extenso, a letra é a única coisa que orienta, e ela precisa ser
- * legível de relance.
+ * legível de relance. 62px é o teto: na tela mais estreita que
+ * atendemos (320px, `Inner` a 90% = 288px) quatro marcos mais três
+ * vãos de 10px somam 278px, e o que passar disso encosta na borda.
  */
 const Marco = styled.div`
   width: 44px;
@@ -68,8 +70,8 @@ const Marco = styled.div`
   z-index: 1;
 
   ${Media.PhoneLarge} {
-    width: 50px;
-    height: 50px;
+    width: 62px;
+    height: 62px;
     margin-bottom: 0;
   }
 

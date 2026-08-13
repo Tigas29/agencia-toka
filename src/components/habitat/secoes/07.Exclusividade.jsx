@@ -17,9 +17,6 @@ import {
  * Urgência sem motivo soa a truque, e em B2B o médico fareja truque de
  * longe. Aqui a exclusividade é explicada pela mecânica da oferta, uma
  * frase por vez, e a última é a que fecha.
- *
- * O `id="fio-contrai"` é a marca que `FioCondutor.jsx` procura para
- * afinar o traço enquanto esta seção atravessa a tela.
  */
 
 const FRASES = [
@@ -112,7 +109,7 @@ export default function Exclusividade() {
   }, [menosMovimento]);
 
   return (
-    <CenaAlta ref={cenaAltaRef} $estatico={menosMovimento} id="fio-contrai">
+    <CenaAlta ref={cenaAltaRef} $estatico={menosMovimento}>
       <Palco ref={escopo} $estatico={menosMovimento}>
         <Inner>
           <Bloco>

@@ -3,7 +3,6 @@ import styled from "styled-components";
 import { Inner, Media, Page, Tokens } from "./style";
 import { capturarUtm, track } from "./lead";
 import { ScrollTrigger, useMenosMovimento, useRolagemSuave } from "./animacao";
-import FioCondutor from "./FioCondutor";
 import Atmosfera from "./Atmosfera";
 
 import Hero from "./secoes/01.Hero";
@@ -85,7 +84,6 @@ export default function PaginaHabitat() {
       <Tokens />
       <Page className="toka-habitat">
         <Atmosfera />
-        <FioCondutor />
 
         <Hero aoClicar={irParaForm} />
         <Cena />

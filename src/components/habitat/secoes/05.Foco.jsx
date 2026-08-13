@@ -168,10 +168,13 @@ const Cabeca = styled.div`
   ${Media.PhoneLarge} {
     gap: 14px;
 
+    /* Mesma medida dos marcos da trilha lá embaixo: os dois carregam a
+       mesma letra e precisam ler como o mesmo elemento, um dizendo
+       "estou aqui" e o outro "por onde já passei". */
     .letra {
-      width: 54px;
-      height: 54px;
-      font-size: 1.5rem;
+      width: 62px;
+      height: 62px;
+      font-size: 1.7rem;
     }
   }
 `;
