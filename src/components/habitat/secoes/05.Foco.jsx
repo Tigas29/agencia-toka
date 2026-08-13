@@ -94,11 +94,11 @@ const FRENTES = [
 
 const CenaAlta = styled.section`
   position: relative;
-  height: ${(p) => (p.$estatico ? "auto" : alturaDaCena(FASES.length, 60))};
+  height: ${(p) => (p.$estatico ? "auto" : alturaDaCena(FASES.length, 44))};
   z-index: 1;
 
   ${Media.TabletSmall} {
-    height: ${(p) => (p.$estatico ? "auto" : alturaDaCena(FASES.length, 52))};
+    height: ${(p) => (p.$estatico ? "auto" : alturaDaCena(FASES.length, 38))};
   }
 `;
 
@@ -302,15 +302,22 @@ export default function Foco() {
       // saída terminando antes de a próxima começar sobrava rolagem em
       // que a tela ficava em branco, e foi isso que o Tiago viu como
       // "entra e fica várias rolagens vazio".
-      const entrada = i === 0 ? 0 : i - 0.25;
-      pecas.forEach((peca, j) => {
-        tl.fromTo(
-          peca,
-          { opacity: 0, y: 18 },
-          { opacity: 1, y: 0, duration: passo * 0.9 },
-          entrada + passo * j
-        );
-      });
+      //
+      // 🔑 A primeira fase é exceção: as peças dela nascem visíveis,
+      // fora da timeline. É o que a pessoa vê enquanto a dobra ainda
+      // sobe para prender — com o gatilho em "top top" (ver
+      // `gatilhoDeCena`), animá-las aqui faria a dobra entrar em branco.
+      const entrada = i - 0.25;
+      if (i > 0) {
+        pecas.forEach((peca, j) => {
+          tl.fromTo(
+            peca,
+            { opacity: 0, y: 18 },
+            { opacity: 1, y: 0, duration: passo * 0.9 },
+            entrada + passo * j
+          );
+        });
+      }
 
       // A última fica na tela até o fim da cena. As demais saem no
       // mesmo instante em que a seguinte entra.
@@ -331,17 +338,23 @@ export default function Foco() {
       FASES.forEach((_fase, i) => {
         // Aceso e cheio no tempo da fase; depois recua para meia luz,
         // que é o que distingue "já passei por aqui" de "estou aqui".
-        tl.fromTo(
-          trilha.marcos[i],
-          { opacity: 0.18, scale: 0.8, transformOrigin: "center" },
-          { opacity: 1, scale: 1, duration: 0.3 },
-          Math.max(0, i - 0.15)
-        ).fromTo(
-          trilha.nomes[i],
-          { opacity: 0.18 },
-          { opacity: 1, duration: 0.3 },
-          Math.max(0, i - 0.15)
-        );
+        //
+        // O primeiro marco já nasce aceso, pelo mesmo motivo das peças
+        // da primeira fase: ele faz parte do que está na tela enquanto
+        // a dobra sobe para prender.
+        if (i > 0) {
+          tl.fromTo(
+            trilha.marcos[i],
+            { opacity: 0.18, scale: 0.8, transformOrigin: "center" },
+            { opacity: 1, scale: 1, duration: 0.3 },
+            i - 0.15
+          ).fromTo(
+            trilha.nomes[i],
+            { opacity: 0.18 },
+            { opacity: 1, duration: 0.3 },
+            i - 0.15
+          );
+        }
 
         if (i < FASES.length - 1) {
           tl.to(

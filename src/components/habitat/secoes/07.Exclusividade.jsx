@@ -32,11 +32,11 @@ const FRASES = [
 
 const CenaAlta = styled.section`
   position: relative;
-  height: ${(p) => (p.$estatico ? "auto" : alturaDaCena(FRASES.length + 1, 32))};
+  height: ${(p) => (p.$estatico ? "auto" : alturaDaCena(FRASES.length + 1, 24))};
   z-index: 1;
 
   ${Media.TabletSmall} {
-    height: ${(p) => (p.$estatico ? "auto" : alturaDaCena(FRASES.length + 1, 28))};
+    height: ${(p) => (p.$estatico ? "auto" : alturaDaCena(FRASES.length + 1, 21))};
   }
 `;
 
@@ -79,12 +79,10 @@ export default function Exclusividade() {
       scrollTrigger: gatilhoDeCena(cenaAltaRef.current, 0.5),
     });
 
-    tl.fromTo(
-      tituloRef.current,
-      { opacity: 0, y: 26, filter: "blur(7px)" },
-      { opacity: 1, y: 0, filter: "blur(0px)", duration: 0.4 },
-      0
-    );
+    // 🔑 O título fica fora da timeline, visível desde sempre: é ele que
+    // ocupa a tela enquanto a cena sobe para prender. Com o gatilho em
+    // "top top" (ver `gatilhoDeCena`), pôr o título aqui dentro faria a
+    // seção entrar em branco.
 
     // Cruzamento, não sequência: a frase sai no mesmo instante em que a
     // seguinte entra. Deixar um vão entre as duas é o que faz a tela

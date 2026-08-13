@@ -125,18 +125,25 @@ export const alturaDaCena = (tempos, unidade = 46) =>
 /**
  * O gatilho padrão de uma cena presa.
  *
- * 🔑 `start` **antes** de a seção prender, não em "top top". Com "top
- * top" a timeline só começa quando o topo da seção alcança o topo da
- * tela, e no caminho até lá a seção já está visível e ainda vazia — era
- * exatamente a "entrada em branco" que o Tiago viu. Começando em
- * "top 72%" o primeiro conteúdo já está na tela quando o palco prende.
+ * 🔑 `start` em "top top": a cena só começa a contar quando o palco
+ * prende, e não enquanto ele ainda está subindo. O Tiago descreveu o
+ * defeito oposto assim: "vou de uma seção para outra e o scroll já
+ * capta e muda antes mesmo de eu terminar de chegar".
+ *
+ * ⚠️ Este valor já foi "top 72%", e não por acidente: com "top top" a
+ * seção subia visível e **vazia**, porque no progresso 0 todo primeiro
+ * elemento está em `opacity: 0`. O que tornou "top top" seguro foi
+ * outra coisa — **a primeira peça de cada cena nasce visível, fora da
+ * timeline**. Quem devolver o 72% sem desfazer isso reabre a queixa de
+ * a cena mudar antes de a pessoa chegar; quem puser as primeiras peças
+ * de volta na timeline reabre a entrada em branco. Andam juntos.
  *
  * `end` em "bottom bottom" faz a timeline acabar no instante em que o
  * sticky solta, sem sobra morta no fim.
  */
 export const gatilhoDeCena = (elemento, scrub = 0.5) => ({
   trigger: elemento,
-  start: "top 72%",
+  start: "top top",
   end: "bottom bottom",
   scrub,
 });

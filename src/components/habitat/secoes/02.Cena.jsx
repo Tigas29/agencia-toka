@@ -70,11 +70,11 @@ const INICIO_FASES = 10;
 
 const CenaAlta = styled.section`
   position: relative;
-  height: ${(p) => (p.$estatico ? "auto" : alturaDaCena(FRASES.length, 32))};
+  height: ${(p) => (p.$estatico ? "auto" : alturaDaCena(FRASES.length, 24))};
   z-index: 1;
 
   ${Media.TabletSmall} {
-    height: ${(p) => (p.$estatico ? "auto" : alturaDaCena(FRASES.length, 28))};
+    height: ${(p) => (p.$estatico ? "auto" : alturaDaCena(FRASES.length, 21))};
   }
 `;
 
@@ -298,12 +298,18 @@ export default function Cena() {
     // que as duas estavam quase invisíveis, e a tela parecia vazia — foi
     // isso que o Tiago viu como "várias rolagens em branco".
     frasesRefs.current.filter(Boolean).forEach((frase, i) => {
-      tl.fromTo(
-        frase,
-        { opacity: 0, y: 34, filter: "blur(9px)" },
-        { opacity: 1, y: 0, filter: "blur(0px)", duration: 0.3 },
-        i === 0 ? 0 : i - 0.3
-      );
+      // 🔑 A primeira frase NÃO entra na timeline. Ela nasce visível e
+      // fica: é o que a pessoa vê enquanto a cena ainda está subindo
+      // para prender. Sem isso, o gatilho em "top top" (ver
+      // `gatilhoDeCena`) devolveria a seção entrando em branco.
+      if (i > 0) {
+        tl.fromTo(
+          frase,
+          { opacity: 0, y: 34, filter: "blur(9px)" },
+          { opacity: 1, y: 0, filter: "blur(0px)", duration: 0.3 },
+          i - 0.3
+        );
+      }
 
       // A última fica até o fim da cena.
       if (i < FRASES.length - 1) {
