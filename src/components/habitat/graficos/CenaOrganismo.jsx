@@ -1,5 +1,6 @@
 import { forwardRef, useImperativeHandle, useRef } from "react";
 import styled, { keyframes } from "styled-components";
+import { Media } from "../style";
 
 /**
  * O gráfico único que carrega a dobra central da página: caos vira
@@ -132,6 +133,91 @@ const seta = (graus, raio) => {
 const passo = 360 / FASES.length;
 
 /**
+ * ── A câmera ──────────────────────────────────────────────────────────
+ *
+ * No telemóvel o `viewBox` deixa de ser fixo e vira enquadramento: ele
+ * fecha em cima do que está em cena naquele momento, que é o que permite
+ * o desenho aparecer grande numa tela estreita. Quem anima é
+ * `secoes/02.Cena.jsx`, nos mesmos tempos da narrativa.
+ *
+ * Os três quadros saem das constantes acima, nunca de olhômetro: cada um
+ * é a caixa do que precisa estar visível, mais uma folga de 6. Mexer em
+ * `RAIO_ANEL` ou `RAIO_NO` recalcula tudo sozinho.
+ *
+ * O terceiro quadro só existe porque os nós somem antes de os arcos
+ * entrarem: sem eles em cena, sobra a moldura que eles ocupavam, e é
+ * essa sobra que vira aumento.
+ */
+const folga = 6;
+const caixa = (x0, y0, x1, y1) =>
+  [x0 - folga, y0 - folga, x1 - x0 + folga * 2, y1 - y0 + folga * 2]
+    .map((n) => Math.round(n))
+    .join(" ");
+
+const extremos = (pontos, raio) => [
+  Math.min(...pontos.map((p) => p.x)) - raio,
+  Math.min(...pontos.map((p) => p.y)) - raio,
+  Math.max(...pontos.map((p) => p.x)) + raio,
+  Math.max(...pontos.map((p) => p.y)) + raio,
+];
+
+export const QUADRO_ABERTO = "0 0 326 330";
+
+export const CAMERA = {
+  /** O caos: só a nuvem de nós soltos. */
+  caos: caixa(
+    ...extremos(
+      NOS.map((n) => ({ x: n.xA, y: n.yA })),
+      RAIO_NO
+    )
+  ),
+  /** Os nós já pousados no anel, ainda visíveis. */
+  anel: caixa(
+    CX - RAIO_ANEL - RAIO_NO,
+    CY - RAIO_ANEL - RAIO_NO,
+    CX + RAIO_ANEL + RAIO_NO,
+    CY + RAIO_ANEL + RAIO_NO
+  ),
+  /** Só o ciclo: anel, arcos e núcleo. O quadro mais fechado dos três. */
+  ciclo: caixa(
+    CX - RAIO_ANEL - ESPESSURA_ARCO / 2,
+    CY - RAIO_ANEL - ESPESSURA_ARCO / 2,
+    CX + RAIO_ANEL + ESPESSURA_ARCO / 2,
+    CY + RAIO_ANEL + ESPESSURA_ARCO / 2
+  ),
+};
+
+/**
+ * O `viewBox` fechado só é possível porque os rótulos das fases saem de
+ * cena no telemóvel. Eles vivem a `RAIO_ANEL + 30` do centro e eram eles
+ * que obrigavam o quadro a ser 35% maior que o próprio anel.
+ *
+ * Some sem perda: o nome da fase aparece em garrafais douradas ao lado
+ * do gráfico (`NomeFase`, em `02.Cena.jsx`), no mesmo tempo em que o
+ * arco se pinta. Com o rótulo fora, a letra dentro do arco cresce e
+ * assume o papel de marcar a fase no desenho.
+ */
+const Desenho = styled.svg`
+  display: block;
+  width: 100%;
+
+  ${Media.PhoneLarge} {
+    height: 100%;
+
+    .rotulo-fase {
+      display: none;
+    }
+
+    /* 15 e não mais: a letra mora dentro do traço do arco, que tem
+       ESPESSURA_ARCO de espessura. Passando disso ela transborda para
+       fora do dourado e lê como desalinhamento, não como destaque. */
+    .letra-fase {
+      font-size: 15px;
+    }
+  }
+`;
+
+/**
  * "?" do centro pulsando enquanto o caos domina a cena. CSS puro, e só
  * no `transform`, nunca no `opacity` — quem controla se o "?" está
  * visível é o GSAP, e uma animação CSS pesa mais que estilo inline no
@@ -182,6 +268,7 @@ function No({ x, y, rotulo, groupRef }) {
 }
 
 const CenaOrganismo = forwardRef(function CenaOrganismo(_props, refExterno) {
+  const svgRef = useRef(null);
   const nosRefs = useRef([]);
   const culpaGrupoRef = useRef(null);
   const culpaTracosRefs = useRef([]);
@@ -196,6 +283,7 @@ const CenaOrganismo = forwardRef(function CenaOrganismo(_props, refExterno) {
   const setasArcoRefs = useRef([]);
 
   useImperativeHandle(refExterno, () => ({
+    svg: svgRef.current,
     nos: nosRefs.current,
     culpaGrupo: culpaGrupoRef.current,
     culpaTracos: culpaTracosRefs.current,
@@ -211,11 +299,11 @@ const CenaOrganismo = forwardRef(function CenaOrganismo(_props, refExterno) {
   }));
 
   return (
-    <svg
-      viewBox="0 0 326 330"
+    <Desenho
+      ref={svgRef}
+      viewBox={QUADRO_ABERTO}
       role="img"
       aria-labelledby="titulo-cena-organismo"
-      width="100%"
     >
       <title id="titulo-cena-organismo">
         Cinco fornecedores soltos se organizam em torno da clínica e viram um
@@ -345,6 +433,7 @@ const CenaOrganismo = forwardRef(function CenaOrganismo(_props, refExterno) {
               />
 
               <text
+                className="letra-fase"
                 x={letra.x}
                 y={letra.y + 5}
                 textAnchor="middle"
@@ -357,6 +446,7 @@ const CenaOrganismo = forwardRef(function CenaOrganismo(_props, refExterno) {
               </text>
 
               <text
+                className="rotulo-fase"
                 x={rotulo.x}
                 y={rotulo.y + 4}
                 textAnchor="middle"
@@ -457,7 +547,7 @@ const CenaOrganismo = forwardRef(function CenaOrganismo(_props, refExterno) {
           que se renova
         </text>
       </g>
-    </svg>
+    </Desenho>
   );
 });
 

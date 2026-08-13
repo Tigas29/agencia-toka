@@ -8,9 +8,10 @@ import {
   gatilhoDeCena,
   gsap,
   useContextoGsap,
+  useEhCelular,
   useMenosMovimento,
 } from "../animacao";
-import CenaOrganismo, { NOS } from "../graficos/CenaOrganismo";
+import CenaOrganismo, { CAMERA, NOS } from "../graficos/CenaOrganismo";
 
 /**
  * Dobra 2, e a mais importante da página. O organismo fica preso no
@@ -118,8 +119,24 @@ const GraficoWrap = styled.div`
     max-width: min(420px, 46vh);
   }
 
+  /* No telemóvel o gráfico sai do Inner e ocupa a largura inteira da
+     tela. A margem de texto de 5% não serve a um desenho, e ali cada
+     pixel de largura vira tamanho de nó. O Palco tem overflow hidden,
+     que segura qualquer sobra lateral.
+
+     🔑 A altura é explícita de propósito. A câmera anima o viewBox, e
+     com altura automática o aspecto mudaria a cada frame: a caixa
+     cresceria e encolheria, e a página inteira pularia junto. Com a
+     caixa fixa e preserveAspectRatio no padrão, quem escala é o
+     conteúdo, dentro dela, sem cortar nada.
+
+     ⚠️ Nada de crase em comentário aqui dentro — isto é um template
+     literal, e a crase fecha o template no meio do CSS. */
   ${Media.PhoneLarge} {
-    max-width: min(330px, 40vh);
+    width: 100vw;
+    max-width: 100vw;
+    margin-left: calc(50% - 50vw);
+    height: min(96vw, 52vh);
   }
 `;
 
@@ -137,18 +154,53 @@ const NomeFase = styled.span`
 
 export default function Cena() {
   const menosMovimento = useMenosMovimento();
+  const ehCelular = useEhCelular();
   const cenaAltaRef = useRef(null);
   const graficoRef = useRef(null);
   const frasesRefs = useRef([]);
 
   const escopo = useContextoGsap(() => {
-    if (menosMovimento || !graficoRef.current || !cenaAltaRef.current) return;
+    if (menosMovimento) {
+      // Sem movimento a marcação já nasce no estado final, o ciclo
+      // pronto. Falta só o enquadramento: no telemóvel, deixar o quadro
+      // aberto devolveria o desenho pequeno com margem morta em volta,
+      // que é justamente o que esta rodada veio resolver.
+      const parado = graficoRef.current;
+      if (ehCelular && parado?.svg) {
+        gsap.set(parado.svg, { attr: { viewBox: CAMERA.ciclo } });
+      }
+      return;
+    }
+    if (!graficoRef.current || !cenaAltaRef.current) return;
 
     const refs = graficoRef.current;
     const tl = gsap.timeline({
       defaults: { ease: EASE },
       scrollTrigger: gatilhoDeCena(cenaAltaRef.current, 0.6),
     });
+
+    // ── A câmera, só no telemóvel ────────────────────────────────────
+    //
+    // O `viewBox` acompanha a narrativa: fecha em cima do que está em
+    // cena e abre só o necessário. É o que permite o desenho aparecer
+    // grande numa tela estreita, e ele fecha mais justamente quando
+    // sobra menos coisa — os nós somem em VIRADA + 1.5, e a moldura que
+    // eles ocupavam vira tamanho para o ciclo.
+    //
+    // No desktop nada disto roda: lá o gráfico tem 520px e espaço de
+    // sobra, e mexer no enquadramento só arriscaria uma dobra pronta.
+    if (ehCelular && refs.svg) {
+      tl.fromTo(
+        refs.svg,
+        { attr: { viewBox: CAMERA.caos } },
+        { attr: { viewBox: CAMERA.anel }, duration: 0.9 },
+        VIRADA + 0.1
+      ).to(
+        refs.svg,
+        { attr: { viewBox: CAMERA.ciclo }, duration: 0.9 },
+        VIRADA + 1.6
+      );
+    }
 
     // ── O caos, tempos 0 a 7 ─────────────────────────────────────────
     // As setas de culpa se desenham devagar ao longo das primeiras
@@ -263,7 +315,7 @@ export default function Cena() {
       }
     });
 
-  }, [menosMovimento]);
+  }, [menosMovimento, ehCelular]);
 
   return (
     <CenaAlta ref={cenaAltaRef} $estatico={menosMovimento}>

@@ -34,6 +34,34 @@ export function useMenosMovimento() {
   return menos;
 }
 
+/**
+ * O mesmo padrão reativo acima, para a largura da tela.
+ *
+ * Existe porque a cena central enquadra o gráfico de forma diferente no
+ * telemóvel: lá a câmera fecha em cima do desenho para ele caber grande,
+ * e no desktop o `viewBox` fica parado. Ler `matchMedia` uma vez só
+ * deixaria quem gira o aparelho preso no enquadramento da orientação
+ * anterior, então a preferência entra como estado e a timeline se
+ * remonta quando ela muda.
+ *
+ * 610px é o `Media.PhoneLarge` de `style.js` — mudar um exige mudar o
+ * outro, senão o CSS e a câmera passam a discordar sobre o que é
+ * telemóvel.
+ */
+export function useEhCelular() {
+  const [celular, setCelular] = useState(false);
+
+  useEffect(() => {
+    const mq = window.matchMedia("(max-width: 610px)");
+    const aplicar = () => setCelular(mq.matches);
+    aplicar();
+    mq.addEventListener("change", aplicar);
+    return () => mq.removeEventListener("change", aplicar);
+  }, []);
+
+  return celular;
+}
+
 /** Saída de desaceleração. Entra rápido, assenta devagar. */
 export const SUAVE = [0.22, 1, 0.36, 1];
 
