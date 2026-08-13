@@ -58,9 +58,9 @@ const Etapa = styled.div`
  *
  * No telemóvel os marcos crescem em vez de encolher: sem os nomes por
  * extenso, a letra é a única coisa que orienta, e ela precisa ser
- * legível de relance. 62px é o teto: na tela mais estreita que
- * atendemos (320px, `Inner` a 90% = 288px) quatro marcos mais três
- * vãos de 10px somam 278px, e o que passar disso encosta na borda.
+ * legível de relance. A medida acompanha a largura da tela em vez de
+ * ser fixa: `17vw` mantém a proporção da trilha igual num iPhone SE e
+ * num Pro Max, e o teto de 72px impede que ela vire o assunto da dobra.
  */
 const Marco = styled.div`
   width: 44px;
@@ -70,8 +70,8 @@ const Marco = styled.div`
   z-index: 1;
 
   ${Media.PhoneLarge} {
-    width: 62px;
-    height: 62px;
+    width: min(72px, 17vw);
+    height: min(72px, 17vw);
     margin-bottom: 0;
   }
 

@@ -172,9 +172,9 @@ const Cabeca = styled.div`
        mesma letra e precisam ler como o mesmo elemento, um dizendo
        "estou aqui" e o outro "por onde já passei". */
     .letra {
-      width: 62px;
-      height: 62px;
-      font-size: 1.7rem;
+      width: 68px;
+      height: 68px;
+      font-size: 1.85rem;
     }
   }
 `;

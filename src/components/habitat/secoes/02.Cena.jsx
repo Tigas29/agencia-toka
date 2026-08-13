@@ -107,8 +107,19 @@ const GraficoWrap = styled.div`
   position: relative;
   z-index: 1;
 
+  /* O teto de altura existe porque o palco é uma tela só e o gráfico
+     divide o espaço com a caixa de legendas (min(240px, 30vh)). Somando
+     o gap, o pior caso ocupa 70vh e sempre cabe.
+
+     Ele já foi 240px, e nessa medida os nós ficavam com 39px e os
+     rótulos com 8px reais numa tela de 390 — pequenos demais para o
+     desenho que carrega o argumento da página. */
   ${Media.TabletSmall} {
-    max-width: min(240px, 28vh);
+    max-width: min(420px, 46vh);
+  }
+
+  ${Media.PhoneLarge} {
+    max-width: min(330px, 40vh);
   }
 `;
 
