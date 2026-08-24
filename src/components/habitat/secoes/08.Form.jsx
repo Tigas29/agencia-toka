@@ -253,7 +253,17 @@ export default function Form() {
     if (!validar()) return;
 
     setEnviando(true);
-    track("Lead", { content_name: "habitat-estrategico" });
+    // nome, telefone e cidade são as match keys que a Meta usa para
+    // reconhecer a pessoa. Sem elas o evento chega anônimo.
+    track(
+      "Lead",
+      { content_name: "habitat-estrategico" },
+      {
+        nome: dados.nome,
+        telefone: somenteDigitos(dados.whatsapp),
+        cidade: dados.cidade,
+      }
+    );
 
     const payload = {
       ...dados,

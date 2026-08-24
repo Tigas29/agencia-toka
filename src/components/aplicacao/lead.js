@@ -67,6 +67,11 @@ export function capturarUtm() {
 export const gerarLeadId = () =>
   `toka-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 8)}`;
 
+// ── Telefone ─────────────────────────────────────────────────────────
+
+/** O campo é texto livre: a Meta casa telefone por dígitos, sem máscara. */
+export const somenteDigitos = (v) => (v || "").replace(/\D/g, "");
+
 // ── Envio ────────────────────────────────────────────────────────────
 
 /**
@@ -108,16 +113,38 @@ export async function enviarLead(payload) {
 // ── Tracking ─────────────────────────────────────────────────────────
 
 /**
- * Pixel e GTM ainda estão pendentes de ID. A camada fica pronta e
- * silenciosa até os scripts existirem na página.
+ * Camada de tracking. O Pixel entra pelo GTM, nunca no bundle: instalar
+ * nos dois lugares contaria tudo em dobro.
+ *
+ * `eventId` é o que faz a Meta reconhecer o evento do navegador e o do
+ * nosso servidor como a MESMA conversão. Sem ele, cada lead vale dois e
+ * o algoritmo otimiza em cima de número inflado.
+ *
+ * `userData` viaja em texto puro no dataLayer e NÃO vai assim para a
+ * Meta: o hash SHA-256 é aplicado no servidor. Só nome, e-mail,
+ * telefone e cidade entram aqui.
  */
-export function track(evento, dados = {}) {
+export function track(evento, dados = {}, userData = null) {
   try {
-    if (typeof window.fbq === "function") window.fbq("track", evento, dados);
+    const eventId =
+      window.crypto?.randomUUID?.() ??
+      `${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 10)}`;
+
+    if (typeof window.fbq === "function")
+      window.fbq("track", evento, dados, { eventID: eventId });
+
     if (Array.isArray(window.dataLayer))
-      window.dataLayer.push({ event: `toka_${evento}`, ...dados });
+      window.dataLayer.push({
+        event: `toka_${evento}`,
+        ...dados,
+        event_id: eventId,
+        ...(userData ? { toka_user: userData } : {}),
+      });
+
+    return eventId;
   } catch {
     /* tracking nunca derruba o formulário */
+    return null;
   }
 }
 

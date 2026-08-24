@@ -20,6 +20,7 @@ import {
   limparProgresso,
   linkWhatsApp,
   salvarProgresso,
+  somenteDigitos,
   track,
 } from "./lead";
 
@@ -97,10 +98,24 @@ export default function Aplicacao() {
     });
 
     await enviarLead(payload);
-    track(qualificado ? "CompleteRegistration" : "Lead", {
-      qualificado,
-      score: payload.score,
-    });
+
+    const user = {
+      nome: respostasFinais.nome,
+      email: respostasFinais.email,
+      telefone: somenteDigitos(respostasFinais.telefone),
+    };
+
+    // Lead é o evento que a campanha otimiza, então todo mundo que
+    // termina o quiz conta. Antes o aprovado só gerava
+    // CompleteRegistration e os melhores leads ficavam de fora da conta.
+    track("Lead", { qualificado, score: payload.score }, user);
+
+    if (qualificado)
+      track(
+        "CompleteRegistration",
+        { qualificado: true, score: payload.score },
+        user
+      );
 
     limparProgresso();
     setEnviando(false);
@@ -127,7 +142,10 @@ export default function Aplicacao() {
       if (salvo) salvarProgresso({ ...salvo, kommoLeadId: getKommoLeadId() });
     });
 
-    track("Lead", { etapa: "milestone_instagram" });
+    // meio do quiz: ninguém virou lead ainda. Continua rastreado, para
+    // remarketing de quem começou e não terminou, mas não se passa por
+    // conversão.
+    track("InitiateCheckout", { etapa: "milestone_instagram" });
   }, []);
 
   // ── Navegação ─────────────────────────────────────────────────────

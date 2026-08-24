@@ -45,7 +45,7 @@ export default function Obrigado() {
                 href={`https://www.instagram.com/${INSTAGRAM}/`}
                 target="_blank"
                 rel="noreferrer"
-                onClick={() => track("Lead", { etapa: "seguir_instagram" })}
+                onClick={() => track("Contact", { etapa: "seguir_instagram" })}
               >
                 Seguir @{INSTAGRAM} no Instagram
               </S.Primary>
