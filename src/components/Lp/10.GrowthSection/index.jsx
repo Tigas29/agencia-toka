@@ -93,7 +93,7 @@ export default function GrowthSection() {
               <img src={WhatsApp} /> (11) 95682-9886
             </p>
             <p className="footerTextLine">
-              <img src={Email} /> marketing@agenciatoka.com.br
+              <img src={Email} /> mkt@tokacompany.com.br
             </p>
           </div>
 

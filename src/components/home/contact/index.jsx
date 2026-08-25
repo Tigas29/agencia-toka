@@ -26,7 +26,7 @@ export default function Contact() {
           </div>
           <div className="info">
             <p className="title">Email</p>
-            <p>marketing@agenciatoka.com.br</p>
+            <p>mkt@tokacompany.com.br</p>
           </div>
         </div>
       </div>
