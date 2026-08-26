@@ -114,6 +114,70 @@ const Artes = styled.div`
   }
 `;
 
+/**
+ * O quadro do CRM.
+ *
+ * Cada etapa é uma barra cuja largura é a proporção de contatos que
+ * chegaram até ali. É a leitura que a linha promete: onde as pessoas
+ * param. Um gráfico de funil em bloco trapezoidal ficaria mais bonito e
+ * mais difícil de comparar — largura de barra o olho compara sozinho,
+ * área de trapézio não.
+ */
+const Funil = styled.div`
+  margin-top: 16px;
+  border: 1px solid var(--linha);
+  border-radius: 14px;
+  background: var(--superficie);
+  padding: 18px 16px;
+  max-width: 30rem;
+
+  .etapa {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: baseline;
+    gap: 8px 12px;
+    margin-bottom: 11px;
+
+    &:last-of-type {
+      margin-bottom: 0;
+    }
+  }
+
+  .nome {
+    font-size: 0.86rem;
+    color: var(--tinta-corpo);
+  }
+
+  .conta {
+    font-family: "Poppins", sans-serif;
+    font-size: 0.86rem;
+    font-variant-numeric: lining-nums tabular-nums;
+    color: var(--tinta);
+  }
+
+  .trilho {
+    grid-column: 1 / -1;
+    height: 7px;
+    border-radius: 999px;
+    background: var(--linha);
+    overflow: hidden;
+  }
+
+  .barra {
+    height: 100%;
+    border-radius: 999px;
+    background: var(--acento);
+  }
+
+  .nota {
+    font-size: 0.78rem;
+    color: var(--tinta-fraca);
+    margin: 16px 0 0;
+    padding-top: 12px;
+    border-top: 1px solid var(--linha);
+  }
+`;
+
 const Conversa = styled.div`
   margin-top: 16px;
   border: 1px solid var(--linha);
@@ -194,6 +258,33 @@ export default function Exemplo({ exemplo, amostras }) {
           </figure>
         ))}
       </Artes>
+    );
+  }
+
+  if (exemplo.tipo === "funil") {
+    const etapas = amostras?.[exemplo.chave] || [];
+    if (!etapas.length) return null;
+    // A primeira etapa é a régua: todas as larguras são proporção dela.
+    const topo = etapas[0].cards;
+    return (
+      <Funil>
+        {etapas.map((e) => (
+          <div className="etapa" key={e.etapa}>
+            <span className="nome">{e.etapa}</span>
+            <span className="conta">{e.cards}</span>
+            <div className="trilho">
+              <div
+                className="barra"
+                style={{ width: `${(e.cards / topo) * 100}%` }}
+              />
+            </div>
+          </div>
+        ))}
+        <p className="nota">
+          Quadro de exemplo. Cada contato numa coluna, com dono e com prazo, e
+          dá para ver onde as pessoas param.
+        </p>
+      </Funil>
     );
   }
 

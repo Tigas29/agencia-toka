@@ -76,6 +76,27 @@ const AMOSTRAS = {
   ],
 
   /**
+   * O quadro do CRM, desenhado.
+   *
+   * Não é link para o painel: tráfego e dashboard já apontam para lá, e
+   * três linhas mandando ao mesmo lugar fazem as três parecerem o mesmo
+   * exemplo. E o que esta linha promete não é um gráfico de funil, é o
+   * quadro organizado: cada contato numa coluna, com dono e com prazo.
+   *
+   * Números de uma operação inventada, coerentes entre si: o que sai de
+   * uma coluna aparece na seguinte, e a diferença é o que ficou pelo
+   * caminho.
+   */
+  funil: [
+    { etapa: "Chegou pelo anúncio", cards: 84, cor: 1 },
+    { etapa: "Respondeu", cards: 61, cor: 2 },
+    { etapa: "Qualificado", cards: 34, cor: 3 },
+    { etapa: "Consulta marcada", cards: 19, cor: 4 },
+    { etapa: "Compareceu", cards: 14, cor: 5 },
+    { etapa: "Fechou", cards: 6, cor: 6 },
+  ],
+
+  /**
    * Conversa escrita à mão, e não print de atendimento real: mostrar
    * conversa de paciente numa proposta seria exatamente o oposto do que
    * a página promete sobre o cuidado com dado de quem procura o médico.
@@ -124,7 +145,12 @@ const PAULO = {
   /* ── I · Emoção ─────────────────────────────────────────────── */
 
   culpa: {
-    selo: "Primeiro",
+    /**
+     * Sem selo, de propósito. Todos os outros selos da página nomeiam o
+     * assunto da dobra ("O preço", "A conta"); "Primeiro" só anunciava
+     * ordem, e o traço do selo abria distância entre a capa e a frase
+     * que precisa chegar logo.
+     */
     titulo: "Se você já tentou antes e não deu certo, o problema não foi você.",
     linhas: [
       "Você contratou alguém para fazer anúncio. Outra pessoa para fazer a arte. Um terceiro mexeu no site em algum momento. E o CRM ficou com a secretária, que já tinha o consultório inteiro na cabeça.",
@@ -167,7 +193,7 @@ const PAULO = {
             nome: "Gestão de tráfego pago",
             exemplo: {
               tipo: "link",
-              url: "/demo",
+              url: "/demo?view=trafego",
               rotulo: "ver a tela de tráfego",
             },
             promessa:
@@ -178,11 +204,7 @@ const PAULO = {
           },
           {
             nome: "Ajuste do CRM que você já usa",
-            exemplo: {
-              tipo: "link",
-              url: "/demo",
-              rotulo: "ver o funil num painel real",
-            },
+            exemplo: { tipo: "funil", chave: "funil" },
             promessa:
               "para que nenhum contato fique sem dono, sem prazo e sem resposta",
             detalhe:
@@ -270,7 +292,7 @@ const PAULO = {
             nome: "Dashboard",
             exemplo: {
               tipo: "link",
-              url: "/demo",
+              url: "/demo?view=vendas",
               rotulo: "abrir o painel de demonstração",
             },
             promessa:

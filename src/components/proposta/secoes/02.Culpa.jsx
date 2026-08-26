@@ -1,5 +1,5 @@
 import { useRef } from "react";
-import { Fecho, H2, Selo } from "../../../estilo/ds";
+import { Fecho, H2 } from "../../../estilo/ds";
 import { useMenosMovimento, useRevelacaoPorScroll } from "../../habitat/animacao";
 import { Coluna, Dobra, Linha } from "../style";
 
@@ -24,16 +24,15 @@ export default function Culpa({ dados }) {
   return (
     <Dobra className="faixa-escura" id="leitura" ref={escopo}>
       <Coluna>
-        <Selo ref={guardar(0)}>{culpa.selo}</Selo>
-        <H2 ref={guardar(1)}>{culpa.titulo}</H2>
+        <H2 ref={guardar(0)}>{culpa.titulo}</H2>
 
         {culpa.linhas.map((linha, i) => (
-          <Linha key={linha} ref={guardar(2 + i)}>
+          <Linha key={linha} ref={guardar(1 + i)}>
             {linha}
           </Linha>
         ))}
 
-        <Fecho ref={guardar(2 + culpa.linhas.length)}>{culpa.fecho}</Fecho>
+        <Fecho ref={guardar(1 + culpa.linhas.length)}>{culpa.fecho}</Fecho>
       </Coluna>
     </Dobra>
   );
