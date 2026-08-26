@@ -1,6 +1,7 @@
 import { useRef, useState } from "react";
 import styled from "styled-components";
-import { Cta, H2, Inner, Lead, Media, Section } from "../style";
+import { Cta, H2, Lead } from "../../../estilo/ds";
+import { Inner, Media, SectionTransparente } from "../style";
 import { Seta, Whatsapp } from "../icones";
 import {
   capturarUtm,
@@ -47,7 +48,7 @@ const CAMPOS = [
   },
 ];
 
-const Faixa = styled(Section)`
+const Faixa = styled(SectionTransparente)`
   scroll-margin-top: 24px;
 `;
 
@@ -67,7 +68,7 @@ const Chegada = styled.p`
   font-weight: 600;
   letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: var(--gold);
+  color: var(--acento);
   margin: 0 0 26px;
 
   svg {
@@ -88,8 +89,8 @@ const Grade = styled.div`
 `;
 
 const Caixa = styled.form`
-  background: var(--navy-800);
-  border: 1px solid rgba(255, 255, 255, 0.09);
+  background: var(--superficie);
+  border: 1px solid var(--linha);
   border-radius: 16px;
   padding: 36px;
   display: flex;
@@ -110,17 +111,17 @@ const Campo = styled.label`
     font-family: "Poppins", sans-serif;
     font-size: 0.82rem;
     font-weight: 500;
-    color: var(--off-white);
+    color: var(--tinta-corpo);
   }
 
   input {
     width: 100%;
-    background: var(--navy-900);
+    background: var(--fundo);
     border: 1px solid
-      ${(p) => (p.$erro ? "var(--erro)" : "rgba(255,255,255,0.12)")};
+      ${(p) => (p.$erro ? "var(--erro)" : "var(--linha)")};
     border-radius: 9px;
     padding: 14px 16px;
-    color: var(--white);
+    color: var(--tinta);
     font-family: "Nunito Sans", sans-serif;
     font-size: 1rem;
     transition: border-color 180ms ease, box-shadow 180ms ease;
@@ -131,20 +132,20 @@ const Campo = styled.label`
 
     &:focus {
       outline: none;
-      border-color: var(--gold);
-      box-shadow: 0 0 0 3px var(--gold-soft);
+      border-color: var(--acento);
+      box-shadow: 0 0 0 3px var(--acento-veu);
     }
   }
 
   .dica {
     font-size: 0.78rem;
-    color: ${(p) => (p.$erro ? "var(--erro)" : "var(--apagado)")};
+    color: ${(p) => (p.$erro ? "var(--erro)" : "var(--tinta-fraca)")};
   }
 `;
 
 const Aviso = styled.p`
   font-size: 0.84rem;
-  color: var(--apagado);
+  color: var(--tinta-fraca);
   margin: 0;
   text-align: center;
 `;
@@ -157,13 +158,13 @@ const Sucesso = styled.div`
     font-family: "Poppins", sans-serif;
     font-size: 1.35rem;
     font-weight: 600;
-    color: var(--white);
+    color: var(--tinta);
     margin: 0 0 12px;
   }
 
   p {
     font-size: 0.98rem;
-    color: var(--off-white);
+    color: var(--tinta-corpo);
     margin: 0 0 24px;
   }
 

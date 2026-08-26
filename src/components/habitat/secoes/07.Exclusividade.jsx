@@ -56,12 +56,12 @@ const Bloco = styled.div`
 `;
 
 const Titulo = styled.h2`
-  font-family: "Poppins", sans-serif;
-  font-size: clamp(1.7rem, 3.6vw, 2.7rem);
-  font-weight: 600;
-  line-height: 1.14;
-  letter-spacing: -0.025em;
-  color: var(--white);
+  font-family: "EB Garamond", Georgia, serif;
+  font-size: clamp(1.85rem, 3.8vw, 2.9rem);
+  font-weight: 400;
+  line-height: 1.08;
+  letter-spacing: -0.014em;
+  color: var(--tinta);
   margin: 0 0 40px;
 `;
 

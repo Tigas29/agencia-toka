@@ -231,7 +231,7 @@ export default function Aplicacao() {
   const moldura = (conteudo, progresso) => (
     <>
       <S.Tokens />
-      <S.Page className="toka-aplicacao">
+      <S.Page className="toka">
         <S.Progress>
           <div style={{ width: `${progresso}%` }} />
         </S.Progress>
@@ -354,10 +354,10 @@ export default function Aplicacao() {
             <button
               key={opcao.id}
               type="button"
-              className={respostas[campo.id] === opcao.id ? "selected" : ""}
+              className={respostas[campo.id] === opcao.id ? "marcada" : ""}
               onClick={() => escolher(opcao.id)}
             >
-              <span className="key">{LETRAS[i]}</span>
+              <span className="tecla">{LETRAS[i]}</span>
               {opcao.label}
             </button>
           ))}

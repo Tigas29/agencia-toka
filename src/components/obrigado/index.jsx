@@ -22,7 +22,7 @@ export default function Obrigado() {
   return (
     <>
       <S.Tokens />
-      <S.Page className="toka-aplicacao">
+      <S.Page className="toka">
         <S.Topbar>
           <img src={logo} alt="Toka" />
           <span>Aplicação · Blefaroplastia</span>

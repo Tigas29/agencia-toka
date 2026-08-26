@@ -1,7 +1,8 @@
 import { useRef } from "react";
 import styled from "styled-components";
 import logoToka from "../../../assets/landingpage/logo.svg";
-import { Cta, Inner, Mascara, Media } from "../style";
+import { Cta, Mascara } from "../../../estilo/ds";
+import { Inner, Media } from "../style";
 import { Seta } from "../icones";
 import {
   EASE,
@@ -46,22 +47,22 @@ const Corpo = styled.div`
   position: relative;
 
   h1 {
-    font-family: "Poppins", sans-serif;
-    font-size: clamp(2rem, 5.1vw, 3.5rem);
-    font-weight: 600;
-    line-height: 1.1;
-    letter-spacing: -0.03em;
-    color: var(--white);
+    font-family: "EB Garamond", Georgia, serif;
+    font-size: clamp(2.2rem, 5.6vw, 3.9rem);
+    font-weight: 400;
+    line-height: 1.06;
+    letter-spacing: -0.014em;
+    color: var(--tinta);
     margin: 0 0 26px;
 
     .destaque {
-      color: var(--gold);
+      color: var(--acento);
     }
   }
 
   .abertura {
     font-size: clamp(1.05rem, 1.7vw, 1.24rem);
-    color: var(--off-white);
+    color: var(--tinta-corpo);
     margin: 0 0 34px;
     max-width: 34rem;
   }
@@ -73,7 +74,7 @@ const Selo = styled.p`
   font-weight: 600;
   letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: var(--gold);
+  color: var(--acento);
   margin: 0 0 26px;
 `;
 
@@ -83,7 +84,7 @@ const Numeros = styled.div`
   gap: 14px 40px;
   margin-top: 54px;
   padding-top: 28px;
-  border-top: 1px solid rgba(255, 255, 255, 0.09);
+  border-top: 1px solid var(--linha);
 
   div {
     strong {
@@ -91,13 +92,13 @@ const Numeros = styled.div`
       font-family: "Poppins", sans-serif;
       font-size: 1.4rem;
       font-weight: 600;
-      color: var(--white);
+      color: var(--tinta);
       line-height: 1.2;
     }
 
     span {
       font-size: 0.86rem;
-      color: var(--apagado);
+      color: var(--tinta-fraca);
     }
   }
 

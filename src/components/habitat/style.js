@@ -1,52 +1,26 @@
-import styled, { createGlobalStyle, css } from "styled-components";
-
-export const Media = {
-  Desktop: "@media(max-width:1200px)",
-  Tablet: "@media(max-width:1000px)",
-  TabletSmall: "@media(max-width:880px)",
-  PhoneLarge: "@media(max-width:610px)",
-  PhoneSmall: "@media(max-width:450px)",
-};
+import styled from "styled-components";
+import { Media, Section } from "../../estilo/ds";
 
 /**
- * Identidade da Toka: navy + gold, Poppins nos títulos e Nunito Sans no
- * corpo. Os tokens ficam escopados nesta página, como em /aplicacao. O
- * `:root` global do site, que ainda usa o laranja legado, fica intocado.
+ * Estilo próprio da /habitat.
+ *
+ * Quase nada mora aqui: a página é escrita contra `src/estilo/ds.js`, o
+ * mesmo design system da home e do resto do site. Antes este arquivo
+ * mantinha uma paleta paralela (`--navy-900`, `--gold`, `--off-white`) e
+ * títulos em Poppins 600, o que fazia a /habitat parecer um site vizinho
+ * do institucional em vez da mesma marca.
+ *
+ * Sobra só o que é desta página e de nenhuma outra: o fundo em gradiente
+ * longo com halos, que existe porque aqui a cor é narrativa (ver
+ * `Atmosfera.jsx`, que anima a temperatura conforme a rolagem), e as
+ * cenas em `position: sticky` que ele precisa sustentar.
+ *
+ * O que a página importa do DS ela importa direto de `estilo/ds`. Este
+ * arquivo não reexporta nada: intermediário que só repassa nome esconde
+ * de onde a coisa vem.
  */
-export const Tokens = createGlobalStyle`
-  .toka-habitat {
-    --navy-900: #121A30;
-    --navy-800: #181F30;
-    --navy-700: #1F2941;
-    --navy-600: #2C3853;
-    --gold: #E0B65A;
-    --gold-forte: #EFCB7C;
-    --gold-soft: rgba(224, 182, 90, 0.14);
-    --gold-linha: rgba(224, 182, 90, 0.32);
-    --off-white: #D0D2D7;
-    --apagado: #8D93A3;
-    --white: #FFFFFF;
-    --erro: #E9967A;
 
-    /* Ritmo vertical único da página. Uma seção nunca inventa o seu. */
-    --respiro: 132px;
-    --respiro-curto: 88px;
-  }
-
-  ${Media.Tablet} {
-    .toka-habitat {
-      --respiro: 96px;
-      --respiro-curto: 66px;
-    }
-  }
-
-  ${Media.PhoneLarge} {
-    .toka-habitat {
-      --respiro: 72px;
-      --respiro-curto: 54px;
-    }
-  }
-`;
+export { Media };
 
 /**
  * Um plano de fundo só para a página inteira, sem nenhuma borda
@@ -55,30 +29,35 @@ export const Tokens = createGlobalStyle`
  * corte e concluía "acabou uma coisa, começou outra". O gradiente longo
  * respira do escuro ao quase-escuro e volta, e os halos dourados marcam
  * os momentos altos sem desenhar limite nenhum.
+ *
+ * A exceção é a dobra de prova, que é uma faixa clara e opaca por cima
+ * disto — lá o argumento muda de registro, e o papel claro faz o corte
+ * que o gradiente evita no resto da página.
  */
 export const Page = styled.div`
   position: relative;
   min-height: 100dvh;
   width: 100%;
-  color: var(--off-white);
+  color: var(--tinta-corpo);
   font-family: "Nunito Sans", "Inter", sans-serif;
   font-size: 16px;
+  font-weight: 300;
   line-height: 1.62;
   /* "clip", não "hidden": qualquer valor de overflow diferente de
      "visible" num eixo obriga o outro eixo a computar como "auto" (vira
-     um scroller). Como esta seção é ancestral da cena com
-     position: sticky, isso quebrava o sticky inteiro — o "scroller
-     mais próximo" deixava de ser a viewport e passava a ser esta div.
-     "clip" corta o overflow horizontal sem criar contexto de rolagem. */
+     um scroller). Como esta div é ancestral das cenas com
+     position: sticky, isso quebrava o sticky inteiro — o "scroller mais
+     próximo" deixava de ser a viewport e passava a ser ela. "clip" corta
+     o overflow horizontal sem criar contexto de rolagem. */
   overflow-x: clip;
   background: linear-gradient(
     180deg,
-    var(--navy-900) 0%,
-    var(--navy-800) 22%,
-    var(--navy-900) 38%,
-    var(--navy-800) 56%,
-    var(--navy-900) 74%,
-    var(--navy-800) 100%
+    var(--fundo) 0%,
+    var(--fundo-fundo) 22%,
+    var(--fundo) 38%,
+    var(--fundo-fundo) 56%,
+    var(--fundo) 74%,
+    var(--fundo-fundo) 100%
   );
 
   /* Halos: profundidade sem contorno. Não recebem clique. */
@@ -109,28 +88,31 @@ export const Page = styled.div`
   }
 
   ::selection {
-    background: var(--gold);
-    color: var(--navy-900);
+    background: var(--acento);
+    color: var(--fundo);
   }
 `;
 
-export const Section = styled.section`
-  width: 100%;
-  padding: var(--respiro) 0;
-  position: relative;
-  z-index: 1;
+/**
+ * Seção sem fundo próprio, para o gradiente da página aparecer atrás.
+ *
+ * O `Section` do DS pinta `var(--fundo)`, que é o certo numa página de
+ * faixas alternadas e o errado aqui: cada seção taparia o gradiente com
+ * um retângulo chapado e a página voltaria a ler como blocos empilhados.
+ */
+export const SectionTransparente = styled(Section)`
+  background: transparent;
+
+  &.faixa-escura::before {
+    content: none;
+  }
 `;
 
 /**
- * Dobra que ocupa a tela sozinha, com o conteúdo centrado. É o "uma
- * coisa de cada vez": sem isso, duas dobras aparecem juntas na mesma
- * tela e a de cima rouba a atenção da de baixo antes de terminar de ser
- * lida.
- *
- * No telemóvel a altura mínima sai. Lá o conteúdo já enche a tela por
- * conta própria, e forçar 100dvh só criaria vazio de rolagem.
+ * Dobra de tela cheia sobre o gradiente. Mesma ideia do `SectionTela` do
+ * DS, sem o fundo opaco, pela razão acima.
  */
-export const SectionTela = styled(Section)`
+export const SectionTela = styled(SectionTransparente)`
   min-height: 100dvh;
   display: flex;
   align-items: center;
@@ -141,210 +123,15 @@ export const SectionTela = styled(Section)`
   }
 `;
 
+/** Área de leitura da página. */
 export const Inner = styled.div`
   width: 90%;
   max-width: 1080px;
   margin: 0 auto;
   position: relative;
-`;
-
-export const H2 = styled.h2`
-  font-family: "Poppins", sans-serif;
-  font-size: clamp(1.75rem, 3.4vw, 2.6rem);
-  font-weight: 600;
-  line-height: 1.18;
-  letter-spacing: -0.02em;
-  color: var(--white);
-  margin: 0 0 22px;
-  max-width: 20ch;
-  position: relative;
-  z-index: 1;
-
-  ${Media.PhoneLarge} {
-    max-width: 100%;
-  }
-
-  em {
-    font-style: normal;
-    color: var(--gold);
-  }
-`;
-
-/** Parágrafo de abertura de seção, um pouco maior que o corpo. */
-export const Lead = styled.p`
-  font-size: clamp(1.02rem, 1.5vw, 1.18rem);
-  color: var(--off-white);
-  margin: 0 0 18px;
-  max-width: 62ch;
-  position: relative;
-  z-index: 1;
-`;
-
-export const Texto = styled.p`
-  font-size: 1rem;
-  color: var(--apagado);
-  margin: 0 0 16px;
-  max-width: 62ch;
-  position: relative;
-  z-index: 1;
-
-  strong {
-    color: var(--off-white);
-    font-weight: 600;
-  }
-`;
-
-/**
- * Lista de argumentos. Substituiu os parágrafos corridos nas dobras que
- * explicam alguma coisa: em texto corrido a pessoa precisa parar de
- * rolar para achar onde estava, e cada item aqui entra na sua própria
- * rolagem. O corpo é maior que o do parágrafo comum de propósito, porque
- * nestas dobras a lista é o conteúdo principal, não apoio.
- */
-export const Bullets = styled.ul`
-  list-style: none;
-  padding: 0;
-  margin: 0 0 22px;
-  max-width: 40rem;
-  position: relative;
-  z-index: 1;
-
-  li {
-    font-size: 1.1rem;
-    line-height: 1.5;
-    color: var(--off-white);
-    padding-left: 26px;
-    position: relative;
-    margin-bottom: 15px;
-
-    &::before {
-      content: "";
-      position: absolute;
-      left: 0;
-      top: 11px;
-      width: 7px;
-      height: 7px;
-      border-radius: 50%;
-      background: var(--gold);
-    }
-
-    strong {
-      color: var(--white);
-      font-weight: 600;
-    }
-  }
-
-  ${Media.PhoneLarge} {
-    li {
-      font-size: 1.02rem;
-      padding-left: 22px;
-      margin-bottom: 13px;
-    }
-  }
-`;
-
-/** Frase de fecho de um bloco: pesa mais que a lista que vem antes. */
-export const Fecho = styled.p`
-  font-family: "Poppins", sans-serif;
-  font-size: 1.08rem;
-  font-weight: 500;
-  color: var(--gold);
-  margin: 0;
-  max-width: 40rem;
-  position: relative;
-  z-index: 1;
-
-  ${Media.PhoneLarge} {
-    font-size: 1rem;
-  }
-`;
-
-const tamanhos = {
-  grande: css`
-    padding: 19px 34px;
-    font-size: 1.05rem;
-  `,
-  medio: css`
-    padding: 15px 28px;
-    font-size: 0.98rem;
-  `,
-};
-
-export const Cta = styled.button`
-  ${(p) => tamanhos[p.$tamanho || "grande"]};
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 12px;
-  border: none;
-  border-radius: 10px;
-  background: var(--gold);
-  color: var(--navy-900);
-  font-family: "Poppins", sans-serif;
-  font-weight: 600;
-  letter-spacing: -0.01em;
-  cursor: pointer;
-  position: relative;
-  z-index: 1;
-  transition: background 220ms ease, transform 220ms ease,
-    box-shadow 220ms ease;
-  box-shadow: 0 10px 30px rgba(224, 182, 90, 0.16);
-
-  &:hover {
-    background: var(--gold-forte);
-    transform: translateY(-2px);
-    box-shadow: 0 14px 38px rgba(224, 182, 90, 0.24);
-  }
-
-  &:active {
-    transform: translateY(0);
-  }
-
-  &:focus-visible {
-    outline: 2px solid var(--white);
-    outline-offset: 3px;
-  }
-
-  &:disabled {
-    opacity: 0.55;
-    cursor: not-allowed;
-    transform: none;
-  }
-
-  svg {
-    flex: none;
-  }
 
   ${Media.PhoneLarge} {
     width: 100%;
-    padding: 17px 18px;
-    /* Encolhe o suficiente para o rótulo caber numa linha só. Quebrado
-       em duas, com o ícone solto ao lado, o botão perde o ar de botão. */
-    font-size: 0.95rem;
-    gap: 10px;
+    padding: 0 22px;
   }
-
-  ${Media.PhoneSmall} {
-    font-size: 0.9rem;
-  }
-`;
-
-/** Linha curta abaixo do botão. Tira o peso do clique. */
-export const Microcopy = styled.p`
-  font-size: 0.86rem;
-  color: var(--apagado);
-  margin: 14px 0 0;
-  position: relative;
-  z-index: 1;
-`;
-
-/**
- * Máscara de uma linha de título: o corte fica no pai, o movimento no
- * filho. Sem o `overflow: hidden` aqui a linha apareceria vindo de fora
- * em vez de nascer de dentro do próprio corte.
- */
-export const Mascara = styled.span`
-  display: block;
-  overflow: hidden;
-  padding-bottom: 0.06em;
 `;

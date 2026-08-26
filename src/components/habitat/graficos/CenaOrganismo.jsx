@@ -248,8 +248,8 @@ function No({ x, y, rotulo, groupRef }) {
         cx="0"
         cy="0"
         r={RAIO_NO}
-        fill="var(--navy-700)"
-        stroke="var(--gold-linha)"
+        fill="var(--superficie)"
+        stroke="var(--acento-borda)"
         strokeWidth="1"
       />
       <text
@@ -259,7 +259,7 @@ function No({ x, y, rotulo, groupRef }) {
         fontSize="11"
         fontFamily="Poppins, sans-serif"
         fontWeight="500"
-        fill="var(--gold)"
+        fill="var(--acento)"
       >
         {rotulo}
       </text>
@@ -346,7 +346,7 @@ const CenaOrganismo = forwardRef(function CenaOrganismo(_props, refExterno) {
           cx={CX}
           cy={CY}
           r={RAIO_NO}
-          fill="var(--navy-800)"
+          fill="var(--superficie)"
           stroke="rgba(233,150,122,0.34)"
           strokeWidth="1.2"
           strokeDasharray="3 6"
@@ -371,7 +371,7 @@ const CenaOrganismo = forwardRef(function CenaOrganismo(_props, refExterno) {
         cy={CY}
         r={RAIO_ANEL}
         fill="none"
-        stroke="var(--gold-linha)"
+        stroke="var(--acento-borda)"
         strokeWidth="1"
         pathLength="1"
         strokeDasharray="1 1"
@@ -389,7 +389,7 @@ const CenaOrganismo = forwardRef(function CenaOrganismo(_props, refExterno) {
           y1={CY}
           x2={no.xB}
           y2={no.yB}
-          stroke="var(--gold-linha)"
+          stroke="var(--acento-borda)"
           strokeWidth="1.2"
           pathLength="1"
           strokeDasharray="1 1"
@@ -423,7 +423,7 @@ const CenaOrganismo = forwardRef(function CenaOrganismo(_props, refExterno) {
                 }}
                 d={arco(de, ate, RAIO_ANEL)}
                 fill="none"
-                stroke="var(--gold)"
+                stroke="var(--acento)"
                 strokeOpacity={fase.opacidade}
                 strokeWidth={ESPESSURA_ARCO}
                 strokeLinecap="round"
@@ -440,7 +440,7 @@ const CenaOrganismo = forwardRef(function CenaOrganismo(_props, refExterno) {
                 fontSize="13"
                 fontFamily="Poppins, sans-serif"
                 fontWeight="700"
-                fill="var(--navy-900)"
+                fill="var(--fundo)"
               >
                 {fase.letra}
               </text>
@@ -453,7 +453,7 @@ const CenaOrganismo = forwardRef(function CenaOrganismo(_props, refExterno) {
                 fontSize="11.5"
                 fontFamily="Poppins, sans-serif"
                 fontWeight="500"
-                fill="var(--off-white)"
+                fill="var(--tinta-corpo)"
               >
                 {fase.nome}
               </text>
@@ -467,7 +467,7 @@ const CenaOrganismo = forwardRef(function CenaOrganismo(_props, refExterno) {
                 setasArcoRefs.current[i] = el;
               }}
               d={`M ${seta(ate + FOLGA_ARCO, RAIO_ANEL)} Z`}
-              fill="var(--gold-forte)"
+              fill="var(--acento-forte)"
             />
           </g>
         );
@@ -488,13 +488,13 @@ const CenaOrganismo = forwardRef(function CenaOrganismo(_props, refExterno) {
 
       {/* Núcleo: um círculo só, dois textos que se revezam. */}
       <g ref={nucleoCirculoRef} opacity="1">
-        <circle cx={CX} cy={CY} r="40" fill="var(--gold-soft)" />
+        <circle cx={CX} cy={CY} r="40" fill="var(--acento-veu)" />
         <circle
           cx={CX}
           cy={CY}
           r="40"
           fill="none"
-          stroke="var(--gold)"
+          stroke="var(--acento)"
           strokeWidth="1.4"
         />
       </g>
@@ -507,7 +507,7 @@ const CenaOrganismo = forwardRef(function CenaOrganismo(_props, refExterno) {
           fontSize="11"
           fontFamily="Poppins, sans-serif"
           fontWeight="600"
-          fill="var(--gold)"
+          fill="var(--acento)"
         >
           SUA
         </text>
@@ -518,7 +518,7 @@ const CenaOrganismo = forwardRef(function CenaOrganismo(_props, refExterno) {
           fontSize="11"
           fontFamily="Poppins, sans-serif"
           fontWeight="600"
-          fill="var(--gold)"
+          fill="var(--acento)"
         >
           CLÍNICA
         </text>
@@ -532,7 +532,7 @@ const CenaOrganismo = forwardRef(function CenaOrganismo(_props, refExterno) {
           fontSize="12.5"
           fontFamily="Poppins, sans-serif"
           fontWeight="600"
-          fill="var(--white)"
+          fill="var(--tinta)"
         >
           Demanda
         </text>
@@ -542,7 +542,7 @@ const CenaOrganismo = forwardRef(function CenaOrganismo(_props, refExterno) {
           textAnchor="middle"
           fontSize="11.5"
           fontFamily="Nunito Sans, sans-serif"
-          fill="var(--gold)"
+          fill="var(--acento)"
         >
           que se renova
         </text>

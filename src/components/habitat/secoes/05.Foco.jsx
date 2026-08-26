@@ -1,6 +1,7 @@
 import { useRef } from "react";
 import styled from "styled-components";
-import { Bullets, Inner, Media } from "../style";
+import { Bullets } from "../../../estilo/ds";
+import { Inner, Media } from "../style";
 import TrilhaFoco from "../graficos/TrilhaFoco";
 import {
   EASE,
@@ -147,9 +148,9 @@ const Cabeca = styled.div`
     border-radius: 50%;
     display: grid;
     place-items: center;
-    background: var(--gold-soft);
-    border: 1px solid var(--gold);
-    color: var(--gold);
+    background: var(--acento-veu);
+    border: 1px solid var(--acento);
+    color: var(--acento);
     font-family: "Poppins", sans-serif;
     font-size: 2.1rem;
     font-weight: 600;
@@ -160,7 +161,7 @@ const Cabeca = styled.div`
     font-size: clamp(2rem, 4.4vw, 3.2rem);
     font-weight: 600;
     letter-spacing: -0.03em;
-    color: var(--white);
+    color: var(--tinta);
     line-height: 1.05;
     margin: 0;
   }
@@ -181,7 +182,7 @@ const Cabeca = styled.div`
 
 const LinhaFase = styled.p`
   font-size: 1.05rem;
-  color: var(--gold);
+  color: var(--acento);
   margin: 0 0 30px 96px;
 
   ${Media.PhoneLarge} {
@@ -203,7 +204,7 @@ const Movimentos = styled(Bullets)`
 const Rodape = styled.div`
   margin-top: 48px;
   padding-top: 30px;
-  border-top: 1px solid rgba(255, 255, 255, 0.07);
+  border-top: 1px solid var(--linha);
 
   ${Media.PhoneLarge} {
     margin-top: 26px;
@@ -216,7 +217,7 @@ const Frentes = styled.div`
 
   .rotulo {
     font-size: 0.94rem;
-    color: var(--apagado);
+    color: var(--tinta-fraca);
     margin: 0 0 14px;
   }
 
@@ -239,9 +240,9 @@ const Frentes = styled.div`
 
   li {
     font-size: 0.84rem;
-    color: var(--off-white);
-    background: rgba(255, 255, 255, 0.04);
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    color: var(--tinta-corpo);
+    background: var(--superficie);
+    border: 1px solid var(--linha);
     border-radius: 999px;
     padding: 7px 14px;
     white-space: nowrap;

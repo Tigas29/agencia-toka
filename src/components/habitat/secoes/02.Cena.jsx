@@ -148,7 +148,7 @@ const NomeFase = styled.span`
   font-weight: 600;
   letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: var(--gold);
+  color: var(--acento);
   margin-bottom: 14px;
 `;
 

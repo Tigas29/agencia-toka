@@ -1,6 +1,7 @@
 import { useRef } from "react";
 import styled from "styled-components";
-import { H2, Inner, Media, SectionTela, Texto } from "../style";
+import { H2, SectionTela, Texto } from "../../../estilo/ds";
+import { Inner, Media } from "../style";
 import fotoLuis from "../../../assets/habitat/dr-luis-felipe.webp";
 import {
   EASE,
@@ -111,33 +112,37 @@ const Placar = styled.div`
 `;
 
 const Numero = styled.div`
-  border-left: 2px solid var(--gold);
+  border-left: 2px solid var(--acento);
   padding-left: 20px;
 
   strong {
     display: block;
-    font-family: "Poppins", sans-serif;
-    font-size: clamp(1.5rem, 2.6vw, 2rem);
-    font-weight: 600;
-    color: var(--white);
-    line-height: 1.15;
-    letter-spacing: -0.02em;
-    font-variant-numeric: tabular-nums;
+    font-family: "EB Garamond", Georgia, serif;
+    font-size: clamp(1.7rem, 3vw, 2.3rem);
+    font-weight: 500;
+    color: var(--tinta);
+    line-height: 1.12;
+    letter-spacing: -0.01em;
+    /* A Garamond traz algarismo old-style por padrão, em que o 1 tem
+       altura de minúscula e o 3 desce da linha de base: num placar isso
+       vira letra e o número deixa de ser lido como número. */
+    font-variant-numeric: lining-nums tabular-nums;
+    font-feature-settings: "lnum" 1;
   }
 
   span {
     display: block;
     margin-top: 6px;
     font-size: 0.9rem;
-    color: var(--apagado);
+    color: var(--tinta-fraca);
   }
 `;
 
 const Case = styled.div`
-  border: 1px solid var(--gold-linha);
+  border: 1px solid var(--acento-borda);
   border-radius: 16px;
   padding: 40px;
-  background: rgba(224, 182, 90, 0.04);
+  background: var(--acento-veu);
   display: grid;
   grid-template-columns: 168px 1fr;
   gap: 40px;
@@ -165,8 +170,8 @@ const Retrato = styled.div`
   height: 168px;
   border-radius: 50%;
   overflow: hidden;
-  border: 1px solid var(--gold-linha);
-  box-shadow: 0 0 0 6px rgba(224, 182, 90, 0.05);
+  border: 1px solid var(--acento-borda);
+  box-shadow: 0 0 0 6px var(--acento-veu);
 
   img {
     width: 100%;
@@ -188,20 +193,20 @@ const Identidade = styled.div`
     font-family: "Poppins", sans-serif;
     font-size: clamp(1.35rem, 2.4vw, 1.75rem);
     font-weight: 600;
-    color: var(--white);
+    color: var(--tinta);
     margin: 0 0 6px;
     letter-spacing: -0.02em;
   }
 
   .arroba {
     font-size: 0.94rem;
-    color: var(--gold);
+    color: var(--acento);
     margin: 0 0 4px;
   }
 
   .especialidade {
     font-size: 0.9rem;
-    color: var(--apagado);
+    color: var(--tinta-fraca);
     margin: 0;
   }
 `;
@@ -228,20 +233,20 @@ const Saltos = styled.div`
 
     .de {
       font-size: 1rem;
-      color: var(--apagado);
+      color: var(--tinta-fraca);
       text-decoration: line-through;
       text-decoration-color: rgba(141, 147, 163, 0.5);
     }
 
     .seta {
-      color: var(--gold);
+      color: var(--acento);
       font-size: 0.9rem;
     }
 
     .para {
       font-size: clamp(1.5rem, 2.6vw, 2rem);
       font-weight: 600;
-      color: var(--gold);
+      color: var(--acento);
       letter-spacing: -0.02em;
     }
 
@@ -250,7 +255,7 @@ const Saltos = styled.div`
       margin-top: 5px;
       font-family: "Nunito Sans", sans-serif;
       font-size: 0.86rem;
-      color: var(--apagado);
+      color: var(--tinta-fraca);
     }
   }
 `;
@@ -265,7 +270,7 @@ const Linhas = styled.ul`
 
   li {
     font-size: 0.98rem;
-    color: var(--off-white);
+    color: var(--tinta-corpo);
     padding-left: 20px;
     position: relative;
     line-height: 1.45;
@@ -278,7 +283,7 @@ const Linhas = styled.ul`
       width: 6px;
       height: 6px;
       border-radius: 50%;
-      background: var(--gold);
+      background: var(--acento);
     }
   }
 `;
@@ -389,7 +394,7 @@ export default function Prova() {
   };
 
   return (
-    <Faixa ref={escopo}>
+    <Faixa ref={escopo} className="faixa-clara">
       <Inner>
 
         <H2 ref={registrarCabeca(0)}>Cinco anos, um nicho&nbsp;só.</H2>

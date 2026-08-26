@@ -46,6 +46,12 @@ const GOLD_ESCURO = "#7A5C12";
    creme, e ambos passam de 4.5:1 contra o próprio fundo. */
 const ERRO_SOBRE_ESCURO = "#E9967A";
 const ERRO_SOBRE_CLARO = "#9B3412";
+/* Superfície elevada: a caixa que precisa se destacar do fundo da faixa
+   sem ganhar borda (cartão de formulário, painel de gráfico). Sobre navy
+   ela clareia, sobre creme ela também clareia — em papel, o que "sobe" é
+   o mais branco, não o mais escuro. */
+const SUPERFICIE_ESCURA = "#1B2338";
+const SUPERFICIE_CLARA = "#F7F5F0";
 
 export const Tokens = createGlobalStyle`
   .toka {
@@ -62,6 +68,8 @@ export const Tokens = createGlobalStyle`
     --tinta-fraca: #7F8698;
     --linha: rgba(244, 243, 238, 0.11);
     --acento: ${GOLD};
+    --acento-forte: #EFCB7C;
+    --superficie: ${SUPERFICIE_ESCURA};
     --erro: ${ERRO_SOBRE_ESCURO};
     /* Véu do acento, para fundo de opção marcada e realce de campo. Sai
        de color-mix e não de um rgba fixo porque o acento muda com a
@@ -78,6 +86,8 @@ export const Tokens = createGlobalStyle`
     --tinta-fraca: #7F8698;
     --linha: rgba(244, 243, 238, 0.11);
     --acento: ${GOLD};
+    --acento-forte: #EFCB7C;
+    --superficie: ${SUPERFICIE_ESCURA};
     --erro: ${ERRO_SOBRE_ESCURO};
   }
 
@@ -91,6 +101,8 @@ export const Tokens = createGlobalStyle`
     --tinta-fraca: #635E51;
     --linha: rgba(22, 32, 58, 0.13);
     --acento: ${GOLD_ESCURO};
+    --acento-forte: #5E4708;
+    --superficie: ${SUPERFICIE_CLARA};
     --erro: ${ERRO_SOBRE_CLARO};
   }
 
@@ -492,6 +504,88 @@ export const Mascara = styled.span`
   display: block;
   overflow: hidden;
   padding-bottom: 0.08em;
+`;
+
+/**
+ * Dobra que ocupa a tela sozinha, com o conteúdo centrado. É o "uma coisa
+ * de cada vez": sem isso, duas dobras aparecem juntas na mesma tela e a de
+ * cima rouba a atenção da de baixo antes de terminar de ser lida.
+ *
+ * No telemóvel a altura mínima sai. Lá o conteúdo já enche a tela por
+ * conta própria, e forçar 100dvh só criaria vazio de rolagem.
+ */
+export const SectionTela = styled(Section)`
+  min-height: 100dvh;
+  display: flex;
+  align-items: center;
+
+  ${Media.TabletSmall} {
+    min-height: 0;
+    display: block;
+  }
+`;
+
+/**
+ * Lista de argumentos. Substitui parágrafo corrido nas dobras que
+ * explicam alguma coisa: em texto corrido a pessoa precisa parar de rolar
+ * para achar onde estava. O corpo é maior que o do parágrafo comum de
+ * propósito — nestas dobras a lista é o conteúdo, não apoio.
+ */
+export const Bullets = styled.ul`
+  list-style: none;
+  padding: 0;
+  margin: 0 0 22px;
+  max-width: 40rem;
+
+  li {
+    font-size: 1.08rem;
+    line-height: 1.5;
+    color: var(--tinta-corpo);
+    padding-left: 26px;
+    position: relative;
+    margin-bottom: 15px;
+
+    &::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      /* 0.72em, e não um valor em pixel: o ponto acompanha o tamanho da
+         linha e continua alinhado ao meio da primeira letra quando o
+         corpo encolhe no telemóvel. */
+      top: 0.72em;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--acento);
+    }
+
+    strong {
+      color: var(--tinta);
+      font-weight: 600;
+    }
+  }
+
+  ${Media.PhoneLarge} {
+    li {
+      font-size: 1rem;
+      padding-left: 22px;
+      margin-bottom: 13px;
+    }
+  }
+`;
+
+/** Frase de fecho de um bloco: pesa mais que a lista que vem antes. */
+export const Fecho = styled.p`
+  font-family: "Poppins", sans-serif;
+  font-size: 1.06rem;
+  font-weight: 400;
+  color: var(--acento);
+  margin: 0;
+  max-width: 40rem;
+
+  ${Media.PhoneLarge} {
+    font-size: 1rem;
+  }
 `;
 
 /* ------------------------------------------------------------------ *

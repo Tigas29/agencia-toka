@@ -91,7 +91,7 @@ const Nome = styled.p`
   font-family: "Poppins", sans-serif;
   font-size: 0.84rem;
   font-weight: 500;
-  color: var(--off-white);
+  color: var(--tinta-corpo);
   margin: 0;
 
   ${Media.PhoneLarge} {
@@ -119,13 +119,13 @@ const TrilhaFoco = forwardRef(function TrilhaFoco(_props, refExterno) {
             }}
           >
             <svg viewBox="0 0 54 54" aria-hidden="true">
-              <circle cx="27" cy="27" r="26" fill="var(--navy-900)" />
+              <circle cx="27" cy="27" r="26" fill="var(--fundo)" />
               <circle
                 cx="27"
                 cy="27"
                 r="26"
-                fill="var(--gold-soft)"
-                stroke="var(--gold)"
+                fill="var(--acento-veu)"
+                stroke="var(--acento)"
                 strokeWidth="1.2"
               />
               <text
@@ -135,7 +135,7 @@ const TrilhaFoco = forwardRef(function TrilhaFoco(_props, refExterno) {
                 fontSize="21"
                 fontFamily="Poppins, sans-serif"
                 fontWeight="600"
-                fill="var(--gold)"
+                fill="var(--acento)"
               >
                 {etapa.letra}
               </text>

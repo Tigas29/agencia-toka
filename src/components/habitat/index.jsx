@@ -1,6 +1,7 @@
 import { useCallback, useEffect } from "react";
 import styled from "styled-components";
-import { Inner, Media, Page, Tokens } from "./style";
+import { Tokens } from "../../estilo/ds";
+import { Inner, Media, Page } from "./style";
 import { capturarUtm, track } from "./lead";
 import { ScrollTrigger, useMenosMovimento, useRolagemSuave } from "./animacao";
 import Atmosfera from "./Atmosfera";
@@ -15,7 +16,7 @@ import Form from "./secoes/08.Form";
 
 const Rodape = styled.footer`
   padding: 40px 0 56px;
-  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  border-top: 1px solid var(--linha);
   position: relative;
   z-index: 1;
 
@@ -30,7 +31,7 @@ const Rodape = styled.footer`
   p {
     margin: 0;
     font-size: 0.82rem;
-    color: var(--apagado);
+    color: var(--tinta-fraca);
   }
 
   ${Media.PhoneLarge} {
@@ -82,7 +83,7 @@ export default function PaginaHabitat() {
   return (
     <>
       <Tokens />
-      <Page className="toka-habitat">
+      <Page className="toka">
         <Atmosfera />
 
         <Hero aoClicar={irParaForm} />

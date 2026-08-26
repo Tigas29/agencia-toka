@@ -48,20 +48,20 @@ const Frase = styled.p`
   font-weight: 500;
   line-height: 1.22;
   letter-spacing: -0.02em;
-  color: var(--off-white);
+  color: var(--tinta-corpo);
   max-width: 22ch;
 
   /* A frase de virada tem o peso de um título e a cor da marca: é ela
      que fecha cada ato, e precisa soar diferente das que a levaram até
      lá. */
   &[data-peso="virada"] {
-    color: var(--white);
+    color: var(--tinta);
     font-weight: 600;
     font-size: clamp(1.7rem, 3.8vw, 2.9rem);
   }
 
   &[data-peso="marca"] {
-    color: var(--gold);
+    color: var(--acento);
     font-weight: 600;
     font-size: clamp(1.8rem, 4.2vw, 3.1rem);
     letter-spacing: -0.03em;
@@ -69,11 +69,11 @@ const Frase = styled.p`
 
   em {
     font-style: normal;
-    color: var(--gold);
+    color: var(--acento);
   }
 
   strong {
-    color: var(--white);
+    color: var(--tinta);
     font-weight: 600;
   }
 
