@@ -1,454 +1,308 @@
 import styled from "styled-components";
+import { Media, Section, numerais } from "../../../estilo/ds";
 
-const Media = {
-  PhoneLarge: "@media(max-width:610px)",
-  LaptopLarge: "@media(max-width:1450px)",
-  Laptop: "@media(max-width:1150px)",
-  Tablet: "@media(max-width:1000px)",
-  TabletSmall: "@media(max-width:880px)",
-  PhoneSmall: "@media(max-width:450px)",
-};
-
-export const Container = styled.section`
-  width: 100%;
-  background-color: var(--white);
-  display: flex;
-  justify-content: center;
-  padding: 2rem 0 5rem;
-  min-width: 279px;
-
-  ${Media.Tablet} {
-    padding: 4rem 0;
-  }
-
+/**
+ * Carrossel de cases.
+ *
+ * A mecânica é a de antes — trilho que desliza, setas, pontos, vídeo do
+ * YouTube que só carrega depois do clique na miniatura — e nada disso
+ * mudou. O que mudou é que os números pararam de gritar: eles eram
+ * marrom `#6c3200` em 3.8rem de Poppins 700, o elemento mais pesado da
+ * página inteira, competindo com o próprio depoimento que deveriam
+ * sustentar.
+ *
+ * Agora o retrato do médico e a frase de virada é que lideram o cartão,
+ * e o número entra na serifada, na cor da tinta, com o rótulo embaixo.
+ * A métrica "fantasma" (o investimento, sempre a primeira) continua em
+ * tom mais fraco: ela existe para dar escala ao resultado, não para ser
+ * lida primeiro.
+ */
+export const Container = styled(Section).attrs({ className: "faixa-escura" })`
   .inner {
     width: 90%;
-    max-width: 75rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    gap: 1rem;
-  }
+    max-width: 1140px;
+    margin: 0 auto;
 
-  .carousel {
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 2.5rem;
-
-    ${Media.Tablet} {
-      gap: 1.5rem;
+    ${Media.PhoneLarge} {
+      width: 100%;
+      padding: 0 22px;
     }
   }
 
+  .carousel {
+    display: flex;
+    align-items: center;
+    gap: 22px;
+  }
+
   .slideWrapper {
-    width: 100%;
-    padding-top: 3rem;
-    overflow-x: hidden;
-    padding-top: 2rem;
+    flex: 1;
+    overflow: hidden;
   }
 
   .slideTrack {
     display: flex;
-    transition: transform 0.5s ease;
-    will-change: transform;
+    transition: transform 520ms cubic-bezier(0.22, 1, 0.36, 1);
+
+    @media (prefers-reduced-motion: reduce) {
+      transition: none;
+    }
   }
 
   .slide {
+    flex: 0 0 100%;
     min-width: 100%;
-    padding: 0.2rem;
   }
 
   .card {
-    display: flex;
-    grid-template-columns: 1.05fr 1.4fr;
-    background: #ffffff;
-    border-radius: 2rem;
+    display: grid;
+    grid-template-columns: 0.85fr 1.15fr;
+    gap: 3rem;
     align-items: start;
 
-    ${Media.Tablet} {
-      flex-direction: column;
-      align-items: center;
+    ${Media.TabletSmall} {
+      grid-template-columns: 1fr;
+      gap: 1.8rem;
     }
   }
 
   .cardImage {
     position: relative;
     width: 100%;
-
-    ${Media.Tablet} {
-      max-width: 100%;
-    }
+    border-radius: 4px;
+    overflow: hidden;
+    border: 1px solid var(--linha);
 
     img {
       width: 100%;
-      max-width: 25rem;
-      height: 35rem;
+      aspect-ratio: 3 / 4;
       object-fit: cover;
       display: block;
-      border-radius: 20px;
-
-      ${Media.Tablet} {
-        max-width: 100%;
-      }
     }
   }
 
-  .cardImage,
   .videoWrapper {
+    position: relative;
     width: 100%;
-    max-width: 25rem;
-    min-height: 35rem;
-    border-radius: 20px;
-
-    ${Media.Tablet} {
-      max-width: 100%;
-    }
+    aspect-ratio: 3 / 4;
 
     iframe {
+      position: absolute;
+      inset: 0;
       width: 100%;
       height: 100%;
       border: 0;
-      display: block;
     }
   }
 
   .thumbButton {
     position: relative;
+    display: block;
     width: 100%;
-    max-width: 25rem;
-    height: 35rem;
     padding: 0;
-    border: none;
     background: none;
     cursor: pointer;
-
-    ${Media.Tablet} {
-      max-width: 100%;
-    }
   }
 
-  .thumbButton img {
-    width: 100%;
-    height: 100%;
-    border-radius: 20px;
-    object-fit: cover;
-    display: block;
-  }
-
+  /* Botão de play: círculo vazado com um triângulo, sobre o retrato.
+     Sem fundo cheio — o retrato é o que deve ser visto. */
   .playIcon {
     position: absolute;
-    inset: 0;
-    margin: auto;
-    width: 4.5rem;
-    height: 4.5rem;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 62px;
+    height: 62px;
     border-radius: 50%;
-    background: rgba(0, 0, 0, 0.55);
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    border: 1px solid rgba(244, 243, 238, 0.7);
+    background: rgba(18, 26, 48, 0.35);
+    backdrop-filter: blur(2px);
+    transition: background 220ms ease, transform 220ms ease;
   }
 
   .playIcon::before {
     content: "";
-    display: block;
-    width: 0;
-    height: 0;
-    border-left: 1.3rem solid #ffffff;
-    border-top: 0.8rem solid transparent;
-    border-bottom: 0.8rem solid transparent;
-    transform: translateX(2px);
+    position: absolute;
+    top: 50%;
+    left: 54%;
+    transform: translate(-50%, -50%);
+    border-style: solid;
+    border-width: 9px 0 9px 15px;
+    border-color: transparent transparent transparent #f4f3ee;
   }
 
   .thumbButton:hover .playIcon {
-    background: rgba(0, 0, 0, 0.75);
+    background: rgba(18, 26, 48, 0.55);
+    transform: translate(-50%, -50%) scale(1.06);
   }
 
+  /* O nome do case como legenda embaixo do retrato, não como etiqueta
+     por cima dele. */
   .cardImageName {
     position: absolute;
-    top: -25px;
-    left: 50%;
-    bottom: 2.5rem;
-    transform: translateX(-50%);
-    text-align: center;
-    z-index: 2;
-    pointer-events: none;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    padding: 30px 16px 12px;
+    background: linear-gradient(
+      to top,
+      rgba(15, 22, 38, 0.85),
+      transparent
+    );
 
     p {
       margin: 0;
-      font-family: "Poppins";
-      font-size: 1rem;
-      font-weight: 500;
-      color: #ffffff;
-      padding: 0.5rem;
-      background: #3a302c;
-      border-radius: 0.7rem;
-      border: 2px solid #ff8419;
-      z-index: 2;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-    }
-
-    ${Media.Laptop} {
-      bottom: 2rem;
-
-      p {
-        font-size: 1.4rem;
-      }
-    }
-
-    ${Media.PhoneLarge} {
-      bottom: 1.7rem;
-
-      p {
-        font-size: 1.25rem;
-      }
+      font-family: "Poppins", sans-serif;
+      font-size: 0.72rem;
+      font-weight: 400;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: #f4f3ee;
     }
   }
 
   .cardContent {
-    min-height: 33rem;
-    padding: 0rem 2rem 0rem 2rem;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
-    color: #6c3200;
-
-    ${Media.Tablet} {
-      padding: 1rem 0rem 0rem;
-      justify-content: center;
-      gap: 2rem;
-    }
   }
 
   .caseLogo {
-    margin-bottom: -0.8rem;
+    margin-bottom: 18px;
+
+    img {
+      height: 30px;
+      width: auto;
+      display: block;
+      /* Os logos dos parceiros vêm em cores próprias. Sobre navy, a
+         única forma de eles conviverem com a faixa é entrarem como
+         marca monocromática. */
+      filter: grayscale(1) brightness(2.4);
+      opacity: 0.75;
+    }
   }
 
-  .caseLogo img {
-    max-width: 120px;
-    display: block;
-  }
-
+  /* A frase de virada. É o título do cartão. */
   .tag {
-    font-family: "Poppins";
-    font-weight: 700;
-    font-size: 1.3rem;
-    line-height: 140%;
-    color: #6c3200;
-
-    ${Media.PhoneLarge} {
-      font-size: 0.98rem;
-    }
+    font-family: "EB Garamond", Georgia, serif;
+    font-size: clamp(1.6rem, 2.8vw, 2.3rem);
+    font-weight: 400;
+    line-height: 1.1;
+    letter-spacing: -0.012em;
+    color: var(--tinta);
+    margin: 0 0 22px;
+    max-width: 22ch;
   }
 
-  .bodyText {
-    display: flex;
-    flex-direction: column;
-    gap: 0.35rem;
-
-    p {
-      margin: 0;
-      font-family: "Poppins";
-      line-height: 150%;
-    }
-
-    p:nth-child(1) {
-      font-size: 1rem;
-      color: #a45200;
-    }
-
-    p:nth-child(2) {
-      font-size: 1.2em;
-      font-weight: 400;
-      line-height: 120%;
-      margin-top: 0.5rem;
-      color: #6c3200;
-
-      ${Media.Laptop} {
-        font-size: 1rem;
-      }
-
-      ${Media.PhoneLarge} {
-        font-size: 0.95rem;
-      }
-    }
+  .bodyText p {
+    font-size: 1rem;
+    line-height: 1.62;
+    color: var(--tinta-corpo);
+    margin: 0 0 14px;
+    max-width: 52ch;
 
     strong {
-      font-weight: 800;
-    }
-
-    p:nth-child(3) {
-      font-size: 1.4em;
-      font-weight: 400;
-      line-height: 100%;
-      margin-top: 0.5rem;
-      color: #6c3200;
+      color: var(--tinta);
+      font-weight: 600;
     }
   }
 
   .metrics {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    column-gap: 3.5rem;
-    row-gap: 1.4rem;
-    margin-top: 0.5rem;
-    align-items: center;
-
-    ${Media.Laptop} {
-      column-gap: 2.5rem;
-    }
-
-    ${Media.PhoneLarge} {
-      column-gap: 1.5rem;
-    }
-  }
-
-  .metrics .metric:nth-child(3) {
-    grid-column: 1 / -1;
-    justify-self: center;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2.6rem;
+    margin: 20px 0 22px;
+    padding-top: 22px;
+    border-top: 1px solid var(--linha);
   }
 
   .metric {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    text-align: center;
-    font-family: "Poppins";
   }
 
   .metricHighlight {
     display: flex;
     align-items: baseline;
-    gap: 0.25rem;
+    gap: 0.15rem;
+    font-family: "EB Garamond", Georgia, serif;
+    color: var(--tinta);
+    ${numerais};
   }
 
   .metricHighlight .prefix,
   .metricHighlight .suffix {
-    font-size: 1.8rem;
-    font-weight: 600;
-    color: #6c3200;
-    opacity: 0.9;
-
-    ${Media.Laptop} {
-      font-size: 1rem;
-    }
-
-    ${Media.PhoneLarge} {
-      font-size: 0.85rem;
-    }
+    font-size: 1.2rem;
+    font-weight: 400;
+    color: var(--tinta-fraca);
   }
 
   .metricHighlight .value {
-    font-size: 3.8rem;
-    font-weight: 700;
-    color: #6c3200;
-    line-height: 100%;
-
-    ${Media.Laptop} {
-      font-size: 2.7rem;
-    }
-
-    ${Media.PhoneLarge} {
-      font-size: 2.2rem;
-    }
+    font-size: clamp(2.2rem, 3.6vw, 3rem);
+    font-weight: 400;
+    line-height: 1;
   }
 
-  .metric--ghost .value {
-    color: rgba(108, 50, 0, 0.5) !important;
-  }
-
+  /* O investimento entra apagado de propósito: ele dá escala ao número
+     que vem depois e não deve ser lido antes dele. */
+  .metric--ghost .value,
   .metric--ghost .prefix,
-  .metric--ghost .suffix {
-    color: rgba(108, 50, 0, 0.5) !important;
-    opacity: 0.4;
+  .metric--ghost .suffix,
+  .metric--ghost .metricCaption {
+    color: var(--tinta-fraca);
   }
 
   .metricCaption {
-    margin-top: 0.5rem;
-    font-weight: 400;
-    font-size: 1rem;
-    text-transform: none;
-    color: #6c3200;
-
-    ${Media.PhoneLarge} {
-      font-size: 0.75rem;
-    }
-  }
-
-  .metric--ghost .metricCaption {
-    color: rgba(108, 50, 0, 0.5) !important;
+    margin-top: 8px;
+    font-size: 0.84rem;
+    line-height: 1.35;
+    color: var(--tinta-fraca);
+    max-width: 22ch;
   }
 
   .footerTextCard {
-    margin-top: 0.4rem;
-    font-family: "Poppins";
-    font-style: normal;
-    font-weight: 600;
-    font-size: 0.95rem;
-    line-height: 150%;
-    color: #6c3200;
-
-    ${Media.Laptop} {
-      font-size: 0.9rem;
-    }
-
-    ${Media.PhoneLarge} {
-      font-size: 0.85rem;
-    }
+    margin: 0;
+    font-family: "EB Garamond", Georgia, serif;
+    font-size: 1.24rem;
+    font-weight: 400;
+    line-height: 1.24;
+    color: var(--acento);
+    max-width: 34ch;
   }
 
   .navButton {
-    border: none;
-    outline: none;
-    background: #ff8419;
-    color: #6c3200;
+    flex: none;
+    width: 44px;
+    height: 44px;
     border-radius: 50%;
-    width: 3.2rem;
-    height: 3.2rem;
+    border: 1px solid var(--linha);
+    background: transparent;
+    color: var(--tinta-corpo);
+    display: grid;
+    place-items: center;
     cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    line-height: 0;
-    transition: transform 0.15s ease, box-shadow 0.15s ease;
-    flex-shrink: 0;
-    position: relative;
+    transition: border-color 200ms ease, color 200ms ease;
 
-    ${Media.PhoneLarge} {
-      width: 2.8rem;
-      height: 2.8rem;
-      font-size: 1.5rem;
-    }
-  }
-
-  .navButton:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.18);
-  }
-
-  .navButton--left-desktop {
     p {
-      position: absolute;
-      top: 35%;
-      right: 30%;
-      font-size: 4rem;
+      margin: 0;
+      font-size: 1.05rem;
+      line-height: 1;
     }
 
-    ${Media.TabletSmall} {
-      display: none;
+    &:hover {
+      border-color: var(--acento);
+      color: var(--tinta);
+    }
+
+    &:focus-visible {
+      outline: 1px solid var(--tinta);
+      outline-offset: 3px;
     }
   }
 
+  /* No telemóvel as setas saem das laterais (onde roubariam largura do
+     cartão) e vão para uma linha própria abaixo dele. */
+  .navButton--left-desktop,
   .navButton--right-desktop {
-    p {
-      position: absolute;
-      top: 35%;
-      left: 30%;
-      font-size: 4rem;
-    }
-
     ${Media.TabletSmall} {
       display: none;
     }
@@ -456,74 +310,43 @@ export const Container = styled.section`
 
   .buttom-mobile {
     display: none;
-
-    .navButton {
-      border: none;
-      outline: none;
-      background: #ff8419;
-      color: #6c3200;
-      border-radius: 50%;
-      width: 2rem;
-      height: 2rem;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      line-height: 0;
-      transition: transform 0.15s ease, box-shadow 0.15s ease;
-      flex-shrink: 0;
-      position: relative;
-    }
-
-    .navButton:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 6px 14px rgba(0, 0, 0, 0.18);
-    }
-
-    .navButton--left {
-      p {
-        position: absolute;
-        top: 35%;
-        right: 30%;
-        font-size: 2.5rem;
-      }
-    }
-
-    .navButton--right {
-      p {
-        position: absolute;
-        top: 35%;
-        left: 30%;
-        font-size: 2.5rem;
-      }
-    }
+    gap: 12px;
+    margin-top: 26px;
 
     ${Media.TabletSmall} {
       display: flex;
-      gap: 2rem;
-      margin: -1rem 0 2rem;
     }
   }
 
   .dots {
     display: flex;
     justify-content: center;
-    gap: 0.5rem;
+    gap: 10px;
+    margin-top: 34px;
   }
 
   .dot {
-    width: 0.55rem;
-    height: 0.55rem;
-    border-radius: 999px;
-    border: none;
-    background: #ffd1a3;
-    cursor: pointer;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    border: 0;
     padding: 0;
-    transition: background 0.2s ease, width 0.2s ease;
+    background: var(--tinta-fraca);
+    opacity: 0.45;
+    cursor: pointer;
+    transition: opacity 200ms ease, background 200ms ease, width 200ms ease;
+
+    &:hover {
+      opacity: 0.8;
+    }
   }
 
+  /* O ponto ativo vira traço: em seis pontos iguais, mudar só a cor não
+     diz o suficiente sobre onde a pessoa está. */
   .dot--active {
-    background: #ff8419;
-    width: 1.2rem;
+    width: 20px;
+    border-radius: 3px;
+    background: var(--acento);
+    opacity: 1;
   }
 `;

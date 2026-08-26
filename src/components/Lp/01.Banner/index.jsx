@@ -1,8 +1,8 @@
 import * as Styled from "./style.js";
 import Button from "../button/index.jsx";
 
-import logoToka from "../../../assets/landingpage/logo.svg";
-import doctorImage from "../../../assets/landingpage/01.Banner/imagem.webp";
+import logoToka from "../../../assets/homepage/logo-toka-branco.png";
+import doctorImage from "../../../assets/landingpage/01.Banner/medico-sem-selo.webp";
 
 export default function Banner() {
   return (

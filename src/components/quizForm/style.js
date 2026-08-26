@@ -1,424 +1,233 @@
 import styled from "styled-components";
+import { Acoes, Campo, Erro, Media, Opcoes, Palco, Progresso } from "../../estilo/ds";
 
-const Media = {
-  PhoneLarge: "@media(max-width:610px)",
-  Laptop: "@media(max-width:1150px)",
-  Tablet: "@media(max-width:1000px)",
-  PhoneSmall: "@media(max-width:450px)",
-};
+/**
+ * Teste de escala para consultórios (/quizForm-fisio).
+ *
+ * Mesma reconstrução do /clienteForm, e pela mesma razão: os dois eram
+ * formulários laranja, cada um com a sua caixa. Aqui há uma tela a mais,
+ * a de abertura, que apresenta o teste antes da primeira pergunta.
+ *
+ * Os componentes que o `index.jsx` não usa (`Question`, `Options`,
+ * `Footer`, `LoadingScreen`, `ResultScreenContainer`, `ResultContent`)
+ * saíram: eram de uma versão do quiz que calculava e mostrava resultado,
+ * e essa versão não existe mais no componente.
+ */
 
-export const Container = styled.div`
-  margin: auto;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: center;
-  width: 80%;
-  background-color: inherit;
-  height: 70vh;
-
-  ${Media.Tablet} {
-    width: 90%;
-  }
-
-  .box {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    justify-content: center;
-    padding: 20px;
-    width: 100%;
-  }
-`;
+export { Tokens } from "../../estilo/ds";
 
 export const ContainerBackground = styled.div`
+  min-height: 100dvh;
   width: 100%;
-  height: 100vh;
-  background-color: #1b1b1b;
+  background: radial-gradient(
+      120% 90% at 85% 10%,
+      var(--superficie) 0%,
+      transparent 60%
+    ),
+    var(--fundo);
+  color: var(--tinta-corpo);
+  font-family: "Nunito Sans", "Inter", sans-serif;
+  font-size: 16px;
+  font-weight: 300;
+  line-height: 1.65;
+  /* A coluna existe para o palco poder crescer: é o flex-grow dele que
+     centra a pergunta na altura da tela. Sem um pai flex, o palco não
+     tem o que ocupar e tudo fica encostado no topo. */
+  display: flex;
+  flex-direction: column;
 
-  .box {
+  * {
+    box-sizing: border-box;
+  }
+
+  form {
+    flex: 1;
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
-    justify-content: center;
-    padding: 20px;
+  }
+
+  ::selection {
+    background: var(--acento);
+    color: var(--fundo);
+  }
+`;
+
+export const ProgressBar = Progresso;
+
+export const Container = styled(Palco)`
+  .box {
     width: 100%;
+    max-width: 640px;
   }
 `;
 
-export const ProgressBar = styled.div`
+/**
+ * Tela de abertura. O título era caixa alta em Poppins 700 e disputava
+ * atenção com o botão logo abaixo; agora é a serifada da marca, e a
+ * versalete fica só no botão.
+ */
+export const StartScreen = styled.div`
   width: 100%;
-  height: 10px;
-  background-color: #e0e0e0;
-  margin-bottom: 20px;
-  position: fixed;
-  top: 0;
-  z-index: 10;
+  max-width: 620px;
 
-  div {
-    height: 100%;
-    background-color: var(--orange);
-    position: absolute;
+  h1 {
+    font-family: "EB Garamond", Georgia, serif;
+    font-weight: 400;
+    font-size: clamp(2rem, 4.4vw, 3.2rem);
+    line-height: 1.08;
+    letter-spacing: -0.014em;
+    /* O texto vem em caixa alta do JSX. Em serifada, caixa alta desse
+       tamanho vira placa: o lowercase devolve a frase e a regra de
+       first-letter recompõe a inicial. */
+    text-transform: lowercase;
+    color: var(--tinta);
+    margin: 0 0 20px;
+
+    &::first-letter {
+      text-transform: uppercase;
+    }
   }
-`;
-
-export const Question = styled.div`
-  text-align: center;
 
   p {
-    font-size: 2rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    margin-bottom: 20px;
-    color: var(--off-white);
-
-    ${Media.PhoneLarge} {
-      font-size: 1.5rem;
-      text-align: left;
-    }
+    font-size: 1.06rem;
+    line-height: 1.6;
+    color: var(--tinta-corpo);
+    margin: 0 0 34px;
+    max-width: 48ch;
   }
-`;
-
-export const Options = styled.div`
-  display: flex;
-  gap: 20px;
 
   button {
-    padding: 10px 20px;
-    font-size: 16px;
-    border: 1px solid var(--orange);
-    background: transparent;
-    cursor: pointer;
-    border-radius: 5px;
-    color: white;
-
-    &.active {
-      background-color: var(--orange);
-      color: white;
-    }
-  }
-`;
-
-export const InputContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-
-  label {
-    font-size: 1.5rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 17px 34px;
+    border-radius: 999px;
+    background: var(--acento);
+    color: var(--fundo);
+    border: 1px solid var(--acento);
+    font-family: "Poppins", sans-serif;
+    font-size: 0.86rem;
     font-weight: 400;
-    margin-bottom: 20px;
-    color: var(--off-white);
-
-    ${Media.PhoneLarge} {
-      text-align: left;
-    }
-  }
-
-  input,
-  select {
-    width: 50%;
-    padding: 10px;
-    font-size: 16px;
-    border-bottom: 1px solid #ccc;
-    background-color: transparent;
-    color: var(--off-white);
-
-    ${Media.Tablet} {
-      width: 80%;
-    }
-  }
-`;
-
-export const RevenueOptions = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  width: 100%;
-
-  button {
-    width: 100%;
-    text-align: left;
-    padding: 12px 20px;
-    border-radius: 5px;
-    border: 1px solid var(--orange);
-    background: transparent;
-    font-size: 1rem;
-    color: white;
+    letter-spacing: 0.08em;
     cursor: pointer;
-    transition: 0.2s ease;
+    transition: transform 240ms ease;
 
     &:hover {
-      background-color: rgba(219, 171, 109, 0.1);
+      transform: translateY(-2px);
     }
 
-    &.selected {
-      background-color: var(--orange);
-      color: #1b1b1b;
+    ${Media.PhoneLarge} {
+      width: 100%;
+      padding: 16px 20px;
     }
   }
 `;
 
-export const Footer = styled.div`
-  position: fixed;
-  bottom: 10px;
-  right: 10px;
-  display: flex;
-  gap: 10px;
+export const LogoWrapper = styled.div`
+  margin-bottom: 44px;
 
-  @media (max-width: 768px) {
-    bottom: 10px;
-    left: 10px;
-    right: 10px;
-    justify-content: space-between;
+  img {
+    width: auto;
+    height: 30px;
+    display: block;
+  }
+`;
+
+export const InputContainer = styled(Campo)`
+  margin-top: 0;
+
+  label {
+    display: block;
+    font-family: "EB Garamond", Georgia, serif;
+    font-weight: 400;
+    font-size: clamp(1.6rem, 3.2vw, 2.4rem);
+    line-height: 1.12;
+    letter-spacing: -0.012em;
+    color: var(--tinta);
+    margin-bottom: 26px;
+    max-width: 22ch;
+  }
+`;
+
+export const RevenueOptions = styled(Opcoes)`
+  margin-top: 0;
+
+  /* O JSX marca a escolhida com "selected"; o DS desenha ".marcada".
+     Em vez de mexer na marcação, o seletor herda o desenho aqui. */
+  button.selected {
+    border-color: var(--acento);
+    background: var(--acento-veu);
+    color: var(--tinta);
+  }
+`;
+
+export const Buttons = styled(Acoes)`
+  button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 13px 26px;
+    border-radius: 999px;
+    background: var(--acento);
+    color: var(--fundo);
+    border: 1px solid var(--acento);
+    font-family: "Poppins", sans-serif;
+    font-size: 0.92rem;
+    font-weight: 400;
+    cursor: pointer;
+    transition: transform 240ms ease, opacity 240ms ease;
+
+    &:hover:not(:disabled) {
+      transform: translateY(-2px);
+    }
+
+    &:disabled {
+      opacity: 0.55;
+      cursor: not-allowed;
+    }
+
+    ${Media.PhoneLarge} {
+      width: 100%;
+      padding: 16px 20px;
+    }
   }
 `;
 
 export const Navigation = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 1px;
-  position: absolute;
-  bottom: 3rem;
-  right: 1rem;
+  margin-top: 14px;
 
-  button {
-    width: 50px;
-    height: 50px;
-    font-size: 20px;
-    border-radius: 10px;
-    border: none;
+  .back {
+    background: none;
+    border: 0;
+    padding: 8px 2px;
+    font-family: "Poppins", sans-serif;
+    font-size: 0.86rem;
+    font-weight: 400;
+    color: var(--tinta-fraca);
     cursor: pointer;
-    background-color: var(--orange);
-    color: white;
+    transition: color 160ms ease;
 
-    &:disabled {
-      background-color: #ccc;
-      cursor: not-allowed;
+    &:hover {
+      color: var(--tinta);
     }
 
-    &.back {
-      background-color: var(--orange);
-    }
-
-    &.next {
-      background-color: var(--orange);
-    }
-  }
-
-  @media (max-width: 768px) {
-    button {
-      width: auto;
-      height: auto;
-      padding: 10px 15px;
-      border-radius: 5px;
+    &:focus-visible {
+      outline: 1px solid var(--tinta);
+      outline-offset: 3px;
     }
   }
 `;
 
 export const EndMessage = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 100vh;
-  text-align: center;
-  font-size: 1.5rem;
-  color: var(--off-white);
-`;
-
-export const Buttons = styled.div`
-  display: flex;
-  justify-content: center;
-  margin-top: 20px;
-
-  button {
-    padding: 10px 20px;
-    font-size: 16px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    background-color: var(--orange);
-    color: white;
-
-    &:disabled {
-      background-color: #ccc;
-      cursor: not-allowed;
-    }
-  }
-`;
-
-export const ErrorMessage = styled.div`
-  color: red;
-  margin-top: 10px;
-`;
-
-export const StartScreen = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: 90vh;
-  text-align: center;
-  color: var(--off-white);
-  padding: 2rem;
-
-  h1 {
-    font-size: 1.8rem;
-    margin-bottom: 1rem;
-  }
-
   p {
-    font-size: 1rem;
-    max-width: 500px;
-    margin-bottom: 2rem;
-  }
-
-  button {
-    padding: 12px 24px;
-    font-size: 1rem;
-    border-radius: 5px;
-    background-color: var(--orange);
-    color: white;
-    border: none;
-    cursor: pointer;
+    margin: 0;
+    font-family: "EB Garamond", Georgia, serif;
+    font-weight: 400;
+    font-size: clamp(1.7rem, 3.4vw, 2.6rem);
+    line-height: 1.12;
+    color: var(--tinta);
+    max-width: 20ch;
   }
 `;
 
-export const LogoWrapper = styled.div`
-  margin-bottom: 2rem;
-
-  img {
-    max-width: 100px;
-    height: auto;
-    display: block;
-    margin: 0 auto 1rem auto;
-  }
-`;
-
-export const LoadingScreen = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: 90vh;
-  color: var(--off-white);
-  background-color: #1b1b1b;
-  text-align: center;
-  font-size: 1.5rem;
-
-  .progress-bar {
-    width: 80%;
-    height: 10px;
-    background-color: #e0e0e0;
-    margin-top: 20px;
-    border-radius: 5px;
-    overflow: hidden;
-  }
-
-  .progress {
-    height: 100%;
-    background-color: var(--orange);
-    border-radius: 5px;
-    transition: width 0.2s ease-in-out;
-  }
-`;
-
-export const ResultScreenContainer = styled.div`
-  background-color: #1b1b1b;
-  height: 100vh;
-  color: white;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 2rem;
-  text-align: center;
-
-  h2 {
-    font-size: 2rem;
-    margin-bottom: 1rem;
-    color: var(--orange);
-  }
-
-  p {
-    max-width: 600px;
-    font-size: 1.2rem;
-    margin-bottom: 1rem;
-    line-height: 1.5;
-  }
-
-  .progress-bar {
-    width: 100%;
-    height: 10px;
-    background-color: #e0e0e0;
-    margin: 20px 0 40px 0;
-    border-radius: 5px;
-    overflow: hidden;
-  }
-
-  .progress {
-    height: 100%;
-    width: 100%;
-    background-color: var(--orange);
-  }
-
-  form {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    max-width: 400px;
-    width: 100%;
-  }
-
-  label {
-    text-align: left;
-    font-weight: 600;
-    font-size: 1rem;
-  }
-
-  input {
-    padding: 10px;
-    font-size: 1rem;
-    border: none;
-    border-radius: 5px;
-  }
-
-  button {
-    margin-top: 1rem;
-    padding: 12px;
-    font-size: 1.1rem;
-    border: none;
-    border-radius: 5px;
-    background-color: var(--orange);
-    color: #1b1b1b;
-    cursor: pointer;
-
-    &:disabled {
-      background-color: #ccc;
-      cursor: not-allowed;
-    }
-  }
-`;
-
-export const ResultContent = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  color: var(--off-white);
-  max-width: 700px;
-  padding: 2rem;
-
-  h2 {
-    font-size: 2rem;
-    margin-bottom: 1.5rem;
-    color: var(--orange);
-    text-align: center;
-  }
-
-  p {
-    font-size: 1.2rem;
-    line-height: 1.6;
-    margin-bottom: 1rem;
-    text-align: center;
-  }
-`;
+export const ErrorMessage = Erro;

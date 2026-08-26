@@ -9,6 +9,22 @@ const revenueOptions = [
 
 const segmentOptions = ["Saúde", "Educação", "Tecnologia", "Comércio", "Outro"];
 
+/**
+ * Token do Pipefy.
+ *
+ * Ele era um literal aqui dentro, e este repositório é público: o token
+ * está exposto no histórico do GitHub desde o commit que o trouxe, e
+ * precisa ser rotativo no Pipefy — tirá-lo do código não desfaz isso,
+ * só impede que a próxima cópia continue carregando o segredo.
+ *
+ * Sendo uma variável VITE_, ela também vai parar no bundle: qualquer
+ * chave que o navegador usa é pública por definição. O lugar certo para
+ * uma credencial de escrita é um endpoint no servidor, e enquanto ele
+ * não existe isto é o mínimo — a chave passa a ser configurável e
+ * revogável sem tocar no código.
+ */
+const TOKEN_PIPEFY = import.meta.env.VITE_PIPEFY_TOKEN ?? "";
+
 const FormContainer = () => {
   const [step, setStep] = useState(1);
   const [formData, setFormData] = useState({
@@ -86,8 +102,7 @@ const FormContainer = () => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization:
-            "Bearer eyJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJQaXBlZnkiLCJpYXQiOjE3MjUzODg0NzUsImp0aSI6Ijc0YTYyYTJiLTg4NzEtNDZiNy05MmRiLTdmNWMxMDUxYmE5OCIsInN1YiI6MzAzMjEzNDM3LCJ1c2VyIjp7ImlkIjozMDMyMTM0MzcsImVtYWlsIjoidGlhZ29hbG1laWRhc2FudG9zMDRAZ21haWwuY29tIn19.jJdEiAbINcjf0YmaNJMumP-B5iUaaff_EA8XgESCP-WSFEyyJmGgseOG_victBzPPlcO2vKv9o9O9JNn1mPNng",
+          Authorization: `Bearer ${TOKEN_PIPEFY}`,
         },
         body: JSON.stringify({
           query: `
@@ -150,163 +165,166 @@ const FormContainer = () => {
   };
 
   return (
-    <Styled.ContainerBackground>
-      <form onSubmit={step === 6 ? handleSubmit : handleNext}>
-        <Styled.ProgressBar>
-          <div style={{ width: `${(step / 6) * 100}%` }} />
-        </Styled.ProgressBar>
+    <>
+      <Styled.Tokens />
+      <Styled.ContainerBackground className="toka">
+        <form onSubmit={step === 6 ? handleSubmit : handleNext}>
+          <Styled.ProgressBar>
+            <div style={{ width: `${(step / 6) * 100}%` }} />
+          </Styled.ProgressBar>
 
-        <Styled.Container>
-          <div className="box">
-            {showFinalMessage ? (
-              <Styled.EndMessage>
-                <p>Obrigado! Em breve entraremos em contato.</p>
-              </Styled.EndMessage>
-            ) : (
-              <>
-                {step === 1 && (
-                  <Styled.InputContainer>
-                    <label>Qual seu nome?</label>
-                    <input
-                      ref={nameRef}
-                      type="text"
-                      placeholder="Insira seu nome completo"
-                      value={formData.name}
-                      onChange={(e) =>
-                        handleInputChange("name", e.target.value)
-                      }
-                    />
-                  </Styled.InputContainer>
-                )}
-
-                {step === 2 && (
-                  <Styled.InputContainer>
-                    <label>E-mail corporativo</label>
-                    <input
-                      ref={emailRef}
-                      type="email"
-                      placeholder="ex: email@empresa.com"
-                      value={formData.email}
-                      onChange={(e) =>
-                        handleInputChange("email", e.target.value)
-                      }
-                    />
-                  </Styled.InputContainer>
-                )}
-
-                {step === 3 && (
-                  <Styled.InputContainer>
-                    <label>Qual seu número de telefone?</label>
-                    <input
-                      ref={phoneRef}
-                      type="text"
-                      placeholder="Ex: 5511999999999"
-                      value={formData.phone}
-                      onChange={(e) =>
-                        handleInputChange("phone", e.target.value)
-                      }
-                    />
-                  </Styled.InputContainer>
-                )}
-
-                {step === 4 && (
-                  <Styled.InputContainer>
-                    <label>Qual o nome da sua empresa?</label>
-                    <input
-                      ref={companyRef}
-                      type="text"
-                      placeholder="Ex: Agência Toka"
-                      value={formData.company}
-                      onChange={(e) =>
-                        handleInputChange("company", e.target.value)
-                      }
-                    />
-                  </Styled.InputContainer>
-                )}
-
-                {step === 5 && (
-                  <Styled.InputContainer>
-                    <label>Qual o faturamento mensal da sua empresa?</label>
-                    <Styled.RevenueOptions>
-                      {revenueOptions.map((opt) => (
-                        <button
-                          key={opt}
-                          type="button"
-                          className={formData.revenue === opt ? "selected" : ""}
-                          onClick={() => handleInputChange("revenue", opt)}
-                        >
-                          {opt}
-                        </button>
-                      ))}
-                    </Styled.RevenueOptions>
-                  </Styled.InputContainer>
-                )}
-
-                {step === 6 && (
-                  <Styled.InputContainer>
-                    <label>Qual o seu segmento?</label>
-                    <Styled.RevenueOptions>
-                      {segmentOptions.map((opt) => (
-                        <button
-                          key={opt}
-                          type="button"
-                          className={formData.segment === opt ? "selected" : ""}
-                          onClick={() => handleInputChange("segment", opt)}
-                        >
-                          {opt}
-                        </button>
-                      ))}
-                    </Styled.RevenueOptions>
-                    {formData.segment === "Outro" && (
+          <Styled.Container>
+            <div className="box">
+              {showFinalMessage ? (
+                <Styled.EndMessage>
+                  <p>Obrigado! Em breve entraremos em contato.</p>
+                </Styled.EndMessage>
+              ) : (
+                <>
+                  {step === 1 && (
+                    <Styled.InputContainer>
+                      <label>Qual seu nome?</label>
                       <input
-                        ref={otherSegmentRef}
+                        ref={nameRef}
                         type="text"
-                        placeholder="Digite seu segmento"
-                        value={formData.otherSegment}
+                        placeholder="Insira seu nome completo"
+                        value={formData.name}
                         onChange={(e) =>
-                          handleInputChange("otherSegment", e.target.value)
+                          handleInputChange("name", e.target.value)
                         }
-                        style={{
-                          marginTop: "1rem",
-                          width: "50%",
-                          padding: "10px",
-                          fontSize: "16px",
-                          backgroundColor: "transparent",
-                          color: "white",
-                          borderBottom: "1px solid #ccc",
-                        }}
                       />
-                    )}
-                  </Styled.InputContainer>
-                )}
-
-                <Styled.Buttons>
-                  {step < 6 ? (
-                    <button type="button" onClick={handleNext}>
-                      Próximo
-                    </button>
-                  ) : (
-                    <button type="submit" disabled={isSubmitting}>
-                      {isSubmitting ? "Enviando..." : "Finalizar"}
-                    </button>
+                    </Styled.InputContainer>
                   )}
-                </Styled.Buttons>
 
-                {step > 1 && !showFinalMessage && (
-                  <Styled.Navigation>
-                    <button type="button" className="back" onClick={handleBack}>
-                      ←
-                    </button>
-                  </Styled.Navigation>
-                )}
+                  {step === 2 && (
+                    <Styled.InputContainer>
+                      <label>E-mail corporativo</label>
+                      <input
+                        ref={emailRef}
+                        type="email"
+                        placeholder="ex: email@empresa.com"
+                        value={formData.email}
+                        onChange={(e) =>
+                          handleInputChange("email", e.target.value)
+                        }
+                      />
+                    </Styled.InputContainer>
+                  )}
 
-                {error && <Styled.ErrorMessage>{error}</Styled.ErrorMessage>}
-              </>
-            )}
-          </div>
-        </Styled.Container>
-      </form>
-    </Styled.ContainerBackground>
+                  {step === 3 && (
+                    <Styled.InputContainer>
+                      <label>Qual seu número de telefone?</label>
+                      <input
+                        ref={phoneRef}
+                        type="text"
+                        placeholder="Ex: 5511999999999"
+                        value={formData.phone}
+                        onChange={(e) =>
+                          handleInputChange("phone", e.target.value)
+                        }
+                      />
+                    </Styled.InputContainer>
+                  )}
+
+                  {step === 4 && (
+                    <Styled.InputContainer>
+                      <label>Qual o nome da sua empresa?</label>
+                      <input
+                        ref={companyRef}
+                        type="text"
+                        placeholder="Ex: Agência Toka"
+                        value={formData.company}
+                        onChange={(e) =>
+                          handleInputChange("company", e.target.value)
+                        }
+                      />
+                    </Styled.InputContainer>
+                  )}
+
+                  {step === 5 && (
+                    <Styled.InputContainer>
+                      <label>Qual o faturamento mensal da sua empresa?</label>
+                      <Styled.RevenueOptions>
+                        {revenueOptions.map((opt) => (
+                          <button
+                            key={opt}
+                            type="button"
+                            className={
+                              formData.revenue === opt ? "selected" : ""
+                            }
+                            onClick={() => handleInputChange("revenue", opt)}
+                          >
+                            {opt}
+                          </button>
+                        ))}
+                      </Styled.RevenueOptions>
+                    </Styled.InputContainer>
+                  )}
+
+                  {step === 6 && (
+                    <Styled.InputContainer>
+                      <label>Qual o seu segmento?</label>
+                      <Styled.RevenueOptions>
+                        {segmentOptions.map((opt) => (
+                          <button
+                            key={opt}
+                            type="button"
+                            className={
+                              formData.segment === opt ? "selected" : ""
+                            }
+                            onClick={() => handleInputChange("segment", opt)}
+                          >
+                            {opt}
+                          </button>
+                        ))}
+                      </Styled.RevenueOptions>
+                      {formData.segment === "Outro" && (
+                        <input
+                          ref={otherSegmentRef}
+                          type="text"
+                          placeholder="Digite seu segmento"
+                          value={formData.otherSegment}
+                          onChange={(e) =>
+                            handleInputChange("otherSegment", e.target.value)
+                          }
+                          className="campo-extra"
+                        />
+                      )}
+                    </Styled.InputContainer>
+                  )}
+
+                  <Styled.Buttons>
+                    {step < 6 ? (
+                      <button type="button" onClick={handleNext}>
+                        Próximo
+                      </button>
+                    ) : (
+                      <button type="submit" disabled={isSubmitting}>
+                        {isSubmitting ? "Enviando..." : "Finalizar"}
+                      </button>
+                    )}
+                  </Styled.Buttons>
+
+                  {step > 1 && !showFinalMessage && (
+                    <Styled.Navigation>
+                      <button
+                        type="button"
+                        className="back"
+                        onClick={handleBack}
+                      >
+                        ←
+                      </button>
+                    </Styled.Navigation>
+                  )}
+
+                  {error && <Styled.ErrorMessage>{error}</Styled.ErrorMessage>}
+                </>
+              )}
+            </div>
+          </Styled.Container>
+        </form>
+      </Styled.ContainerBackground>
+    </>
   );
 };
 

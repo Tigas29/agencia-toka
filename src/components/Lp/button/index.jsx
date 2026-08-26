@@ -1,76 +1,37 @@
-import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
-import ButtonIcon from "../../../assets/landingpage/icon-button.svg";
+import { Cta } from "../../../estilo/ds";
+import { Seta } from "../../habitat/icones";
 
-const Media = {
-  Tablet: "@media(max-width:1000px)",
-};
-
-const Container = styled.button`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.6rem;
-  padding: 0.2rem 1rem;
-  background: var(--orange);
-  border-radius: 12px;
-  transition: 0.3s ease;
-
-  p {
-    font-family: "Nunito", sans-serif;
-    font-weight: 700;
-    color: var(--white);
-    font-size: 1.5rem;
-    ${Media.Tablet} {
-      font-size: 1rem;
-    }
-  }
-
-  .icon {
-    display: flex;
-    font-size: 1.2rem;
-    color: var(--white);
-  }
-
-  ${Media.Tablet} {
-    padding: 0.5rem 1.2rem;
-
-    p {
-      font-size: 0.95rem;
-    }
-
-    .icon {
-      display: flex;
-      font-size: 1.4rem;
-      color: var(--white);
-    }
-
-    ${Media.Tablet} {
-      padding: 0.5rem 1.2rem;
-
-      p {
-        font-size: 0.95rem;
-      }
-
-      .icon {
-        font-size: 1.2rem;
-      }
-    }
-  }
-`;
-
-const Button = ({ text, showIcon = true, to = "/clienteForm" }) => {
+/**
+ * Botão de chamada da /LandingPage.
+ *
+ * Por dentro é o `Cta` do design system; por fora mantém a mesma API de
+ * antes (`text`, `showIcon`, `to`), porque ele aparece seis vezes ao
+ * longo da página e trocar a chamada em cada seção só produziria ruído
+ * no diff sem mudar nada para quem visita.
+ *
+ * A seta virou o ícone vetorial da marca, o mesmo da /habitat: o antigo
+ * era um SVG laranja de arquivo, que continuaria laranja mesmo com a
+ * página inteira reconstruída — ícone com cor assada dentro não obedece
+ * à faixa em que está.
+ */
+export default function Button({
+  text,
+  showIcon = true,
+  to = "/clienteForm",
+  className,
+}) {
   const navigate = useNavigate();
-  const handleClick = () => {
-    navigate(to);
-  };
 
   return (
-    <Container onClick={handleClick} aria-label={`Botão para ${text}`}>
-      <p>{text}</p>
-      {showIcon && <img src={ButtonIcon} className="icon" />}
-    </Container>
+    <Cta
+      type="button"
+      className={className}
+      onClick={() => navigate(to)}
+      aria-label={text}
+    >
+      {text}
+      {showIcon && <Seta />}
+    </Cta>
   );
-};
-
-export default Button;
+}

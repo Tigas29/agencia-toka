@@ -1,156 +1,117 @@
 import styled from "styled-components";
-import bgPc from "../../../assets/landingpage/01.Banner/background.webp";
+import { Media, Section } from "../../../estilo/ds";
 
-const Media = {
-  FourK: "@media(min-width:2750px)",
-  PhoneLarge: "@media(max-width:610px)",
-  LaptopLarge: "@media(max-width:1450px)",
-  Laptop: "@media(max-width:1150px)",
-  Tablet: "@media(max-width:1000px)",
-  TabletSmall: "@media(max-width:880px)",
-  PhoneSmall: "@media(max-width:450px)",
-};
-
-export const Container = styled.main`
-  width: 100%;
-  height: 95vh;
-  max-height: 1500px;
-  background-color: var(--white);
-  min-width: 279px;
-
-  ${Media.TabletSmall} {
-    height: auto;
-  }
+/**
+ * Dobra de abertura da LP.
+ *
+ * O que ela era: um bloco branco com foto de fundo, cantos arredondados
+ * de 80px, botão em degradê marrom e a palavra "toka" em 23rem de Nunito
+ * cortada na borda. Cada um desses recursos vinha de um lugar diferente,
+ * e nenhum deles é do design system.
+ *
+ * O que ficou: uma faixa escura como qualquer outra do site, a foto do
+ * médico dentro de uma moldura simples, e a palavra grande reduzida a
+ * marca d'água em EB Garamond — a mesma letra do wordmark. Ela existe
+ * como grafismo de fundo, não como elemento a ser lido, e por isso não
+ * carrega mais peso visual que a headline ao lado.
+ */
+export const Container = styled(Section).attrs({
+  as: "header",
+  className: "faixa-escura",
+})`
+  overflow: hidden;
 
   .containerBackground {
-    background-image: url(${bgPc});
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 4rem 0;
-    border-bottom-left-radius: 80px;
-    border-bottom-right-radius: 80px;
     position: relative;
-    overflow: hidden;
     width: 100%;
-    height: 95vh;
-    max-height: 1500px;
-
-    ${Media.TabletSmall} {
-      height: auto;
-      padding: 5rem 0;
-    }
   }
 
   .inner {
     width: 90%;
-    max-width: 75rem;
+    max-width: 1140px;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 3.5rem;
+    gap: 4rem;
+    position: relative;
+    z-index: 1;
 
     ${Media.TabletSmall} {
       flex-direction: column;
-      align-items: center;
+      align-items: flex-start;
       gap: 2.5rem;
     }
 
     ${Media.PhoneLarge} {
+      width: 100%;
+      padding: 0 22px;
       gap: 2rem;
     }
   }
 
   .left {
     flex: 1;
-    max-width: 32rem;
+    max-width: 34rem;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    gap: 1.2rem;
+    gap: 1.1rem;
 
-    ${Media.PhoneLarge} {
+    ${Media.TabletSmall} {
       max-width: 100%;
     }
   }
 
   .logo {
-    margin-bottom: 0.8rem;
+    margin-bottom: 1.4rem;
     display: flex;
     align-items: center;
-    gap: 0.6rem;
 
     img {
       display: block;
-      max-width: 120px;
-      margin-bottom: -1rem;
+      width: auto;
+      height: 34px;
+
+      ${Media.PhoneLarge} {
+        height: 27px;
+      }
     }
   }
 
   h1 {
-    font-family: "Poppins";
-    font-style: normal;
-    font-weight: 700;
-    font-size: 2.1rem;
-    line-height: 120%;
-    color: var(--white);
-
-    ${Media.Laptop} {
-      font-size: 1.9rem;
-    }
-
-    ${Media.PhoneLarge} {
-      font-size: 1.7rem;
-    }
-
-    ${Media.PhoneSmall} {
-      font-size: 1.5rem;
-    }
+    font-family: "EB Garamond", Georgia, serif;
+    font-weight: 400;
+    font-size: clamp(2.3rem, 4.6vw, 3.6rem);
+    line-height: 1.06;
+    letter-spacing: -0.014em;
+    color: var(--tinta);
+    margin: 0;
   }
 
   .description {
-    font-family: "Nunito";
-    font-style: normal;
-    font-weight: 400;
-    font-size: 1.1rem;
-    line-height: 150%;
-    color: rgba(255, 255, 255, 0.9);
+    font-size: 1.06rem;
+    line-height: 1.6;
+    color: var(--tinta-corpo);
+    max-width: 46ch;
+    margin: 0;
 
     ${Media.PhoneLarge} {
-      font-size: 0.9rem;
+      font-size: 1rem;
     }
 
+    /* O segundo parágrafo é a promessa. Ele não precisa de negrito para
+       pesar mais que o primeiro: basta ser a única linha na cor cheia da
+       faixa, enquanto o de cima fica no tom de corpo. */
     &.highlight {
-      font-weight: 700;
-      color: var(--white);
+      color: var(--tinta);
     }
   }
 
   button {
-    background: linear-gradient(90deg, #6c3200 0%, #9f3d1f 100%);
-    padding: 1rem 1.5rem;
-    border-radius: 50px;
-    box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px,
-      rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px,
-      rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
-    transform: translateY(0);
-    transition: background 0.4s ease, box-shadow 0.25s ease,
-      transform 0.25s ease;
-  }
-
-  button p {
-    font-size: 1.05rem;
-    font-weight: 600;
-    color: #fff;
-  }
-
-  button:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 12px 28px rgba(108, 50, 0, 0.45);
-    background: linear-gradient(90deg, #9f3d1f 0%, #6c3200 100%);
+    margin-top: 0.8rem;
   }
 
   .right {
@@ -159,70 +120,64 @@ export const Container = styled.main`
     align-items: center;
     justify-content: flex-end;
     position: relative;
-    min-height: 15rem;
 
     ${Media.TabletSmall} {
       align-self: stretch;
-      justify-content: center;
-      min-height: 17rem;
-    }
-
-    ${Media.PhoneLarge} {
-      justify-content: center;
+      justify-content: flex-start;
     }
   }
 
+  /* O arquivo já vem com cantos arredondados e fundo transparente, então
+     não leva moldura nem proporção fixa: qualquer uma das duas
+     apareceria como um retângulo por trás dos cantos da própria imagem.
+     A versão em uso é a medico-sem-selo.webp, recortada a partir da
+     original — aquela trazia o símbolo laranja da identidade antiga
+     queimado no canto, e era o último ponto laranja do site. */
   .photoCard {
     width: 100%;
-    max-width: 500px;
-    border-radius: 1.8rem;
-    overflow: hidden;
-    display: flex;
-    align-items: stretch;
-    justify-content: stretch;
+    max-width: 400px;
 
     img {
       width: 100%;
-      height: 100%;
-      object-fit: cover;
+      height: auto;
       display: block;
     }
 
     ${Media.TabletSmall} {
-      max-width: 500px;
+      max-width: 320px;
     }
   }
 
+  /**
+   * A palavra da marca como grafismo, não como título: fica atrás de
+   * tudo, na tinta da faixa em opacidade baixa, e sai de cena no
+   * telemóvel, onde não há largura para ela sem atropelar o texto.
+   */
   .bigWord {
     position: absolute;
-    right: 2%;
-    bottom: -8%;
-    font-family: "Nunito";
+    right: -1%;
+    bottom: -14%;
+    font-family: "EB Garamond", Georgia, serif;
     font-weight: 400;
-    font-size: 23rem;
-    line-height: 0.8;
+    font-size: 22rem;
+    line-height: 0.75;
     text-transform: lowercase;
-    color: rgba(255, 255, 255);
+    color: var(--tinta);
+    opacity: 0.04;
     pointer-events: none;
     user-select: none;
+    z-index: 0;
 
-    ${Media.FourK} {
+    ${Media.Desktop} {
+      font-size: 17rem;
+    }
+
+    ${Media.Tablet} {
+      font-size: 13rem;
+    }
+
+    ${Media.TabletSmall} {
       display: none;
-    }
-
-    ${Media.LaptopLarge} {
-      right: -1%;
-      bottom: -3%;
-      font-size: 18rem;
-    }
-
-    ${Media.Laptop} {
-      font-size: 15rem;
-    }
-
-    ${Media.PhoneLarge} {
-      bottom: -1%;
-      font-size: 10rem;
     }
   }
 `;

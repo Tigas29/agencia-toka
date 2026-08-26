@@ -1,6 +1,13 @@
 import React, { useState, useRef, useEffect } from "react";
 import * as Styled from "./style";
-import logo from "../../assets/logo.svg";
+import logo from "../../assets/homepage/logo-toka-branco.png";
+
+/**
+ * Token do Pipefy. Ver a nota em `components/clientForm/index.jsx`: ele
+ * era um literal no código de um repositório público, e precisa ser
+ * rotativo no Pipefy independentemente desta mudança.
+ */
+const TOKEN_PIPEFY = import.meta.env.VITE_PIPEFY_TOKEN ?? "";
 
 const FormContainer = () => {
   const questions = [
@@ -167,8 +174,7 @@ const FormContainer = () => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization:
-            "Bearer eyJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJQaXBlZnkiLCJpYXQiOjE3MjUzODg0NzUsImp0aSI6Ijc0YTYyYTJiLTg4NzEtNDZiNy05MmRiLTdmNWMxMDUxYmE5OCIsInN1YiI6MzAzMjEzNDM3LCJ1c2VyIjp7ImlkIjozMDMyMTM0MzcsImVtYWlsIjoidGlhZ29hbG1laWRhc2FudG9zMDRAZ21haWwuY29tIn19.jJdEiAbINcjf0YmaNJMumP-B5iUaaff_EA8XgESCP-WSFEyyJmGgseOG_victBzPPlcO2vKv9o9O9JNn1mPNng",
+          Authorization: `Bearer ${TOKEN_PIPEFY}`,
         },
         body: JSON.stringify({
           query: `
@@ -230,112 +236,121 @@ const FormContainer = () => {
   };
 
   return (
-    <Styled.ContainerBackground>
-      {!quizStarted ? (
-        <Styled.Container>
-          <Styled.StartScreen>
-            <Styled.LogoWrapper>
-              <img src={logo} alt="Logo" />
-              <Styled.ProgressBar>
-                <div style={{ width: "10%" }} />
-              </Styled.ProgressBar>
-            </Styled.LogoWrapper>
-            <h1>TESTE DE ESCALA PARA CONSULTÓRIOS</h1>
-            <p>
-              Descubra o quanto de dinheiro seu consultório médico está deixando
-              na mesa todos os meses.
-            </p>
-            <button onClick={() => setQuizStarted(true)}>
-              INICIAR O TESTE
-            </button>
-          </Styled.StartScreen>
-        </Styled.Container>
-      ) : (
-        <form onSubmit={step === questions.length ? handleSubmit : handleNext}>
-          <Styled.ProgressBar>
-            <div style={{ width: `${(step / questions.length) * 100}%` }} />
-          </Styled.ProgressBar>
+    <>
+      <Styled.Tokens />
+      <Styled.ContainerBackground className="toka">
+        {!quizStarted ? (
           <Styled.Container>
-            <div className="box">
-              {showFinalMessage ? (
-                <Styled.EndMessage>
-                  <p>Obrigado! Em breve entraremos em contato.</p>
-                </Styled.EndMessage>
-              ) : (
-                <>
-                  {step <= questions.length && (
-                    <Styled.InputContainer>
-                      <label>{questions[step - 1].question}</label>
-                      {questions[step - 1].options ? (
-                        <Styled.RevenueOptions>
-                          {questions[step - 1].options.map((opt) => (
-                            <button
-                              key={opt}
-                              type="button"
-                              className={
-                                formData[`step${step}`] === opt
-                                  ? "selected"
-                                  : ""
-                              }
-                              onClick={() =>
-                                handleInputChange(`step${step}`, opt)
-                              }
-                            >
-                              {opt}
-                            </button>
-                          ))}
-                        </Styled.RevenueOptions>
-                      ) : (
-                        <input
-                          ref={inputRef}
-                          type="text"
-                          placeholder={questions[step - 1].input.placeholder}
-                          value={formData[questions[step - 1].input.name] || ""}
-                          onChange={(e) =>
-                            handleInputChange(
-                              questions[step - 1].input.name,
-                              e.target.value
-                            )
-                          }
-                        />
-                      )}
-                    </Styled.InputContainer>
-                  )}
-
-                  {questions[step - 1].input && (
-                    <Styled.Buttons>
-                      {step < questions.length ? (
-                        <button type="button" onClick={handleNext}>
-                          Próximo
-                        </button>
-                      ) : (
-                        <button type="submit" disabled={isSubmitting}>
-                          {isSubmitting ? "Enviando..." : "Finalizar"}
-                        </button>
-                      )}
-                    </Styled.Buttons>
-                  )}
-
-                  {step > 1 && !showFinalMessage && (
-                    <Styled.Navigation>
-                      <button
-                        type="button"
-                        className="back"
-                        onClick={handleBack}
-                      >
-                        ←
-                      </button>
-                    </Styled.Navigation>
-                  )}
-
-                  {error && <Styled.ErrorMessage>{error}</Styled.ErrorMessage>}
-                </>
-              )}
-            </div>
+            <Styled.StartScreen>
+              <Styled.LogoWrapper>
+                <img src={logo} alt="Logo" />
+                <Styled.ProgressBar>
+                  <div style={{ width: "10%" }} />
+                </Styled.ProgressBar>
+              </Styled.LogoWrapper>
+              <h1>TESTE DE ESCALA PARA CONSULTÓRIOS</h1>
+              <p>
+                Descubra o quanto de dinheiro seu consultório médico está
+                deixando na mesa todos os meses.
+              </p>
+              <button onClick={() => setQuizStarted(true)}>
+                INICIAR O TESTE
+              </button>
+            </Styled.StartScreen>
           </Styled.Container>
-        </form>
-      )}
-    </Styled.ContainerBackground>
+        ) : (
+          <form
+            onSubmit={step === questions.length ? handleSubmit : handleNext}
+          >
+            <Styled.ProgressBar>
+              <div style={{ width: `${(step / questions.length) * 100}%` }} />
+            </Styled.ProgressBar>
+            <Styled.Container>
+              <div className="box">
+                {showFinalMessage ? (
+                  <Styled.EndMessage>
+                    <p>Obrigado! Em breve entraremos em contato.</p>
+                  </Styled.EndMessage>
+                ) : (
+                  <>
+                    {step <= questions.length && (
+                      <Styled.InputContainer>
+                        <label>{questions[step - 1].question}</label>
+                        {questions[step - 1].options ? (
+                          <Styled.RevenueOptions>
+                            {questions[step - 1].options.map((opt) => (
+                              <button
+                                key={opt}
+                                type="button"
+                                className={
+                                  formData[`step${step}`] === opt
+                                    ? "selected"
+                                    : ""
+                                }
+                                onClick={() =>
+                                  handleInputChange(`step${step}`, opt)
+                                }
+                              >
+                                {opt}
+                              </button>
+                            ))}
+                          </Styled.RevenueOptions>
+                        ) : (
+                          <input
+                            ref={inputRef}
+                            type="text"
+                            placeholder={questions[step - 1].input.placeholder}
+                            value={
+                              formData[questions[step - 1].input.name] || ""
+                            }
+                            onChange={(e) =>
+                              handleInputChange(
+                                questions[step - 1].input.name,
+                                e.target.value,
+                              )
+                            }
+                          />
+                        )}
+                      </Styled.InputContainer>
+                    )}
+
+                    {questions[step - 1].input && (
+                      <Styled.Buttons>
+                        {step < questions.length ? (
+                          <button type="button" onClick={handleNext}>
+                            Próximo
+                          </button>
+                        ) : (
+                          <button type="submit" disabled={isSubmitting}>
+                            {isSubmitting ? "Enviando..." : "Finalizar"}
+                          </button>
+                        )}
+                      </Styled.Buttons>
+                    )}
+
+                    {step > 1 && !showFinalMessage && (
+                      <Styled.Navigation>
+                        <button
+                          type="button"
+                          className="back"
+                          onClick={handleBack}
+                        >
+                          ←
+                        </button>
+                      </Styled.Navigation>
+                    )}
+
+                    {error && (
+                      <Styled.ErrorMessage>{error}</Styled.ErrorMessage>
+                    )}
+                  </>
+                )}
+              </div>
+            </Styled.Container>
+          </form>
+        )}
+      </Styled.ContainerBackground>
+    </>
   );
 };
 

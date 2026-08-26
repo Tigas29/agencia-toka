@@ -1,364 +1,197 @@
 import styled from "styled-components";
-import bgPc from "../../../assets/landingpage/03.TruthResults/background.webp";
-import circle from "../../../assets/landingpage/03.TruthResults/circle.webp";
+import { Media, Section } from "../../../estilo/ds";
 
-const Media = {
-  FourK: "@media(min-width:2750px)",
-  PhoneLarge: "@media(max-width:610px)",
-  LaptopLarge: "@media(max-width:1450px)",
-  Laptop: "@media(max-width:1150px)",
-  Tablet: "@media(max-width:1000px)",
-  TabletSmall: "@media(max-width:880px)",
-  PhoneSmall: "@media(max-width:450px)",
-};
-
-export const Container = styled.section`
-  width: 100%;
-  background-color: var(--white);
-  background-image: url(${bgPc});
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 4.5rem 0 5rem;
-  gap: 4rem;
-  height: auto;
-  min-width: 279px;
-
-  ${Media.FourK} {
-    background-image: none;
-  }
-
+/**
+ * "A verdade que ninguém te fala" + os entregáveis.
+ *
+ * São dois blocos numa faixa só, e a página vira papel aqui: a partir
+ * desta dobra o assunto deixa de ser a promessa e passa a ser o que a
+ * Toka entrega. É o mesmo arco da home — escuro quando fala com a
+ * pessoa, claro quando fala de operação.
+ *
+ * Os sete entregáveis eram pílulas com ícone de check; viraram lista com
+ * régua, na ordem escrita. Check em item de lista é redundante: a lista
+ * já afirma que aquilo está incluído.
+ */
+export const Container = styled(Section).attrs({ className: "faixa-clara" })`
   .inner {
     width: 90%;
-    max-width: 75rem;
-  }
-
-  .top {
-    display: flex;
+    max-width: 1140px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4.5rem;
     align-items: center;
-    justify-content: center;
-    gap: 8rem;
-    margin-bottom: 10rem;
 
     ${Media.Tablet} {
-      gap: 3rem;
+      grid-template-columns: 1fr;
+      gap: 2.6rem;
     }
 
-    ${Media.TabletSmall} {
-      flex-direction: column-reverse;
-      align-items: center;
-      margin-bottom: 5rem;
+    ${Media.PhoneLarge} {
+      width: 100%;
+      padding: 0 22px;
     }
   }
 
-  .topLeft {
-    flex: 1;
-    position: relative;
+  /* O segundo bloco começa depois de uma pausa, não de uma linha: a
+     faixa é a mesma, e o que separa os dois assuntos é o ar. */
+  .inner.bottom {
+    margin-top: var(--respiro-curto);
+    align-items: start;
   }
 
   .mainPhoto {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-
-    img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      max-width: 650px;
-      border-radius: 1.6rem;
-    }
-  }
-
-  .topRight {
-    flex: 1.1;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 1rem;
-
-    ${Media.TabletSmall} {
-      max-width: 42rem;
-    }
-
-    h2 {
-      font-family: "Poppins";
-      font-size: 2.05rem;
-      font-style: normal;
-      font-weight: 700;
-      line-height: 120%;
-      color: var(--orange);
-
-      ${Media.Laptop} {
-        font-size: 1.9rem;
-      }
-
-      ${Media.PhoneLarge} {
-        font-size: 1.7rem;
-      }
-
-      ${Media.PhoneSmall} {
-        font-size: 1.5rem;
-      }
-    }
-  }
-
-  .badge {
-    padding: 0.8rem 1.6rem;
-    border-radius: 0.9rem;
-    background: #994700;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-
-    span {
-      font-family: "Poppins";
-      font-weight: 600;
-      font-size: 1.1rem;
-      color: var(--white);
-      text-align: center;
-    }
-
-    ${Media.PhoneLarge} {
-      span {
-        font-size: 0.9rem;
-      }
-    }
-  }
-
-  .paragraph {
-    font-family: "Poppins";
-    font-style: normal;
-    font-weight: 400;
-    font-size: 1.1rem;
-    line-height: 160%;
-    color: #7f7f7f;
-
-    ${Media.PhoneLarge} {
-      font-size: 0.9rem;
-    }
-  }
-
-  .highlight {
-    font-family: "Poppins";
-    font-style: normal;
-    font-weight: 600;
-    font-size: 1.6rem;
-    line-height: 150%;
-    color: var(--orange);
-
-    ${Media.PhoneLarge} {
-      font-size: 0.94rem;
-    }
-  }
-
-  .bottom {
-    display: flex;
-    align-items: flex-start;
-    justify-content: center;
-    gap: 10%;
-
-    ${Media.TabletSmall} {
-      flex-direction: column;
-      align-items: center;
-      gap: 3rem;
-    }
-  }
-
-  .bottomLeft {
-    max-width: 28rem;
-    position: relative;
-
-    ${Media.TabletSmall} {
-      max-width: 100%;
-    }
-
-    h3 {
-      font-family: "Poppins";
-      line-height: 100%;
-      font-size: 2.05rem;
-      font-style: normal;
-      font-weight: 700;
-      color: var(--orange);
-      margin-bottom: 1.8rem;
-
-      ${Media.Laptop} {
-        font-size: 1.9rem;
-      }
-
-      ${Media.PhoneLarge} {
-        font-size: 1.7rem;
-      }
-
-      ${Media.PhoneSmall} {
-        font-size: 1.5rem;
-      }
-    }
-  }
-
-  .pillList {
-    display: flex;
-    flex-direction: column;
-    gap: 0.7rem;
-  }
-
-  .pill {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    padding: 1rem 2rem;
-    border-radius: 1rem;
-    background: #994700;
-    color: var(--white);
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08);
-
-    ${Media.PhoneLarge} {
-      padding: 0.8rem 1.2rem;
-    }
-
-    img {
-      width: 2rem;
-      height: 2rem;
-      flex-shrink: 0;
-    }
-  }
-
-  .pillText {
-    font-family: "Poppins";
-    font-style: normal;
-    font-weight: 500;
-    font-size: 1.1rem;
-    line-height: 140%;
-
-    ${Media.PhoneLarge} {
-      font-size: 0.88rem;
-    }
-  }
-
-  .bottomRight {
-    flex: 1.1;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 2rem;
-    max-width: 40rem;
-
-    ${Media.Tablet} {
-      width: 100%;
-      align-items: center;
-    }
-  }
-
-  .imagesGrid {
     width: 100%;
-    max-width: 50rem;
-    height: 40rem;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    grid-template-rows: 180px 180px;
-    gap: 8rem 2rem;
-    position: relative;
-
-    background-image: url(${circle});
-    background-position: center bottom;
-    background-repeat: no-repeat;
-    background-size: 100% 100%;
-
-    ${Media.PhoneLarge} {
-      max-width: 100%;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      grid-template-rows: 180px 290px;
-      flex-direction: column;
-      height: auto;
-      gap: 2rem;
-      justify-content: center;
-      align-items: center;
-    }
-
-    ${Media.PhoneSmall} {
-      display: flex;
-      flex-direction: column;
-      justify-content: start;
-      align-items: center;
-      gap: 2rem;
-      background-image: none;
-    }
-  }
-
-  .gridItem {
-    height: 18rem;
-    position: relative;
-
-    ${Media.PhoneLarge} {
-      height: auto;
-    }
+    aspect-ratio: 4 / 5;
+    border-radius: 4px;
+    overflow: hidden;
+    border: 1px solid var(--linha);
 
     img {
       width: 100%;
       height: 100%;
       object-fit: cover;
       display: block;
-      border-radius: 20px;
+    }
+  }
 
-      ${Media.PhoneLarge} {
-        max-width: 350px;
+  h2,
+  h3 {
+    font-family: "EB Garamond", Georgia, serif;
+    font-weight: 400;
+    line-height: 1.07;
+    letter-spacing: -0.014em;
+    color: var(--tinta);
+    margin: 0 0 24px;
+  }
+
+  h2 {
+    font-size: clamp(2rem, 4.2vw, 3.2rem);
+  }
+
+  h3 {
+    font-size: clamp(1.7rem, 3.2vw, 2.5rem);
+  }
+
+  /* Rótulo da dobra, no mesmo desenho do selo de seção do site: traço
+     curto, versalete, entreletras larga. */
+  .badge {
+    margin: 0 0 26px;
+
+    span {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      font-family: "Poppins", sans-serif;
+      font-size: 0.68rem;
+      font-weight: 400;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--tinta-fraca);
+
+      &::before {
+        content: "";
+        width: 34px;
+        height: 1px;
+        background: currentColor;
+        flex: none;
       }
     }
   }
 
-  .textCard {
+  .paragraph {
+    font-size: 1.06rem;
+    line-height: 1.62;
+    color: var(--tinta-corpo);
+    margin: 0 0 26px;
+    max-width: 48ch;
+  }
+
+  .highlight {
+    font-family: "EB Garamond", Georgia, serif;
+    font-size: clamp(1.3rem, 2vw, 1.65rem);
+    font-weight: 400;
+    line-height: 1.22;
+    color: var(--acento);
+    margin: 0;
+    max-width: 34ch;
+  }
+
+  .pillList {
     display: flex;
-    align-items: start;
-    justify-content: start;
+    flex-direction: column;
+    border-top: 1px solid var(--linha);
+  }
+
+  .pill {
+    display: flex;
+    align-items: center;
+    padding: 16px 0;
+    border-bottom: 1px solid var(--linha);
+
+    /* O check some: numa lista de entregáveis, o ícone repete o que a
+       própria lista já diz, e sete deles empilhados viram textura. */
+    img {
+      display: none;
+    }
+  }
+
+  .pillText {
+    font-size: 1.06rem;
+    line-height: 1.4;
+    color: var(--tinta-corpo);
+
+    ${Media.PhoneLarge} {
+      font-size: 1rem;
+    }
+  }
+
+  .imagesGrid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin-bottom: 32px;
+
+    ${Media.PhoneSmall} {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .gridItem {
+    aspect-ratio: 1 / 1;
+    border-radius: 4px;
+    overflow: hidden;
+    border: 1px solid var(--linha);
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+  }
+
+  /* O quarto quadro da grade é texto, não foto: ele fecha o raciocínio
+     das três imagens ao lado. Fundo de superfície para pertencer à
+     grade sem fingir ser uma imagem. */
+  .textCard {
+    background: var(--superficie);
+    display: flex;
+    align-items: center;
+    padding: 22px;
 
     p {
-      font-family: "Nunito";
-      font-style: normal;
-      font-weight: 600;
-      font-size: 1.1rem;
-      line-height: 150%;
-      color: var(--orange);
-      text-align: left;
-      padding-top: 1.2rem;
-      padding-right: 4rem;
-
-      ${Media.TabletSmall} {
-        height: 15rem;
-      }
-
-      ${Media.PhoneSmall} {
-        height: auto;
-        padding: 0;
-        text-align: center;
-      }
+      margin: 0;
+      font-family: "EB Garamond", Georgia, serif;
+      font-size: 1.24rem;
+      line-height: 1.24;
+      color: var(--tinta);
     }
-  }
 
-  button {
-    background: linear-gradient(90deg, #8f0007 0%, #fd9b02 100%);
-    padding: 1rem 1.5rem;
-    border-radius: 50px;
-    box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px,
-      rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px,
-      rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
-    transform: translateY(0);
-    transition: background 0.4s ease, box-shadow 0.25s ease,
-      transform 0.25s ease;
-  }
-
-  button p {
-    font-size: 1.05rem;
-    font-weight: 600;
-    color: #fff;
-  }
-
-  button:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 12px 28px rgba(108, 50, 0, 0.45);
-    background: linear-gradient(90deg, #fd9b02 0%, #8f0007 100%);
+    ${Media.PhoneLarge} {
+      aspect-ratio: auto;
+      padding: 20px;
+    }
   }
 `;

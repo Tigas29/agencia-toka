@@ -1,278 +1,140 @@
 import styled from "styled-components";
-import bgPc from "../../../assets/landingpage/08.ImplementationSteps/background.webp";
+import { Media, Section, numerais } from "../../../estilo/ds";
 
-const Media = {
-  PhoneLarge: "@media(max-width:610px)",
-  Tablet: "@media(max-width:1000px)",
-};
-
-export const Container = styled.section`
-  width: 100%;
-  padding: 6rem 0;
-  min-width: 279px;
-  background: #050505;
-  display: flex;
-  justify-content: center;
-  background-image: url(${bgPc});
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
-
+/**
+ * As três etapas da implementação.
+ *
+ * A versão anterior desenhava um gráfico: três barras de alturas
+ * diferentes com os passos posicionados em volta por grid-area, e a
+ * ordem visual (3, depois 1, depois 2) não era a ordem de leitura. Numa
+ * página, um gráfico de barras que não mede nada é decoração cara.
+ *
+ * Aqui as três etapas viram trilha numerada, na ordem em que acontecem —
+ * o JSX continua declarando o passo 3 primeiro, e a ordem correta é
+ * restabelecida no CSS pela classe de cada um. O prazo, que era o rótulo
+ * da barra mais alta, fecha a dobra como frase.
+ */
+export const Container = styled(Section).attrs({ className: "faixa-clara" })`
   .inner {
     width: 90%;
-    max-width: 75rem;
+    max-width: 1140px;
+    margin: 0 auto;
+
+    ${Media.PhoneLarge} {
+      width: 100%;
+      padding: 0 22px;
+    }
   }
 
   .title {
-    color: #ff8419;
-    font-family: "Poppins";
-    font-size: 2.4rem;
-    font-weight: 700;
-    line-height: 110%;
-    margin-bottom: 3.5rem;
-
-    ${Media.PhoneLarge} {
-      font-size: 1.8rem;
-    }
+    font-family: "EB Garamond", Georgia, serif;
+    font-weight: 400;
+    font-size: clamp(2rem, 4.2vw, 3.2rem);
+    line-height: 1.07;
+    letter-spacing: -0.014em;
+    color: var(--tinta);
+    margin: 0 0 56px;
+    max-width: 20ch;
   }
 
   .grid {
-    width: 100%;
-    max-width: 75rem;
-    margin: 0 auto;
     display: grid;
-    grid-template-columns: 1fr 1fr 1.4fr;
-    grid-template-rows: auto auto auto;
-    row-gap: 2.7rem;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0;
+    border-top: 1px solid var(--linha);
 
     ${Media.Tablet} {
-      max-width: 100%;
-      grid-template-columns: 1fr 1fr;
-      grid-template-rows: auto auto auto;
-      column-gap: 1.5rem;
-      row-gap: 2rem;
-    }
-
-    ${Media.PhoneLarge} {
       grid-template-columns: 1fr;
-      row-gap: 1.6rem;
     }
   }
 
-  .bar {
-    height: 8rem;
-  }
-
-  .bar--1 {
-    grid-row: 2;
-    grid-column: 1;
-    background: #1e1e1e;
-
-    ${Media.Tablet} {
-      grid-row: 1;
-      grid-column: 1;
-    }
-
-    ${Media.PhoneLarge} {
-      display: none;
-    }
-  }
-
-  .bar--2 {
-    grid-row: 2;
-    grid-column: 2;
-    background: #2e2e2e;
-
-    ${Media.Tablet} {
-      grid-row: 2;
-      grid-column: 1;
-    }
-
-    ${Media.PhoneLarge} {
-      display: none;
-    }
-  }
-
-  .bar--3 {
-    grid-row: 2;
-    grid-column: 3;
-    background: linear-gradient(90deg, #ff6a00, #ffb300);
-    box-shadow: 0 0 50px rgba(255, 153, 0, 0.65);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    ${Media.Tablet} {
-      grid-row: 3;
-      grid-column: 1;
-    }
-
-    ${Media.PhoneLarge} {
-      grid-row: 4;
-      grid-column: 1;
-    }
-  }
-
-  .highlight {
-    font-family: "Poppins";
-    color: #ffffff;
-    font-size: 1.1rem;
-    font-weight: 600;
-    line-height: 135%;
-
-    span {
-      color: #ffe3a6;
-      font-weight: 700;
-    }
-
-    ${Media.PhoneLarge} {
-      font-size: 0.9rem;
-      text-align: center;
-    }
-  }
-
-  .step {
-    position: relative;
-    font-family: "Poppins";
-    color: #ffffff;
-    margin: 1rem 0;
-  }
-
-  .step p {
-    margin-top: 0.4rem;
-    max-width: 18rem;
-    color: #bcbcbc;
-    font-size: 0.85rem;
-    line-height: 150%;
-  }
-
-  .index {
-    color: #ff8419;
-    font-size: 0.85rem;
-    margin-bottom: 0.3rem;
-    display: block;
-  }
-
-  .step h3 {
-    color: #ff8419;
-    font-weight: 600;
-    font-size: 1.35rem;
-    line-height: 130%;
-
-    ${Media.PhoneLarge} {
-      font-size: 1.15rem;
-    }
-  }
-
-  .step::before {
-    content: "";
-    position: absolute;
-    width: 1px;
-    background: #707070;
-    opacity: 1;
-    left: 1%;
-    transform: translateX(-50%);
-
-    ${Media.Tablet} {
-      display: none;
-    }
-  }
-
-  .step--3::before {
-    content: "";
-    position: absolute;
-    width: 1px;
-    background: #707070;
-    opacity: 1;
-    left: 99%;
-    transform: translateX(-50%);
-
-    ${Media.Tablet} {
-      display: none;
-    }
-  }
-
+  /* O JSX lista 3, 1, 2 (era o que a grade de barras exigia). A ordem de
+     leitura é restabelecida aqui, e não lá, para a marcação onde mora a
+     copy ficar intocada. */
   .step--1 {
-    grid-row: 3;
-    grid-column: 1;
-    text-align: left;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: flex-start;
-
-    ${Media.Tablet} {
-      grid-row: 1;
-      grid-column: 2;
-      align-items: flex-start;
-      justify-content: center;
-      text-align: left;
-    }
-
-    ${Media.PhoneLarge} {
-      grid-row: 1;
-      grid-column: 1;
-    }
-  }
-
-  .step--1::before {
-    top: -3.2rem;
-    height: 2.8rem;
+    order: 1;
   }
 
   .step--2 {
-    grid-row: 3;
-    grid-column: 2;
-    text-align: left;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: flex-start;
-
-    ${Media.Tablet} {
-      grid-row: 2;
-      grid-column: 2;
-      align-items: flex-start;
-      text-align: left;
-      justify-content: center;
-    }
-
-    ${Media.PhoneLarge} {
-      grid-row: 2;
-      grid-column: 1;
-    }
-  }
-
-  .step--2::before {
-    top: -3.2rem;
-    height: 2.8rem;
+    order: 2;
   }
 
   .step--3 {
-    grid-row: 1;
-    grid-column: 3;
-    text-align: right;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
-    align-items: flex-end;
+    order: 3;
+  }
 
-    ${Media.Tablet} {
-      grid-row: 3;
-      grid-column: 2;
-      align-items: flex-start;
-      text-align: left;
-      justify-content: center;
+  .step {
+    padding: 30px 30px 34px 0;
+    border-right: 1px solid var(--linha);
+    border-bottom: 1px solid var(--linha);
+
+    &:last-child {
+      border-right: 0;
     }
 
-    ${Media.PhoneLarge} {
-      grid-row: 3;
-      grid-column: 1;
+    ${Media.Tablet} {
+      border-right: 0;
+      padding: 24px 0;
     }
   }
 
-  .step--3::before {
-    bottom: -3.2rem;
-    height: 2.8rem;
+  .index {
+    display: block;
+    font-family: "EB Garamond", Georgia, serif;
+    font-size: 2.4rem;
+    font-weight: 400;
+    line-height: 1;
+    color: var(--acento);
+    margin-bottom: 16px;
+    ${numerais};
+  }
+
+  .step h3 {
+    font-family: "EB Garamond", Georgia, serif;
+    font-weight: 400;
+    font-size: 1.5rem;
+    line-height: 1.16;
+    color: var(--tinta);
+    margin: 0 0 8px;
+  }
+
+  .step p {
+    font-size: 0.98rem;
+    line-height: 1.55;
+    color: var(--tinta-fraca);
+    margin: 0;
+    max-width: 30ch;
+  }
+
+  /* As barras do gráfico saem; sobra o prazo, que era o rótulo de uma
+     delas e é a única informação que elas carregavam. */
+  .bar--1,
+  .bar--2 {
+    display: none;
+  }
+
+  .bar--3 {
+    order: 4;
+    grid-column: 1 / -1;
+    padding-top: 34px;
+  }
+
+  .highlight {
+    margin: 0;
+    font-family: "EB Garamond", Georgia, serif;
+    font-size: clamp(1.5rem, 2.6vw, 2.1rem);
+    font-weight: 400;
+    line-height: 1.16;
+    color: var(--tinta);
+    max-width: 26ch;
+    ${numerais};
+
+    /* A quebra de linha vem do JSX, que compunha o rótulo dentro da
+       barra do gráfico. Ela FICA: sem ela, "elevar o" encosta em
+       "nível" e a frase renderiza como "elevar onível" — o <br> era o
+       único espaço entre as duas partes. */
+    span {
+      color: var(--acento);
+    }
   }
 `;

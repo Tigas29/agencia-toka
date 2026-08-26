@@ -1,177 +1,146 @@
 import styled from "styled-components";
+import { Media, Section, numerais } from "../../../estilo/ds";
 
-const Media = {
-  PhoneLarge: "@media(max-width:610px)",
-  LaptopLarge: "@media(max-width:1450px)",
-  Laptop: "@media(max-width:1150px)",
-  Tablet: "@media(max-width:1000px)",
-  TabletSmall: "@media(max-width:880px)",
-  PhoneSmall: "@media(max-width:450px)",
-};
-
-export const Container = styled.section`
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  padding: 4.5rem 0rem 5rem;
-  min-width: 279px;
-  background-color: var(--white);
-
+/**
+ * Perguntas frequentes.
+ *
+ * O acordeão continua o mesmo — um item aberto por vez, controlado pelo
+ * `useState` do componente. Mudou a régua: cada pergunta é uma linha
+ * separada por 1px, com o número à esquerda e o sinal de mais à direita,
+ * e a resposta entra no mesmo recuo do texto da pergunta em vez de
+ * começar na margem.
+ */
+export const Container = styled(Section).attrs({ className: "faixa-clara" })`
   .inner {
     width: 90%;
-    max-width: 85rem;
-    background-color: #ff8419;
-    border-radius: 20px;
-    padding: 5rem 1rem;
+    max-width: 1140px;
+    margin: 0 auto;
+
+    ${Media.PhoneLarge} {
+      width: 100%;
+      padding: 0 22px;
+    }
   }
 
   .containerFaq {
-    width: 100%;
-    max-width: 75rem;
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-    gap: 4rem;
-    margin: auto;
+    display: grid;
+    grid-template-columns: 0.8fr 1.2fr;
+    gap: 4.5rem;
+    align-items: start;
 
     ${Media.Tablet} {
-      flex-direction: column;
-      gap: 2rem;
+      grid-template-columns: 1fr;
+      gap: 2.4rem;
     }
   }
 
-  .left {
-    flex: 0.9;
+  .badge {
     display: flex;
-    flex-direction: column;
-    gap: 1.6rem;
+    align-items: center;
+    gap: 16px;
+    font-family: "Poppins", sans-serif;
+    font-size: 0.68rem;
+    font-weight: 400;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    color: var(--tinta-fraca);
+    margin-bottom: 26px;
 
-    .badge {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      padding: 1rem 2rem;
-      border-radius: 999px;
-      background-color: #5a2a00;
-      font-family: "Poppins";
-      font-weight: 600;
-      font-size: 0.85rem;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      max-width: 350px;
-      color: var(--white);
-    }
-
-    h2 {
-      font-family: "Poppins";
-      line-height: 100%;
-      font-size: 2.05rem;
-      font-weight: 700;
-      color: #5a2a00;
-
-      ${Media.Laptop} {
-        font-size: 1.9rem;
-      }
-
-      ${Media.PhoneLarge} {
-        font-size: 1.7rem;
-      }
-
-      ${Media.PhoneSmall} {
-        font-size: 1.5rem;
-      }
-    }
-
-    .underline {
-      width: 7rem;
-      height: 2px;
-      background: rgba(90, 42, 0, 0.25);
-      margin-top: 0.4rem;
+    &::before {
+      content: "";
+      width: 34px;
+      height: 1px;
+      background: currentColor;
+      flex: none;
     }
   }
 
-  .right {
-    flex: 1.2;
-    display: flex;
-    flex-direction: column;
-    gap: 0.9rem;
-    width: 100%;
+  h2 {
+    font-family: "EB Garamond", Georgia, serif;
+    font-weight: 400;
+    font-size: clamp(2rem, 4.2vw, 3.1rem);
+    line-height: 1.07;
+    letter-spacing: -0.014em;
+    color: var(--tinta);
+    margin: 0;
+    max-width: 14ch;
+  }
+
+  /* O sublinhado decorativo sai: o título já está sozinho na coluna. */
+  .underline {
+    display: none;
   }
 
   .faqItem {
-    width: 100%;
-    background: transparent;
+    border-bottom: 1px solid var(--linha);
+
+    &:first-child {
+      border-top: 1px solid var(--linha);
+    }
   }
 
   .questionRow {
-    width: 100%;
-    border: none;
-    outline: none;
-    cursor: pointer;
-    border-radius: 1.2rem;
-    background-color: #ffece0;
-    padding: 1rem 1.6rem;
     display: flex;
     align-items: center;
-    gap: 1rem;
-    transition: box-shadow 0.2s ease, transform 0.15s ease;
+    gap: 20px;
+    width: 100%;
+    padding: 22px 0;
+    background: none;
+    border: 0;
+    text-align: left;
+    cursor: pointer;
 
-    &:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08);
+    &:focus-visible {
+      outline: 1px solid var(--tinta);
+      outline-offset: 3px;
     }
   }
 
   .number {
-    min-width: 2.2rem;
-    font-family: "Nunito";
-    font-weight: 700;
-    font-size: 1.5rem;
-    color: rgba(255, 132, 25, 0.7);
-
-    ${Media.Tablet} {
-      font-size: 1.1rem;
-    }
+    flex: none;
+    font-family: "Poppins", sans-serif;
+    font-size: 0.74rem;
+    font-weight: 400;
+    letter-spacing: 0.1em;
+    color: var(--tinta-fraca);
+    ${numerais};
   }
 
   .questionText {
     flex: 1;
-    text-align: left;
-    font-family: "Poppins";
-    font-weight: 500;
-    font-size: 1.1rem;
-    line-height: 110%;
-    color: #4c3a30;
-
-    ${Media.Tablet} {
-      font-size: 0.9rem;
-    }
+    margin: 0;
+    font-family: "EB Garamond", Georgia, serif;
+    font-size: clamp(1.2rem, 1.9vw, 1.5rem);
+    font-weight: 400;
+    line-height: 1.2;
+    color: var(--tinta);
   }
 
   .icon {
-    font-size: 1.2rem;
-    font-weight: 700;
-    color: #c67633;
-    transform-origin: center;
-    transition: transform 0.2s ease;
-
-    &.open {
-      transform: rotate(45deg);
-    }
+    flex: none;
+    font-size: 1.3rem;
+    line-height: 1;
+    color: var(--tinta-fraca);
+    transition: transform 240ms ease, color 240ms ease;
   }
 
-  .answerText {
-    margin-top: 0.4rem;
-    margin-left: 3.8rem;
-    font-family: "Poppins";
-    font-weight: 400;
-    font-size: 1.1rem;
-    line-height: 150%;
-    color: #5a2a00;
+  .icon.open {
+    transform: rotate(45deg);
+    color: var(--acento);
+  }
 
-    ${Media.Tablet} {
-      font-size: 0.9rem;
-      margin-left: 1rem;
+  /* O recuo alinha a resposta com a pergunta, e não com o número:
+     20px do gap + a largura do número. */
+  .answerText {
+    margin: 0 0 24px;
+    padding-left: calc(20px + 1.6rem);
+    font-size: 1.02rem;
+    line-height: 1.6;
+    color: var(--tinta-corpo);
+    max-width: 56ch;
+
+    ${Media.PhoneLarge} {
+      padding-left: 0;
     }
   }
 `;

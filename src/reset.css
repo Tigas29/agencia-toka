@@ -1,4 +1,17 @@
-/* Reset e base */
+/**
+ * Reset e base do documento.
+ *
+ * O `:root` daqui declarava a paleta laranja da identidade antiga
+ * (`--orange: #FFA136`, `--dark`, `--gray`) e servia a /LandingPage e
+ * aos dois formulários. Com todas as rotas reconstruídas contra
+ * `src/estilo/ds.js`, ninguém mais consome esses nomes.
+ *
+ * O que sobrou aqui é o que precisa existir antes de qualquer página
+ * montar: a normalização e a cor de fundo do documento. As cores da
+ * marca moram no design system, escopadas em `.toka`, e não em `:root` —
+ * token global é o que permite uma página herdar cor sem pedir.
+ */
+
 * {
   margin: 0;
   padding: 0;
@@ -9,10 +22,13 @@
 
 body {
   scroll-behavior: smooth;
-  font-family: 'Inter', 'Nunito', sans-serif;
+  font-family: "Nunito Sans", "Inter", sans-serif;
   font-display: swap;
-  background-color: var(--dark);
-  color: var(--white);
+  /* O creme com que a home abre. É a mesma cor declarada inline no
+     index.html, para o primeiro quadro não piscar branco enquanto o
+     bundle não chegou. */
+  background-color: #efede6;
+  color: #16203a;
   height: auto;
 }
 
@@ -31,7 +47,8 @@ img {
 
 input,
 textarea,
-button {
+button,
+select {
   border: none;
   padding: 0;
   font-family: inherit;
@@ -47,107 +64,8 @@ button {
 }
 
 ::-webkit-scrollbar-thumb {
-  background-color: var(--orange);
+  /* Fixo, e não `var(--acento)`: a barra de rolagem é do documento, que
+     está fora do escopo `.toka` onde os tokens existem. */
+  background-color: #e0b65a;
   border-radius: 2px;
-}
-
-:root {
-  --orange: #FFA136;
-  --white: #FFFFFF;
-  --dark: #212121;
-  --black: #000;
-  --gray: #2f2f2f;
-}
-
-/* Tipografia responsiva */
-h1 {
-  font-size: 2.8rem;
-}
-
-h2 {
-  font-size: 2.6rem;
-}
-
-h3 {
-  font-size: 2.4rem;
-}
-
-h4,
-summary,
-p {
-  font-size: 1.5rem;
-}
-
-@media screen and (max-width: 1220px) {
-  h1 {
-    font-size: 2.6rem;
-  }
-
-  h2 {
-    font-size: 2.4rem;
-  }
-
-  h3 {
-    font-size: 2.2rem;
-  }
-}
-
-@media screen and (max-width: 1000px) {
-  h1 {
-    font-size: 2.5rem;
-  }
-
-  h2 {
-    font-size: 2.3rem;
-  }
-
-  h3 {
-    font-size: 2.1rem;
-  }
-
-  h4,
-  summary,
-  p {
-    font-size: 1.4rem;
-  }
-}
-
-@media screen and (max-width: 600px) {
-  h1 {
-    font-size: 1.8rem;
-  }
-
-  h2 {
-    font-size: 1.6rem;
-  }
-
-  h3 {
-    font-size: 1.2rem;
-  }
-
-  h4,
-  summary,
-  p {
-    font-size: 1.3rem;
-  }
-}
-
-@media screen and (max-width: 320px) {
-  h1 {
-    font-size: 1.5rem;
-  }
-
-  h2 {
-    font-size: 1.3rem;
-  }
-
-  h3 {
-    font-size: 1.2rem;
-  }
-
-  h4,
-  summary,
-  p {
-    font-size: 1.1rem;
-  }
 }

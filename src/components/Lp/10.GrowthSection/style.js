@@ -1,290 +1,209 @@
 import styled from "styled-components";
+import { Media, Section } from "../../../estilo/ds";
 
-const Media = {
-  PhoneLarge: "@media(max-width:610px)",
-  LaptopLarge: "@media(max-width:1450px)",
-  Laptop: "@media(max-width:1150px)",
-  Tablet: "@media(max-width:1000px)",
-  TabletSmall: "@media(max-width:880px)",
-  PhoneSmall: "@media(max-width:450px)",
-};
-
-export const Container = styled.section`
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  background: #fff;
-  padding: 2rem 0 0rem;
-  min-width: 279px;
+/**
+ * Fecho da LP e rodapé do site.
+ *
+ * A dobra de convite fica escura, como a abertura: a página termina onde
+ * começou, falando com a pessoa. O rodapé vem logo abaixo, na mesma
+ * faixa, separado só por uma régua de 1px.
+ *
+ * Os cinco bônus eram cartões com ícone de tarefa. Viraram lista com
+ * régua, pelo mesmo motivo dos entregáveis lá em cima: o ícone repetido
+ * cinco vezes vira textura e o check não acrescenta nada a um item que
+ * já está numa lista de bônus.
+ */
+export const Container = styled(Section).attrs({ className: "faixa-escura" })`
+  padding-bottom: 0;
 
   .inner {
     width: 90%;
-    max-width: 75rem;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    gap: 1.7rem;
-    margin: auto auto 3rem;
+    max-width: 1140px;
+    margin: 0 auto;
 
-    ${Media.TabletSmall} {
-      align-items: start;
+    ${Media.PhoneLarge} {
+      width: 100%;
+      padding: 0 22px;
     }
   }
 
+  /* O símbolo da marca no topo do fecho, em monocromático: o arquivo é
+     a versão laranja, e sobre navy ela seria o único ponto laranja do
+     site inteiro. */
   .iconTop {
-    width: 120px;
-    margin-bottom: 1.2rem;
-
-    ${Media.PhoneLarge} {
-      width: 60px;
-    }
+    width: auto;
+    height: 40px;
+    margin-bottom: 34px;
+    filter: grayscale(1) brightness(2.6);
+    opacity: 0.8;
   }
 
   .title {
-    font-family: "Poppins";
-    font-size: 2.7rem;
-    font-weight: 700;
-    line-height: 120%;
-    color: #ff8419;
-
-    ${Media.Laptop} {
-      font-size: 2.3rem;
-    }
-
-    ${Media.TabletSmall} {
-      text-align: left;
-      width: 100%;
-    }
-
-    ${Media.PhoneLarge} {
-      font-size: 1.9rem;
-    }
-
-    ${Media.PhoneSmall} {
-      font-size: 1.7rem;
-    }
+    font-family: "EB Garamond", Georgia, serif;
+    font-weight: 400;
+    font-size: clamp(2.3rem, 4.8vw, 3.7rem);
+    line-height: 1.06;
+    letter-spacing: -0.014em;
+    color: var(--tinta);
+    margin: 0 0 20px;
   }
 
   .smallGray {
-    font-family: "Poppins";
-    font-size: 1.4rem;
-    color: #8f8f8f;
-
-    ${Media.TabletSmall} {
-      text-align: left;
-    }
-
-    ${Media.PhoneLarge} {
-      font-size: 1rem;
-    }
+    font-size: 0.92rem;
+    color: var(--tinta-fraca);
+    margin: 0 0 44px;
   }
 
   .bonusTitle {
-    margin-top: -0.5rem;
-    font-family: "Poppins";
-    font-size: 1.5rem;
-    font-weight: 600;
-    color: #3b3b3b;
-
-    ${Media.TabletSmall} {
-      text-align: left;
-    }
-
-    ${Media.PhoneLarge} {
-      font-size: 1.1rem;
-    }
+    font-size: 1.06rem;
+    line-height: 1.6;
+    color: var(--tinta-corpo);
+    margin: 0 0 22px;
   }
 
   .grid {
-    margin-top: 0.4rem;
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 1rem 0rem;
-    justify-items: center;
-    align-items: center;
-
-    ${Media.TabletSmall} {
-      display: flex;
-      flex-direction: column;
-      align-items: start;
-      margin: auto;
-      width: 100%;
-      gap: 1rem;
-    }
-  }
-
-  .grid .item:last-child {
-    grid-column: 1 / -1;
-    justify-self: center;
+    display: flex;
+    flex-direction: column;
+    border-top: 1px solid var(--linha);
+    margin-bottom: 40px;
+    max-width: 46rem;
   }
 
   .item {
     display: flex;
     align-items: center;
-    justify-content: center;
-    text-align: center;
-    font-family: "Poppins";
-    font-size: 1.1rem;
-    color: #ff8419;
-    font-weight: 500;
-    gap: 0.5rem;
-
-    ${Media.TabletSmall} {
-      text-align: left;
-    }
+    padding: 15px 0;
+    border-bottom: 1px solid var(--linha);
+    font-size: 1.04rem;
+    line-height: 1.4;
+    color: var(--tinta-corpo);
 
     img {
-      width: 17px;
-      height: auto;
+      display: none;
     }
 
     ${Media.PhoneLarge} {
-      font-size: 0.92rem;
+      font-size: 0.98rem;
     }
   }
 
-  button {
-    background: linear-gradient(90deg, #8f0007 0%, #fd9b02 100%);
-    padding: 1rem 1.5rem;
-    border-radius: 50px;
-    box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px,
-      rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px,
-      rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
-    transform: translateY(0);
-    transition: background 0.4s ease, box-shadow 0.25s ease,
-      transform 0.25s ease;
-  }
+  .footer {
+    margin-top: var(--respiro-curto);
+    padding: 44px 0 40px;
+    border-top: 1px solid var(--linha);
+    width: 90%;
+    max-width: 1140px;
+    margin-left: auto;
+    margin-right: auto;
 
-  button p {
-    font-size: 1.05rem;
-    font-weight: 600;
-    color: #fff;
-  }
-
-  button:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 12px 28px rgba(108, 50, 0, 0.45);
-    background: linear-gradient(90deg, #fd9b02 0%, #8f0007 100%);
-  }
-
-  footer {
-    width: 100%;
-    margin-top: 3.5rem;
-    background-color: #ff8419;
-    color: #ffffff;
-    font-family: "Poppins";
+    ${Media.PhoneLarge} {
+      width: 100%;
+      padding: 36px 22px 34px;
+    }
   }
 
   .footerTop {
-    width: 90%;
-    max-width: 75rem;
-    margin: 0 auto;
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-    gap: 3.5rem;
-    padding: 2.2rem 0 1.5rem;
+    display: grid;
+    grid-template-columns: 1.4fr 1fr 1fr 1fr;
+    gap: 2.5rem;
 
     ${Media.Tablet} {
-      gap: 2.5rem;
-      flex-wrap: wrap;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
     }
 
     ${Media.PhoneLarge} {
-      flex-direction: column;
-      gap: 2rem;
+      grid-template-columns: 1fr;
     }
   }
 
-  .footerCol {
-    font-size: 0.88rem;
-  }
-
-  .footerCol--brand {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-  }
-
   .footerLogo {
-    max-width: 120px;
+    width: auto;
+    height: 30px;
+    margin-bottom: 20px;
+    filter: grayscale(1) brightness(2.6);
+    opacity: 0.85;
   }
 
   .footerSocial {
     display: flex;
-    gap: 0.6rem;
+    gap: 12px;
   }
 
   .socialIcon {
-    width: 36px;
-    height: 36px;
+    display: grid;
+    place-items: center;
+    width: 34px;
+    height: 34px;
     border-radius: 50%;
-    background: #c86316;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 0.55rem;
-    text-transform: uppercase;
-    cursor: pointer;
+    border: 1px solid var(--linha);
+    transition: border-color 200ms ease, opacity 200ms ease;
 
     img {
-      width: 20px;
-      height: 20px;
+      width: 15px;
+      height: 15px;
+      object-fit: contain;
+      filter: grayscale(1) brightness(2.4);
+      opacity: 0.8;
+    }
+
+    &:hover {
+      border-color: var(--acento);
+
+      img {
+        opacity: 1;
+      }
     }
   }
 
   .footerHeading {
-    font-size: 0.78rem;
-    font-weight: 600;
-    letter-spacing: 0.04em;
+    font-family: "Poppins", sans-serif;
+    font-size: 0.66rem;
+    font-weight: 400;
+    letter-spacing: 0.22em;
     text-transform: uppercase;
-    margin-bottom: 0.6rem;
+    color: var(--tinta-fraca);
+    margin: 0 0 18px;
   }
 
   .footerTextLine {
-    font-size: 0.85rem;
-    line-height: 150%;
-    margin: 0.5rem 0;
     display: flex;
-    gap: 0.5rem;
     align-items: center;
+    gap: 9px;
+    font-size: 0.92rem;
+    color: var(--tinta-corpo);
+    margin: 0 0 10px;
 
     img {
-      width: 20px;
-      height: 20px;
+      width: 14px;
+      height: 14px;
+      object-fit: contain;
+      filter: grayscale(1) brightness(2.4);
+      opacity: 0.7;
     }
   }
 
   .footerLink {
-    font-size: 0.85rem;
-    line-height: 150%;
-    margin: 0.5rem 0;
+    font-size: 0.92rem;
+    color: var(--tinta-corpo);
+    margin: 0 0 10px;
     cursor: pointer;
-  }
+    transition: color 200ms ease;
 
-  .footerCol--legal {
-    text-align: left;
+    &:hover {
+      color: var(--acento);
+    }
   }
 
   .footerBottom {
-    width: 100%;
-    text-align: center;
-    padding: 0.9rem 0 1.2rem;
+    margin-top: 40px;
+    padding-top: 22px;
+    border-top: 1px solid var(--linha);
 
     p {
-      font-size: 1rem;
-    }
-  }
-
-  ${Media.PhoneSmall} {
-    .footerTop {
-      align-items: flex-start;
-    }
-
-    .footerLogo {
-      max-width: 100px;
+      margin: 0;
+      font-size: 0.82rem;
+      color: var(--tinta-fraca);
     }
   }
 `;
