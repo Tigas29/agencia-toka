@@ -1,6 +1,6 @@
 import { useRef } from "react";
 import styled from "styled-components";
-import { H2, Inner, Lead, Media, Section, Selo } from "../style";
+import { H2, Inner, Lead, Media, Section, Selo } from "../../../estilo/ds";
 import { Cadencia, Caminho, Estrutura, Percepcao } from "../grafismos";
 import { useMenosMovimento, useRevelacaoPorScroll } from "../../habitat/animacao";
 
@@ -80,9 +80,9 @@ const Ruptura = styled.div`
   }
 
   .titulo {
-    font-family: "Cormorant Garamond", Georgia, serif;
+    font-family: "EB Garamond", Georgia, serif;
     font-size: clamp(1.6rem, 2.6vw, 2.15rem);
-    font-weight: 300;
+    font-weight: 400;
     line-height: 1.16;
     color: var(--tinta);
     margin: 0;

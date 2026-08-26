@@ -1,6 +1,6 @@
 import { useRef } from "react";
 import styled from "styled-components";
-import { Inner, Media, Onda, Section, Selo } from "../style";
+import { Inner, Media, Onda, Section, Selo } from "../../../estilo/ds";
 import { OndaFundo } from "../grafismos";
 import { gsap, useContextoGsap, useMenosMovimento } from "../../habitat/animacao";
 
@@ -63,11 +63,11 @@ const Tela = styled.div`
 `;
 
 const Frase = styled.p`
-  font-family: "Cormorant Garamond", Georgia, serif;
+  font-family: "EB Garamond", Georgia, serif;
   /* O piso de 1.9rem é o que impede a frase de estourar a caixa em
      telas de 320px, onde 6.2vw já não tem o que dar. */
   font-size: clamp(1.9rem, 6.2vw, 5rem);
-  font-weight: 300;
+  font-weight: 400;
   line-height: 1.06;
   letter-spacing: -0.01em;
   color: var(--tinta);

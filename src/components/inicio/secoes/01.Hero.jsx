@@ -10,7 +10,7 @@ import styled from "styled-components";
  * reduzido, com a marca intacta: nada aqui é redesenhado.
  */
 import logoToka from "../../../assets/homepage/logo-toka-navy.png";
-import { Cta, H1, Inner, Mascara, Media, Section } from "../style";
+import { Cta, H1, Inner, Mascara, Media, Section } from "../../../estilo/ds";
 import { CicloFrentes, Seta } from "../grafismos";
 import { EASE, gsap, useContextoGsap, useMenosMovimento } from "../../habitat/animacao";
 

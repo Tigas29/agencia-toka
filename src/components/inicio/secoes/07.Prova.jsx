@@ -1,6 +1,6 @@
 import { useRef } from "react";
 import styled from "styled-components";
-import { H2, Inner, Lead, Media, Section, Selo } from "../style";
+import { H2, Inner, Lead, Media, Section, Selo } from "../../../estilo/ds";
 import { Agenda, Estabiliza } from "../grafismos";
 import { useMenosMovimento, useRevelacaoPorScroll } from "../../habitat/animacao";
 
@@ -39,9 +39,9 @@ const Ganho = styled.div`
   border-bottom: 1px solid var(--linha);
 
   p {
-    font-family: "Cormorant Garamond", Georgia, serif;
+    font-family: "EB Garamond", Georgia, serif;
     font-size: clamp(1.7rem, 3.2vw, 2.6rem);
-    font-weight: 300;
+    font-weight: 400;
     line-height: 1.14;
     color: var(--tinta);
     margin: 0;

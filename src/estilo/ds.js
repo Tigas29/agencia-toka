@@ -1,22 +1,26 @@
 import styled, { createGlobalStyle, css, keyframes } from "styled-components";
 
 /**
- * Base de estilo da home.
+ * Design system do site. Toda página ativa é escrita contra este arquivo.
  *
- * Ela **não** reusa mais os styled-components da /habitat. O motivo é a
- * única coisa que importa aqui: aqueles componentes escrevem cor fixa
- * (`--white` no título, `--apagado` no corpo), o que funciona numa
- * página escura do começo ao fim e torna impossível uma faixa clara. A
- * home passou a alternar navy e creme, então cada componente precisa
- * perguntar "qual é a tinta desta faixa?" em vez de "qual é o branco?".
+ * Ele nasceu como estilo só da home e virou base comum quando as demais
+ * rotas foram reconstruídas: o site vivia com três identidades ao mesmo
+ * tempo (a home nova, o navy da /habitat e da /aplicacao, e o laranja
+ * legado da /LandingPage e dos formulários), e cada uma resolvia cor,
+ * título e respiro por conta própria.
  *
- * Daí os seis tokens semânticos abaixo. `.faixa-escura` e `.faixa-clara`
- * redefinem os seis, e todo o resto do arquivo é escrito contra eles.
- * Trocar o tema de uma seção é trocar uma classe.
+ * A ideia que faz o resto funcionar: nenhum componente daqui sabe que
+ * cor ele tem. Ele pergunta "qual é a tinta desta faixa?" em vez de
+ * "qual é o branco?". Os seis tokens semânticos abaixo respondem isso, e
+ * `.faixa-escura` / `.faixa-clara` os redefinem. Trocar o tema de uma
+ * seção inteira é trocar uma classe — foi o que tornou possível uma
+ * página alternar navy e papel sem duplicar componente.
  *
- * O que continua vindo da /habitat é só lógica: `animacao.js` e
- * `lead.js`. O `:root` laranja de `src/reset.css` segue intocado, porque
- * ainda serve /LandingPage, /clienteForm e /quizForm-fisio.
+ * Escopo: `.toka` no elemento de página. Fora dele nada aqui pinta.
+ *
+ * O que NÃO mora aqui é lógica: animação (`components/habitat/animacao.js`)
+ * e captura de lead/UTM (`components/habitat/lead.js`) continuam nos seus
+ * arquivos, compartilhados por todas as páginas.
  */
 
 export const Media = {
@@ -37,9 +41,14 @@ const GOLD = "#E0B65A";
    faixa clara é o mesmo ouro escurecido até passar de 4.5:1, medido, e
    não escolhido no olho: ele carrega rótulo de 0.7rem. */
 const GOLD_ESCURO = "#7A5C12";
+/* Erro é o único par de cor que não deriva do acento: ele precisa ler como
+   alerta em qualquer faixa. O tom claro serve sobre navy, o escuro sobre
+   creme, e ambos passam de 4.5:1 contra o próprio fundo. */
+const ERRO_SOBRE_ESCURO = "#E9967A";
+const ERRO_SOBRE_CLARO = "#9B3412";
 
 export const Tokens = createGlobalStyle`
-  .toka-home {
+  .toka {
     /* O respiro é o que a referência tem de sobra e a nossa página não
        tinha: eles gastam quase o dobro de rolagem para dizer menos. */
     --respiro: 190px;
@@ -53,9 +62,15 @@ export const Tokens = createGlobalStyle`
     --tinta-fraca: #7F8698;
     --linha: rgba(244, 243, 238, 0.11);
     --acento: ${GOLD};
+    --erro: ${ERRO_SOBRE_ESCURO};
+    /* Véu do acento, para fundo de opção marcada e realce de campo. Sai
+       de color-mix e não de um rgba fixo porque o acento muda com a
+       faixa: escrito à mão, o dourado claro vazaria na faixa creme. */
+    --acento-veu: color-mix(in srgb, var(--acento) 14%, transparent);
+    --acento-borda: color-mix(in srgb, var(--acento) 45%, transparent);
   }
 
-  .toka-home .faixa-escura {
+  .toka .faixa-escura {
     --fundo: ${NAVY};
     --fundo-fundo: ${NAVY_FUNDO};
     --tinta: #F4F3EE;
@@ -63,9 +78,10 @@ export const Tokens = createGlobalStyle`
     --tinta-fraca: #7F8698;
     --linha: rgba(244, 243, 238, 0.11);
     --acento: ${GOLD};
+    --erro: ${ERRO_SOBRE_ESCURO};
   }
 
-  .toka-home .faixa-clara {
+  .toka .faixa-clara {
     --fundo: ${CREME};
     --fundo-fundo: ${CREME_FUNDO};
     --tinta: #16203A;
@@ -75,17 +91,18 @@ export const Tokens = createGlobalStyle`
     --tinta-fraca: #635E51;
     --linha: rgba(22, 32, 58, 0.13);
     --acento: ${GOLD_ESCURO};
+    --erro: ${ERRO_SOBRE_CLARO};
   }
 
   ${Media.Tablet} {
-    .toka-home {
+    .toka {
       --respiro: 124px;
       --respiro-curto: 80px;
     }
   }
 
   ${Media.PhoneLarge} {
-    .toka-home {
+    .toka {
       --respiro: 82px;
       --respiro-curto: 58px;
     }
@@ -174,7 +191,7 @@ export const Section = styled.section`
  * marca o corte e o espaço extra vira moldura.
  */
 export const Emenda = createGlobalStyle`
-  .toka-home section + section {
+  .toka section + section {
     padding-top: var(--respiro-curto);
   }
 `;
@@ -475,4 +492,338 @@ export const Mascara = styled.span`
   display: block;
   overflow: hidden;
   padding-bottom: 0.08em;
+`;
+
+/* ------------------------------------------------------------------ *
+ * Formulário
+ *
+ * Três rotas do site são formulário de passo único por tela: /aplicacao,
+ * /clienteForm e /quizForm-fisio. Antes deste bloco cada uma tinha a sua
+ * própria caixa, o seu próprio input e o seu próprio botão-resposta —
+ * duas em laranja, uma em navy, e nenhuma parecida com a outra.
+ *
+ * Tudo aqui é escrito contra os tokens de faixa, então o mesmo campo
+ * funciona sobre navy e sobre papel: é isso que permite a /aplicacao ser
+ * escura e um formulário dentro de uma seção clara usar os mesmos
+ * componentes.
+ * ------------------------------------------------------------------ */
+
+/** Trilho de progresso fixo no topo. A barra é o filho. */
+export const Progresso = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background: var(--linha);
+  z-index: 20;
+
+  div {
+    height: 100%;
+    background: var(--acento);
+    transition: width 320ms ease;
+  }
+`;
+
+/** Barra de marca do topo: logo à esquerda, contexto à direita. */
+export const Topo = styled.header`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 26px 5%;
+
+  img {
+    width: auto;
+    height: 30px;
+  }
+
+  span {
+    font-family: "Poppins", sans-serif;
+    font-size: 0.68rem;
+    font-weight: 400;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--tinta-fraca);
+  }
+
+  ${Media.PhoneLarge} {
+    padding: 20px 22px;
+
+    img {
+      height: 24px;
+    }
+
+    span {
+      font-size: 0.6rem;
+      letter-spacing: 0.16em;
+    }
+  }
+`;
+
+/** Área central que segura o painel e o centraliza na altura da tela. */
+export const Palco = styled.main`
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 5% 80px;
+
+  ${Media.PhoneLarge} {
+    align-items: flex-start;
+    padding: 16px 22px 60px;
+  }
+`;
+
+/**
+ * A caixa de uma pergunta. Sem borda e sem sombra de propósito: o que
+ * separa a pergunta do resto da página é o ar em volta dela, não uma
+ * moldura. Moldura aqui devolvia a cara de formulário de sistema.
+ */
+export const Painel = styled.section`
+  width: 100%;
+  max-width: 720px;
+`;
+
+/** "Pergunta 3 de 8". Fica acima do enunciado, no tom mais fraco. */
+export const Contador = styled.p`
+  font-family: "Poppins", sans-serif;
+  font-size: 0.68rem;
+  font-weight: 400;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  color: var(--tinta-fraca);
+  margin: 0 0 22px;
+  ${numerais};
+`;
+
+/**
+ * Enunciado da pergunta. Usa o mesmo display serifado dos títulos de
+ * seção: a pergunta é o título daquela tela, e tratá-la como parágrafo
+ * grande era o que fazia o formulário parecer outro site.
+ */
+export const Pergunta = styled.h1`
+  ${display};
+  font-size: clamp(1.7rem, 3.4vw, 2.7rem);
+  max-width: 20ch;
+
+  ${Media.PhoneLarge} {
+    max-width: 100%;
+  }
+`;
+
+/** Lista de respostas. Cada filho é um `button`. */
+export const Opcoes = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 30px;
+
+  button {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    width: 100%;
+    text-align: left;
+    padding: 16px 20px;
+    font-family: "Nunito Sans", "Inter", sans-serif;
+    font-size: 1rem;
+    font-weight: 300;
+    line-height: 1.45;
+    color: var(--tinta-corpo);
+    background: transparent;
+    border: 1px solid var(--linha);
+    border-radius: 10px;
+    transition: border-color 160ms ease, background 160ms ease,
+      color 160ms ease, transform 160ms ease;
+
+    &:hover {
+      border-color: var(--acento-borda);
+      background: var(--acento-veu);
+      color: var(--tinta);
+      /* Desloca em vez de crescer: escala em item de lista mexe com o
+         vizinho e a lista inteira treme na passagem do mouse. */
+      transform: translateX(3px);
+    }
+
+    &:focus-visible {
+      outline: 1px solid var(--tinta);
+      outline-offset: 3px;
+    }
+
+    &.marcada {
+      border-color: var(--acento);
+      background: var(--acento-veu);
+      color: var(--tinta);
+    }
+
+    ${Media.PhoneLarge} {
+      font-size: 0.94rem;
+      padding: 14px 16px;
+      gap: 12px;
+    }
+  }
+
+  /* A tecla de atalho. Existe no desktop, onde responder pelo teclado é
+     mais rápido que mirar o clique. */
+  .tecla {
+    flex: none;
+    width: 26px;
+    height: 26px;
+    display: grid;
+    place-items: center;
+    font-family: "Poppins", sans-serif;
+    font-size: 0.74rem;
+    font-weight: 500;
+    color: var(--acento);
+    border: 1px solid var(--acento-borda);
+    border-radius: 6px;
+    ${numerais};
+  }
+
+  button.marcada .tecla {
+    background: var(--acento);
+    color: var(--fundo);
+    border-color: var(--acento);
+  }
+`;
+
+/**
+ * Campo de texto. A linha embaixo, e não a caixa em volta: com caixa, um
+ * campo por tela lê como célula de planilha; com linha, lê como resposta
+ * escrita à mão.
+ */
+export const Campo = styled.div`
+  margin-top: 30px;
+
+  input,
+  textarea,
+  select {
+    width: 100%;
+    background: transparent;
+    border-bottom: 1px solid var(--linha);
+    padding: 12px 2px;
+    font-family: "Nunito Sans", "Inter", sans-serif;
+    font-size: 1.4rem;
+    font-weight: 300;
+    color: var(--tinta);
+    transition: border-color 160ms ease;
+
+    &::placeholder {
+      color: var(--tinta-fraca);
+      opacity: 0.7;
+    }
+
+    &:focus {
+      outline: none;
+      border-bottom-color: var(--acento);
+    }
+
+    ${Media.PhoneLarge} {
+      font-size: 1.12rem;
+    }
+  }
+
+  textarea {
+    min-height: 110px;
+    resize: vertical;
+    border: 1px solid var(--linha);
+    border-radius: 10px;
+    padding: 16px;
+    font-size: 1rem;
+    line-height: 1.6;
+
+    &:focus {
+      border-color: var(--acento);
+    }
+  }
+
+  /* O select herda o fundo da faixa, mas a lista aberta é desenhada pelo
+     sistema: sem cor explícita nas opções, um tema escuro de SO pinta
+     texto claro sobre o nosso creme. */
+  select option {
+    background: var(--fundo);
+    color: var(--tinta);
+  }
+`;
+
+/** Rótulo curto acima de um campo. */
+export const Rotulo = styled.label`
+  display: block;
+  font-family: "Poppins", sans-serif;
+  font-size: 0.72rem;
+  font-weight: 400;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--tinta-fraca);
+  margin-bottom: 4px;
+`;
+
+/** Linha de botões do rodapé do painel: avançar à esquerda, voltar depois. */
+export const Acoes = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-top: 34px;
+  flex-wrap: wrap;
+
+  ${Media.PhoneLarge} {
+    flex-direction: column-reverse;
+    align-items: stretch;
+    gap: 12px;
+  }
+`;
+
+/**
+ * Botão discreto de voltar. Não é o `Cta` com outra variante porque não
+ * deve competir com o avançar nem ocupar a mesma altura de toque.
+ */
+export const Voltar = styled.button`
+  background: none;
+  border: 0;
+  padding: 8px 2px;
+  font-family: "Poppins", sans-serif;
+  font-size: 0.86rem;
+  font-weight: 400;
+  color: var(--tinta-fraca);
+  transition: color 160ms ease;
+
+  &:hover {
+    color: var(--tinta);
+  }
+
+  &:focus-visible {
+    outline: 1px solid var(--tinta);
+    outline-offset: 3px;
+  }
+`;
+
+/**
+ * Mensagem de erro. `role="alert"` fica com quem usa: o estilo garante
+ * que ela seja vista, o atributo garante que ela seja anunciada.
+ */
+export const Erro = styled.p`
+  margin: 16px 0 0;
+  font-size: 0.9rem;
+  color: var(--erro);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  &::before {
+    content: "";
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: currentColor;
+    flex: none;
+  }
+`;
+
+/** Linha de apoio sob um campo ou botão (LGPD, "leva 2 minutos"). */
+export const Apoio = styled.p`
+  margin: 14px 0 0;
+  font-size: 0.82rem;
+  color: var(--tinta-fraca);
+  max-width: 52ch;
 `;

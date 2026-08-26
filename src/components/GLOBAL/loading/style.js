@@ -10,9 +10,8 @@ import styled from "styled-components";
  * preloader de marca acontece sem degrau de cor.
  *
  * Os valores estão escritos à mão, sem `var(--)`, de propósito: este
- * componente monta FORA de qualquer escopo de tokens (`.toka-home`,
- * `.toka-habitat`), porque ele existe justamente enquanto a página que
- * declara esses tokens ainda não montou.
+ * componente monta FORA do escopo de tokens (`.toka`), porque ele existe
+ * justamente enquanto a página que declara esses tokens ainda não montou.
  */
 export const Container = styled.div`
   .loader-container {

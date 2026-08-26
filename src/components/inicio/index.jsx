@@ -1,5 +1,5 @@
 import { useCallback, useEffect } from "react";
-import { Emenda, Page, Tokens } from "./style";
+import { Emenda, Page, Tokens } from "../../estilo/ds";
 import { linkDiagnostico } from "./contato";
 import { capturarUtm, track } from "../habitat/lead";
 import {
@@ -72,7 +72,7 @@ export default function PaginaInicio() {
     <>
       <Tokens />
       <Emenda />
-      <Page className="toka-home">
+      <Page className="toka">
         <Preloader />
         <Hero aoClicar={irParaWhatsApp} aoVerMetodo={irParaMetodo} />
         <Teses />

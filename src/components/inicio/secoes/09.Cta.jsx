@@ -1,7 +1,7 @@
 import { useRef } from "react";
 import styled from "styled-components";
 import logoToka from "../../../assets/homepage/logo-toka-branco.png";
-import { Cta, Inner, Media, Onda, Section } from "../style";
+import { Cta, Inner, Media, Onda, Section } from "../../../estilo/ds";
 import { OndaFundo, Seta } from "../grafismos";
 import { EMAIL, INSTAGRAM, linkDiagnostico } from "../contato";
 import { EASE, gsap, useContextoGsap, useMenosMovimento } from "../../habitat/animacao";
@@ -28,9 +28,9 @@ const Convite = styled.div`
   padding-bottom: clamp(70px, 9vw, 118px);
 
   h2 {
-    font-family: "Cormorant Garamond", Georgia, serif;
+    font-family: "EB Garamond", Georgia, serif;
     font-size: clamp(2.5rem, 5.6vw, 4.4rem);
-    font-weight: 300;
+    font-weight: 400;
     line-height: 1.05;
     letter-spacing: -0.005em;
     color: var(--tinta);

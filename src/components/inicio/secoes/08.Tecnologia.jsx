@@ -1,6 +1,6 @@
 import { useRef } from "react";
 import styled from "styled-components";
-import { H2, Inner, Media, Section, Selo } from "../style";
+import { H2, Inner, Media, Section, Selo } from "../../../estilo/ds";
 import { Estabiliza } from "../grafismos";
 import { useMenosMovimento, useRevelacaoPorScroll } from "../../habitat/animacao";
 

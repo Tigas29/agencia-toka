@@ -1,6 +1,6 @@
 import { useRef } from "react";
 import styled from "styled-components";
-import { H2, Inner, Media, Section, Selo } from "../style";
+import { H2, Inner, Media, Section, Selo } from "../../../estilo/ds";
 import { useMenosMovimento, useRevelacaoPorScroll } from "../../habitat/animacao";
 
 /**
@@ -133,9 +133,9 @@ const Momento = styled.li`
   }
 
   .nome {
-    font-family: "Cormorant Garamond", Georgia, serif;
+    font-family: "EB Garamond", Georgia, serif;
     font-size: clamp(1.55rem, 2.4vw, 2rem);
-    font-weight: 300;
+    font-weight: 400;
     color: var(--tinta);
     margin: 0;
   }

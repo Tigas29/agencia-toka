@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import styled from "styled-components";
-import { H2, Inner, Lead, Media, Section, Selo } from "../style";
+import { H2, Inner, Lead, Media, Section, Selo } from "../../../estilo/ds";
 import { FunilMetodo } from "../grafismos";
 import { gsap, useContextoGsap, useMenosMovimento } from "../../habitat/animacao";
 

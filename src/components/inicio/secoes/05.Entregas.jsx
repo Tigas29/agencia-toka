@@ -1,6 +1,6 @@
 import { useRef } from "react";
 import styled from "styled-components";
-import { H2, Inner, Lead, Media, Section, Selo } from "../style";
+import { H2, Inner, Lead, Media, Section, Selo } from "../../../estilo/ds";
 import { Etapas, Filtro, Mostrador, Sinal, TimeFora } from "../grafismos";
 import { useMenosMovimento, useRevelacaoPorScroll } from "../../habitat/animacao";
 
@@ -73,9 +73,9 @@ const Entrega = styled.div`
   }
 
   .nome {
-    font-family: "Cormorant Garamond", Georgia, serif;
+    font-family: "EB Garamond", Georgia, serif;
     font-size: clamp(1.6rem, 2.5vw, 2.05rem);
-    font-weight: 300;
+    font-weight: 400;
     line-height: 1.16;
     color: var(--tinta);
     margin: 0;
