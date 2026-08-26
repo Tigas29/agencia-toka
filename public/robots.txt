@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+
+# Proposta é documento endereçado a uma pessoa, não conteúdo de site.
+Disallow: /proposta/

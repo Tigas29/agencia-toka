@@ -10,6 +10,7 @@ const Aplicacao = lazy(() => import("./pages/aplicacao/index"));
 const Obrigado = lazy(() => import("./pages/obrigado/index"));
 const Lp = lazy(() => import("./pages/Lp/index"));
 const Habitat = lazy(() => import("./pages/habitat/index"));
+const Proposta = lazy(() => import("./pages/proposta/index"));
 
 export function Router() {
   return (
@@ -22,6 +23,7 @@ export function Router() {
         <Route path="/obrigado" element={<Obrigado />} />
         <Route path="/LandingPage" element={<Lp />} />
         <Route path="/habitat" element={<Habitat />} />
+        <Route path="/proposta/:cliente" element={<Proposta />} />
         <Route path="/" element={<Home />} />
       </Routes>
     </Suspense>
