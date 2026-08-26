@@ -14,8 +14,6 @@
  */
 
 import arteEmanuelAvaliacao from "../../assets/proposta/arte-emanuel-avaliacao.webp";
-import arteEmanuelSolucoes from "../../assets/proposta/arte-emanuel-solucoes.webp";
-import arteInnovaMapa from "../../assets/proposta/arte-innova-mapa.webp";
 
 /* ── Cálculo ────────────────────────────────────────────────────────
    Uma conta só, usada pela seção da conta, pela calculadora e pelo
@@ -63,21 +61,17 @@ export const brl = (v) =>
  * antes e depois na dobra ao lado desmentiria a frase.
  */
 const AMOSTRAS = {
+  /**
+   * Uma peça, não uma galeria. Três miniaturas viravam uma vitrine no
+   * meio da lista de entregáveis e puxavam a atenção para longe do que
+   * a dobra está construindo, que é o valor somando. Uma peça em tamanho
+   * que dá para ler prova o padrão igual e não interrompe a leitura.
+   */
   artes: [
     {
       src: arteEmanuelAvaliacao,
       alt: "Anúncio de feed sobre avaliação de transplante capilar, com o título 'O seu caso tem um número'",
-      legenda: "Feed · transplante capilar",
-    },
-    {
-      src: arteEmanuelSolucoes,
-      alt: "Anúncio de feed com o título 'Pare de apostar em soluções que levam anos para dizer se funcionam'",
-      legenda: "Feed · quebra de objeção",
-    },
-    {
-      src: arteInnovaMapa,
-      alt: "Peça de conteúdo listando cinco sinais de dor causada por má postura na cadeira",
-      legenda: "Conteúdo · campanha institucional",
+      legenda: "Anúncio de feed",
     },
   ],
 
@@ -239,11 +233,7 @@ const PAULO = {
             exemplo: {
               tipo: "link",
               url: "https://drluisfelipebortolan.com",
-              rotulo: "ver o site do Dr. Luís Felipe",
-              segundo: {
-                url: "https://ibrefrativa.com.br",
-                rotulo: "e o do Instituto Brasileiro de Refrativa",
-              },
+              rotulo: "ver um site no ar",
             },
             promessa:
               "para que quem te procura no Google veja o mesmo nível que vê no seu consultório",

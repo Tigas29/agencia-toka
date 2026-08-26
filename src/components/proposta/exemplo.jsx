@@ -22,9 +22,9 @@ const Botoes = styled.div`
 
 /**
  * Link de exemplo. Não usa o `Cta` do design system de propósito: aquele
- * é o botão da ação principal da página, e aqui são oito links de apoio.
- * Oito pílulas douradas competiriam com o único botão que importa, o do
- * fim.
+ * é o botão da ação principal da página, e estes são links de apoio
+ * espalhados pela lista. Meia dúzia de pílulas douradas competiria com o
+ * único botão que importa, o do fim.
  */
 const Link = styled.a`
   display: inline-flex;
@@ -66,14 +66,27 @@ const Saida = () => (
   </svg>
 );
 
+/**
+ * A peça de exemplo, uma por entregável.
+ *
+ * Era uma galeria de três, e três miniaturas no meio da lista viravam
+ * vitrine: puxavam a atenção para longe do que a dobra constrói, que é o
+ * valor somando item a item. Uma peça, em largura que dá para ler o
+ * título dela, prova o mesmo padrão sem interromper a leitura.
+ */
 const Artes = styled.div`
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  display: flex;
+  flex-wrap: wrap;
   gap: 12px;
   margin-top: 16px;
 
   figure {
     margin: 0;
+    /* Largura fixa, e não fração da coluna: a peça é quadrada, e deixá-la
+       ocupar a largura inteira da dobra daria uma imagem alta demais,
+       empurrando o resto da lista para fora da tela. */
+    max-width: 300px;
+    width: 100%;
   }
 
   img {
@@ -94,16 +107,9 @@ const Artes = styled.div`
     margin-top: 8px;
   }
 
-  /* No telemóvel três colunas dariam miniaturas de 100px, onde o título
-     da peça some e a arte deixa de provar qualquer coisa. Duas colunas,
-     e a terceira peça ocupa a linha inteira. */
   ${Media.PhoneLarge} {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 10px;
-
-    figure:last-child {
-      grid-column: 1 / -1;
-      max-width: 60%;
+    figure {
+      max-width: 100%;
     }
   }
 `;
@@ -166,20 +172,12 @@ export default function Exemplo({ exemplo, amostras }) {
   if (!exemplo) return null;
 
   if (exemplo.tipo === "link") {
-    const links = [exemplo, exemplo.segundo].filter(Boolean);
     return (
       <Botoes>
-        {links.map((l) => (
-          <Link
-            key={l.url}
-            href={l.url}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            {l.rotulo}
-            <Saida />
-          </Link>
-        ))}
+        <Link href={exemplo.url} target="_blank" rel="noopener noreferrer">
+          {exemplo.rotulo}
+          <Saida />
+        </Link>
       </Botoes>
     );
   }
