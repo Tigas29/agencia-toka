@@ -6,6 +6,8 @@ import {
   custoSemestre,
   procedimentosParaEmpatar,
 } from "../dados";
+import Grafico from "../grafico";
+import { contribuicao } from "../dados";
 import { Coluna, Dobra, Media, Rotulo } from "../style";
 
 /** Nomes das duas colunas do confronto, em um lugar só. */
@@ -235,6 +237,26 @@ const Confronto = styled.div`
   }
 `;
 
+/**
+ * Os dois cenários lado a lado, na mesma escala.
+ *
+ * É a escala compartilhada que faz o desenho funcionar: as barras são
+ * idênticas nos dois, porque a sobra por procedimento não muda com o
+ * plano de indicação. O que muda é a altura da linha tracejada, e é
+ * exatamente essa a leitura que a dobra quer entregar.
+ */
+const Desenhos = styled.div`
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 26px;
+  margin-bottom: 40px;
+
+  ${Media.TabletSmall} {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+`;
+
 export default function Indicacao({ dados }) {
   const { indicacao, economia } = dados;
 
@@ -247,6 +269,14 @@ export default function Indicacao({ dados }) {
 
   const cheio = cenario(economia.fixoMes);
   const piso = cenario(economia.fixoPiso);
+  const sobra = contribuicao(economia);
+
+  /**
+   * Os dois desenhos compartilham a contagem de barras do cenário mais
+   * longo. É o que mantém a escala comum: sem isso, a mesma sobra por
+   * procedimento sairia com alturas diferentes de um lado para o outro.
+   */
+  const barrasFixas = Math.max(5, cheio.empate + 2);
 
   return (
     <Dobra className="faixa-clara">
@@ -319,6 +349,36 @@ export default function Indicacao({ dados }) {
             </span>
           </div>
         </Confronto>
+
+        <Desenhos>
+          <div>
+            <Rotulo>{COLUNAS[0]}</Rotulo>
+            <Grafico
+              sobra={sobra}
+              custo={cheio.semestre}
+              empate={cheio.empate}
+              destacado={false}
+              barrasFixas={barrasFixas}
+              titulo="Ponto de equilíbrio com o fixo cheio"
+              legenda={`A linha tracejada, o custo do semestre, fica em ${brl(
+                cheio.semestre
+              )}.`}
+            />
+          </div>
+          <div>
+            <Rotulo>{COLUNAS[1]}</Rotulo>
+            <Grafico
+              sobra={sobra}
+              custo={piso.semestre}
+              empate={piso.empate}
+              barrasFixas={barrasFixas}
+              titulo="Ponto de equilíbrio com três indicações"
+              legenda={`Mesmas barras, e a linha desce para ${brl(
+                piso.semestre
+              )}.`}
+            />
+          </div>
+        </Desenhos>
 
         <Fecho>{indicacao.fecho}</Fecho>
       </Coluna>

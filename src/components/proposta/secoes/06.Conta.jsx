@@ -8,6 +8,7 @@ import {
   custoSemestre,
   procedimentosParaEmpatar,
 } from "../dados";
+import Grafico from "../grafico";
 import { Caixa, Coluna, Dobra, Media, Numero, Rotulo, Tabela } from "../style";
 
 /**
@@ -139,6 +140,14 @@ const Veredito = styled(Caixa)`
   }
 `;
 
+const Desenho = styled.div`
+  margin-top: 34px;
+  padding: clamp(20px, 3vw, 28px) clamp(18px, 3vw, 26px);
+  border: 1px solid var(--linha);
+  border-radius: 16px;
+  background: var(--superficie);
+`;
+
 const Fecho = styled.p`
   font-size: 1.02rem;
   line-height: 1.62;
@@ -250,6 +259,18 @@ export default function Conta({ dados }) {
             </Tabela>
           </Caixa>
         </Par>
+
+        <Desenho>
+          <Grafico
+            sobra={sobra}
+            custo={semestre}
+            empate={empate}
+            titulo="Ponto de equilíbrio do semestre"
+            legenda={`Cada barra é um procedimento, e a altura dela é o quanto sobrou somando os anteriores. A linha tracejada é o que o semestre inteiro custa: ${brl(
+              semestre
+            )}.`}
+          />
+        </Desenho>
 
         <Veredito>
           <Rotulo>

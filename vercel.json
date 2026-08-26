@@ -1,3 +1,7 @@
 {
-  "rewrites": [{ "source": "/((?!api/).*)", "destination": "/" }]
+  "rewrites": [
+    { "source": "/demo", "destination": "https://toka-demo-dash.vercel.app/demo" },
+    { "source": "/demo/:path*", "destination": "https://toka-demo-dash.vercel.app/demo/:path*" },
+    { "source": "/((?!api/|demo).*)", "destination": "/" }
+  ]
 }

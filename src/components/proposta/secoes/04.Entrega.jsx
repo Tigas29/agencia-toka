@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import { H2, Lead, Selo } from "../../../estilo/ds";
 import { brl } from "../dados";
+import Exemplo from "../exemplo";
 import { Coluna, Dobra, Media, Numero, Rotulo } from "../style";
 
 /**
@@ -67,6 +68,17 @@ const Item = styled.div`
     color: var(--acento);
     white-space: nowrap;
     text-align: right;
+  }
+
+  /* A prova atravessa as duas colunas: miniatura de arte e bolhas de
+     conversa não cabem na largura reservada ao texto, e espremê-las ali
+     devolveria imagens pequenas demais para provar coisa alguma. */
+  .prova {
+    grid-column: 1 / -1;
+  }
+
+  .prova:empty {
+    display: none;
   }
 
   ${Media.PhoneLarge} {
@@ -144,6 +156,12 @@ export default function Entrega({ dados }) {
                       <p className="detalhe">{item.detalhe}</p>
                     </div>
                     <span className="valor">{brl(item.valor)}</span>
+                    <div className="prova">
+                      <Exemplo
+                        exemplo={item.exemplo}
+                        amostras={dados.amostras}
+                      />
+                    </div>
                   </Item>
                 );
               })}

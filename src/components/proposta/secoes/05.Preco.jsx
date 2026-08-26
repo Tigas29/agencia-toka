@@ -16,66 +16,110 @@ import { Caixa, Coluna, Dobra, Linha, Media, Rotulo } from "../style";
 /**
  * Dobra 5, o preço.
  *
- * Ordem que não se inverte: o comparativo de quanto custaria separado
- * já passou na dobra anterior como valor de entrega, e o preço vem
- * agora. Mostrar o total avulso depois do preço seria justificar; antes
- * dele seria ancorar a cabeça da pessoa num número que não é o que ela
- * vai pagar.
+ * Ordem que não se inverte: o comparativo de quanto custaria contratar
+ * separado já passou na dobra anterior como valor de entrega, e o preço
+ * vem agora. Mostrar o total avulso depois do preço seria justificar;
+ * antes dele seria ancorar a cabeça da pessoa num número que não é o que
+ * ela vai pagar.
  *
- * A âncora aqui é o contrário da usual: o escopo cresce e o valor quase
- * não. É por isso que os R$ 2.500 combinados aparecem inteiros, e não
- * riscados como preço velho de vitrine.
+ * 🔑 A comparação aqui é de ESCOPO, não de preço. A versão anterior
+ * punha R$ 2.500 ao lado de R$ 2.700 contando a história da conversa
+ * ("a gente tinha combinado"), e lida sozinha, sem ninguém conduzindo,
+ * ela vira um aumento sendo justificado. Agora as duas colunas mostram
+ * quanta coisa cabe em cada valor: o olho compara a altura das listas
+ * antes de ler qualquer cifra, e a diferença de R$ 200 aparece como
+ * detalhe, que é o que ela é.
  */
 
-const Comparacao = styled.div`
+const Colunas = styled.div`
   display: grid;
-  grid-template-columns: 1fr auto 1fr;
-  align-items: center;
-  gap: 20px;
-  margin: 40px 0;
-
-  .seta {
-    font-family: "Poppins", sans-serif;
-    color: var(--tinta-fraca);
-    font-size: 1.4rem;
-    line-height: 1;
-  }
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin: 38px 0 30px;
+  align-items: start;
 
   ${Media.PhoneLarge} {
     grid-template-columns: 1fr;
-    gap: 14px;
-
-    .seta {
-      transform: rotate(90deg);
-      justify-self: start;
-    }
+    gap: 12px;
   }
 `;
 
-const Lado = styled.div`
-  p {
-    margin: 0;
-  }
+const Cartao = styled.div`
+  border: 1px solid
+    ${(p) => (p.$destaque ? "var(--acento-borda)" : "var(--linha)")};
+  background: ${(p) =>
+    p.$destaque ? "var(--acento-veu)" : "var(--superficie)"};
+  border-radius: 16px;
+  padding: clamp(20px, 2.6vw, 28px);
 
   .valor {
     font-family: "Poppins", sans-serif;
     font-weight: 600;
     font-variant-numeric: lining-nums proportional-nums;
     line-height: 1;
-    color: ${(p) => (p.$forte ? "var(--acento)" : "var(--tinta-fraca)")};
-    font-size: ${(p) =>
-      p.$forte ? "clamp(2.4rem, 6.4vw, 3.4rem)" : "clamp(1.6rem, 4vw, 2.1rem)"};
-    margin-bottom: 8px;
+    font-size: clamp(1.9rem, 5vw, 2.6rem);
+    color: ${(p) => (p.$destaque ? "var(--acento)" : "var(--tinta-fraca)")};
+    margin: 0 0 4px;
   }
 
-  .escopo {
-    font-size: 0.92rem;
+  .por-mes {
+    font-size: 0.84rem;
     color: var(--tinta-fraca);
+    margin: 0 0 6px;
+  }
+
+  .rotulo {
+    font-family: "Poppins", sans-serif;
+    font-size: 0.94rem;
+    font-weight: 500;
+    color: var(--tinta);
+    margin: 0 0 18px;
+  }
+
+  ul {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 18px;
+  }
+
+  li {
+    position: relative;
+    padding-left: 22px;
+    margin-bottom: 9px;
+    font-size: 0.93rem;
+    line-height: 1.45;
+    color: var(--tinta-corpo);
+
+    /* Marca de conferido desenhada com duas bordas giradas: um caractere
+       de visto muda de forma conforme a fonte que o sistema tiver. */
+    &::before {
+      content: "";
+      position: absolute;
+      left: 2px;
+      top: 0.42em;
+      width: 5px;
+      height: 9px;
+      border-right: 1.5px solid var(--acento);
+      border-bottom: 1.5px solid var(--acento);
+      transform: rotate(42deg);
+    }
+  }
+
+  .nota {
+    font-size: 0.86rem;
+    color: var(--tinta-fraca);
+    margin: 0;
+    padding-top: 14px;
+    border-top: 1px solid var(--linha);
+  }
+
+  ${Media.PhoneLarge} {
+    padding: 18px 17px;
   }
 `;
 
 const Bloco = styled(Caixa)`
-  margin-top: 36px;
+  margin-top: 30px;
 
   h3 {
     font-family: "Poppins", sans-serif;
@@ -145,45 +189,46 @@ const Custos = styled.div`
 `;
 
 export default function Preco({ dados }) {
-  const { preco, economia, entrega } = dados;
-  const quantasCombinadas = entrega.grupos[0].itens.length;
-  const quantasTotal = entrega.grupos.reduce((s, g) => s + g.itens.length, 0);
+  const { preco, entrega } = dados;
 
+  /**
+   * As listas das duas colunas saem dos próprios grupos de entregáveis:
+   * a primeira mostra o grupo de cinco, a segunda mostra as dez. Digitar
+   * de novo aqui abriria a porta para a dobra do preço prometer uma
+   * coisa e a dos entregáveis listar outra.
+   */
+  const primeiroGrupo = entrega.grupos[0].itens.map((i) => i.nome);
+  const todas = entrega.grupos.flatMap((g) => g.itens.map((i) => i.nome));
+  const listas = [primeiroGrupo, todas];
 
   return (
     <Dobra className="faixa-clara">
       <Coluna>
         <Selo>{preco.selo}</Selo>
-        <H2>{preco.tituloAncora}</H2>
+        <H2>{preco.titulo}</H2>
 
-        {preco.linhasAncora.map((linha) => (
-          <Linha key={linha}>
-            {linha}
-          </Linha>
+        {preco.linhasAbertura.map((linha) => (
+          <Linha key={linha}>{linha}</Linha>
         ))}
 
-        <Comparacao>
-          <Lado>
-            <p className="valor">{brl(preco.ancora)}</p>
-            <p className="escopo">
-              por mês, {quantasCombinadas} linhas
-            </p>
-          </Lado>
-          <span className="seta" aria-hidden="true">
-            &rarr;
-          </span>
-          <Lado $forte>
-            <p className="valor">{brl(economia.fixoMes)}</p>
-            <p className="escopo">
-              por mês, as {quantasTotal} linhas
-            </p>
-          </Lado>
-        </Comparacao>
+        <Colunas>
+          {preco.colunas.map((coluna, i) => (
+            <Cartao key={coluna.valor} $destaque={coluna.destaque}>
+              <p className="valor">{brl(coluna.valor)}</p>
+              <p className="por-mes">por mês</p>
+              <p className="rotulo">{coluna.rotulo}</p>
+              <ul>
+                {listas[i].map((nome) => (
+                  <li key={nome}>{nome}</li>
+                ))}
+              </ul>
+              <p className="nota">{coluna.nota}</p>
+            </Cartao>
+          ))}
+        </Colunas>
 
         {preco.linhasPreco.map((linha) => (
-          <Linha key={linha}>
-            {linha}
-          </Linha>
+          <Linha key={linha}>{linha}</Linha>
         ))}
 
         <Bloco>

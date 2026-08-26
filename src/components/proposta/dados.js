@@ -13,6 +13,10 @@
  * topo, porque aqui há valor a construir antes de pedir qualquer coisa).
  */
 
+import arteEmanuelAvaliacao from "../../assets/proposta/arte-emanuel-avaliacao.webp";
+import arteEmanuelSolucoes from "../../assets/proposta/arte-emanuel-solucoes.webp";
+import arteInnovaMapa from "../../assets/proposta/arte-innova-mapa.webp";
+
 /* ── Cálculo ────────────────────────────────────────────────────────
    Uma conta só, usada pela seção da conta, pela calculadora e pelo
    comparativo do plano de indicação. Escrever a mesma fórmula em três
@@ -46,6 +50,66 @@ export const brl = (v) =>
   v.toLocaleString("pt-BR", { style: "currency", currency: "BRL", minimumFractionDigits: 0, maximumFractionDigits: 0 });
 
 /* ── Propostas ───────────────────────────────────────────────────── */
+
+/**
+ * Material que os entregáveis mostram como exemplo.
+ *
+ * Mora fora da lista de itens porque é volumoso e porque é reaproveitável:
+ * a próxima proposta aponta para as mesmas peças. O item guarda só a
+ * chave, e a seção resolve.
+ *
+ * ⚠️ Nada de antes e depois aqui, mesmo tendo material. A própria copy
+ * desta página promete peça dentro da Resolução do CFM, e uma arte de
+ * antes e depois na dobra ao lado desmentiria a frase.
+ */
+const AMOSTRAS = {
+  artes: [
+    {
+      src: arteEmanuelAvaliacao,
+      alt: "Anúncio de feed sobre avaliação de transplante capilar, com o título 'O seu caso tem um número'",
+      legenda: "Feed · transplante capilar",
+    },
+    {
+      src: arteEmanuelSolucoes,
+      alt: "Anúncio de feed com o título 'Pare de apostar em soluções que levam anos para dizer se funcionam'",
+      legenda: "Feed · quebra de objeção",
+    },
+    {
+      src: arteInnovaMapa,
+      alt: "Peça de conteúdo listando cinco sinais de dor causada por má postura na cadeira",
+      legenda: "Conteúdo · campanha institucional",
+    },
+  ],
+
+  /**
+   * Conversa escrita à mão, e não print de atendimento real: mostrar
+   * conversa de paciente numa proposta seria exatamente o oposto do que
+   * a página promete sobre o cuidado com dado de quem procura o médico.
+   */
+  conversa: [
+    { de: "lead", texto: "Oi, vi o anúncio. Quanto custa a cirurgia?", hora: "23:41" },
+    {
+      de: "ia",
+      texto:
+        "Boa noite! Sou a assistente do consultório. O valor depende do que a avaliação encontrar, então quem fecha isso é o doutor na consulta. Posso te adiantar como funciona?",
+      hora: "23:41",
+    },
+    { de: "lead", texto: "pode sim", hora: "23:42" },
+    {
+      de: "ia",
+      texto:
+        "A avaliação leva uns 40 minutos e é ela que define se o seu caso tem indicação. Tenho quinta às 14h ou sexta às 9h30. Qual fica melhor?",
+      hora: "23:42",
+    },
+    { de: "lead", texto: "quinta 14h", hora: "23:43" },
+    {
+      de: "ia",
+      texto:
+        "Agendado. Vou te mandar o endereço e um lembrete na quarta. Qualquer coisa antes disso, é só chamar aqui.",
+      hora: "23:43",
+    },
+  ],
+};
 
 const PAULO = {
   slug: "paulo",
@@ -103,10 +167,15 @@ const PAULO = {
       "Ao lado de cada uma está o que ela custaria contratada separada, no semestre. São valores de mercado, não número inflado para impressionar: você pode conferir um por um.",
     grupos: [
       {
-        rotulo: "O que a gente combinou",
+        rotulo: "O que os R$ 2.500 costumam comprar",
         itens: [
           {
             nome: "Gestão de tráfego pago",
+            exemplo: {
+              tipo: "link",
+              url: "/demo",
+              rotulo: "ver a tela de tráfego",
+            },
             promessa:
               "para que todo mês entre gente nova que ainda não te conhece, com custo por contato medido",
             detalhe:
@@ -115,6 +184,11 @@ const PAULO = {
           },
           {
             nome: "Ajuste do CRM que você já usa",
+            exemplo: {
+              tipo: "link",
+              url: "/demo",
+              rotulo: "ver o funil num painel real",
+            },
             promessa:
               "para que nenhum contato fique sem dono, sem prazo e sem resposta",
             detalhe:
@@ -123,6 +197,11 @@ const PAULO = {
           },
           {
             nome: "Página de venda",
+            exemplo: {
+              tipo: "link",
+              url: "https://dra-mayara-olhar-renovado.vercel.app/blefaroplastia-cascavel",
+              rotulo: "ver uma página no ar",
+            },
             promessa:
               "para que quem clica no anúncio chegue num lugar que fecha, e não numa vitrine",
             detalhe:
@@ -139,6 +218,11 @@ const PAULO = {
           },
           {
             nome: "Copy de anúncio, página e conteúdo",
+            exemplo: {
+              tipo: "link",
+              url: "https://innovamovimento.com.br/corpo-de-gabinete",
+              rotulo: "ver uma página escrita por mim",
+            },
             promessa:
               "para que o paciente entenda o valor antes de perguntar o preço",
             detalhe:
@@ -148,10 +232,19 @@ const PAULO = {
         ],
       },
       {
-        rotulo: "O que eu vou colocar junto",
+        rotulo: "O que entra junto, por R$ 200 a mais",
         itens: [
           {
             nome: "Site completo",
+            exemplo: {
+              tipo: "link",
+              url: "https://drluisfelipebortolan.com",
+              rotulo: "ver o site do Dr. Luís Felipe",
+              segundo: {
+                url: "https://ibrefrativa.com.br",
+                rotulo: "e o do Instituto Brasileiro de Refrativa",
+              },
+            },
             promessa:
               "para que quem te procura no Google veja o mesmo nível que vê no seu consultório",
             detalhe:
@@ -160,6 +253,7 @@ const PAULO = {
           },
           {
             nome: "Arte dos estáticos",
+            exemplo: { tipo: "imagem", chave: "artes" },
             promessa:
               "para que toda peça que sai com o seu nome tenha a mesma cara",
             detalhe:
@@ -175,6 +269,7 @@ const PAULO = {
           },
           {
             nome: "Assistente de IA no WhatsApp",
+            exemplo: { tipo: "conversa", chave: "conversa" },
             promessa:
               "para que quem te chama às onze da noite de domingo seja atendido na hora",
             detalhe:
@@ -183,6 +278,11 @@ const PAULO = {
           },
           {
             nome: "Dashboard",
+            exemplo: {
+              tipo: "link",
+              url: "/demo",
+              rotulo: "abrir o painel de demonstração",
+            },
             promessa:
               "para que você decida com número, e não com sensação",
             detalhe:
@@ -197,15 +297,32 @@ const PAULO = {
 
   preco: {
     selo: "O preço",
-    ancora: 2500,
-    tituloAncora: "A gente tinha combinado R$ 2.500 pelas cinco primeiras.",
-    linhasAncora: [
-      "Esse valor está de pé. Eu não vim aqui aumentar preço.",
-      "Só que eu olhei a sua operação e cinco linhas não fecham o caminho. Anúncio sem dashboard é chute caro. CRM organizado sem ninguém atendendo às onze da noite é lead frio na segunda de manhã.",
-      "Então eu vou fazer o seguinte: entra tudo. As dez.",
+    /**
+     * O enquadramento é de mercado, não de conversa. Dizer "combinamos
+     * 2.500 e agora são 2.700" lido sozinho, sem ninguém para conduzir,
+     * é um aumento sendo justificado. A faixa desloca a comparação para
+     * onde ela ajuda: o valor é o de sempre, o que muda é o que cabe.
+     */
+    faixa: { de: 2500, ate: 3000 },
+    titulo: "Assessoria de marketing médico fica entre R$ 2.500 e R$ 3.000 por mês.",
+    linhasAbertura: [
+      "Essa é a faixa, e ela vale para quase todo mundo que faz isso. O que muda de uma proposta para outra não é o valor. É quanta coisa cabe dentro dele.",
+    ],
+    colunas: [
+      {
+        valor: 2500,
+        rotulo: "O que a faixa costuma comprar",
+        nota: "Cinco frentes. Serve, e para aí.",
+      },
+      {
+        valor: 2700,
+        rotulo: "O que entra aqui",
+        nota: "As dez. O caminho fecha.",
+        destaque: true,
+      },
     ],
     linhasPreco: [
-      "Duzentos reais a mais do que a gente tinha falado, com o dobro de escopo.",
+      "Duzentos reais separam uma coluna da outra.",
     ],
     comissao: {
       titulo: "Mais 5% sobre cada procedimento que sair daqui.",
@@ -331,6 +448,8 @@ const PAULO = {
   },
 
   whatsapp: "5511996865057",
+
+  amostras: AMOSTRAS,
 };
 
 const PROPOSTAS = {
