@@ -12,6 +12,10 @@ const Lp = lazy(() => import("./pages/Lp/index"));
 const Habitat = lazy(() => import("./pages/habitat/index"));
 const Proposta = lazy(() => import("./pages/proposta/index"));
 
+/* Home v2: a mesma casa na fundação de marca nova, no ar em paralelo com
+   a de `/` para as duas poderem ser lidas lado a lado antes da troca. */
+const HomeV2 = lazy(() => import("./pages/home-v2/index"));
+
 export function Router() {
   return (
     <Suspense fallback={<Loading />}>
@@ -24,6 +28,7 @@ export function Router() {
         <Route path="/LandingPage" element={<Lp />} />
         <Route path="/habitat" element={<Habitat />} />
         <Route path="/proposta/:cliente" element={<Proposta />} />
+        <Route path="/v2" element={<HomeV2 />} />
         <Route path="/" element={<Home />} />
       </Routes>
     </Suspense>
