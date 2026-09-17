@@ -146,22 +146,9 @@ const CAMPOS = [
     ],
   },
   // /gargalo (17/set/2026). Rótulos em sincronia com src/components/gargalo/spec.js.
-  {
-    chave: "especialidade",
-    name: "Especialidade",
-    type: "select",
-    enums: [
-      "Cirurgia Plástica",
-      "Oftalmologia",
-      "Dermatologia",
-      "Odontologia",
-      "Ortopedia",
-      "Ginecologia",
-      "Outra especialidade médica",
-      "Outra área da saúde",
-      "Não sou da área da saúde",
-    ],
-  },
+  // "Especialidade" já existia na conta como TEXTO (o SDR da Ana grava
+  // nele). O script só o localiza pelo nome e mapeia; nada de select.
+  { chave: "especialidade", name: "Especialidade", type: "text" },
   {
     chave: "origem_paciente",
     name: "De onde vem o paciente",

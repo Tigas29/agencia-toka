@@ -88,10 +88,11 @@ const origemDe = (p) => ORIGENS[p.origem] || ORIGENS.padrao;
 
 const camposDoLead = (p) => {
   const lista = [
-    // /gargalo: os dois campos abaixo só existem no mapa depois de
-    // scripts/kommo-criar-campos.mjs rodar; antes disso `selecao`
-    // devolve null e o resto do card entra igual.
-    selecao("especialidade", p.especialidade_label),
+    // /gargalo. "Especialidade" é o campo de texto que o SDR já usa na
+    // conta (2447782), por isso vai como texto e não como enum. O select
+    // de origem só existe no mapa depois de kommo-criar-campos.mjs
+    // rodar; antes disso `selecao` devolve null e o card entra igual.
+    texto(CAMPOS.especialidade, p.especialidade_label),
     selecao("origem_paciente", p.origem_paciente_label),
     selecao("procedimento_principal", p.procedimento_principal_label),
     selecao("registro_profissional", p.registro_profissional_label),
