@@ -211,8 +211,11 @@ export const Bolha = styled.div`
   ${(p) =>
     p.$eu &&
     css`
+      /* A resposta do médico é a tinta da faixa sobre o fundo: navy sólido
+         no papel, creme no navy. O ouro fica para acento (pílula, barra,
+         botão de enviar), senão a conversa vira um tabuleiro amarelo. */
       border-radius: 18px 18px 5px 18px;
-      background: var(--acento);
+      background: var(--tinta);
       color: var(--fundo);
       font-family: "Poppins", sans-serif;
       font-weight: 500;

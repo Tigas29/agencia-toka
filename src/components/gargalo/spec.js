@@ -21,16 +21,21 @@
  * nunca de resultado clínico.
  */
 
+import fotoTiago from "../../assets/homepage/tiago-avatar.jpg";
+
 export const TOPO = {
   titulo: "Onde está o seu gargalo",
   lgpd: "Ao continuar, você concorda que eu use esses dados para falar com você sobre a sua operação. Nada é repassado a terceiros.",
 };
 
-/** Quem fala. A foto entra por aqui quando existir. */
+/**
+ * Quem fala. A foto é a do perfil @tiagosantos.med (150px, o avatar
+ * tem 32px). Sem foto, o círculo mostra a inicial.
+ */
 export const AUTOR = {
   nome: "Tiago",
   inicial: "T",
-  foto: null,
+  foto: fotoTiago,
 };
 
 export const ABERTURA = [

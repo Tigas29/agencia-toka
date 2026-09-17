@@ -40,7 +40,7 @@ import {
  */
 
 /** Direção visual: "faixa-escura" (A) ou "faixa-clara" (B). */
-const TEMA = "faixa-escura";
+const TEMA = "faixa-clara";
 
 const PROGRESSO_CHAVE = "toka-gargalo-progresso-v1";
 
@@ -58,23 +58,37 @@ const Fala = ({ texto }) => {
 };
 
 const Seta = () => (
-  <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
-    <path d="M8 13V3M3.5 7.5 8 3l4.5 4.5" strokeLinecap="round" strokeLinejoin="round" />
+  <svg
+    viewBox="0 0 16 16"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    aria-hidden="true"
+  >
+    <path
+      d="M8 13V3M3.5 7.5 8 3l4.5 4.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
   </svg>
 );
 
 const linkWhatsApp = (nome) =>
   `https://api.whatsapp.com/send/?phone=${WHATSAPP.numero}&text=${encodeURIComponent(
-    WHATSAPP.mensagem(nome)
+    WHATSAPP.mensagem(nome),
   )}&type=phone_number&app_absent=0`;
 
 /* Uma fala emenda na anterior quando a anterior é do mesmo autor: o
    avatar some e a bolha encosta. É o histórico que decide, não quem
    chama, para a remontagem e o fluxo vivo baterem. */
-const emendar = (h, fala) => [...h, { ...fala, continua: h[h.length - 1]?.de === fala.de }];
+const emendar = (h, fala) => [
+  ...h,
+  { ...fala, continua: h[h.length - 1]?.de === fala.de },
+];
 
 const mostrarResposta = (passo, valor) => {
-  if (passo.tipo === "chips") return passo.choices.find((c) => c.id === valor)?.label || valor;
+  if (passo.tipo === "chips")
+    return passo.choices.find((c) => c.id === valor)?.label || valor;
   if (passo.tipo === "instagram") return `@${valor}`;
   return valor;
 };
@@ -130,7 +144,7 @@ export default function Gargalo() {
       }
       return true;
     },
-    [falar, vivo]
+    [falar, vivo],
   );
 
   const abrirPasso = useCallback(
@@ -142,7 +156,7 @@ export default function Gargalo() {
       setErro("");
       setDocaAberta(true);
     },
-    [dizer]
+    [dizer],
   );
 
   // ── Boot: UTM, lead_id, retomada ──────────────────────────────────
@@ -161,12 +175,14 @@ export default function Gargalo() {
       // remonta a conversa até o passo salvo, sem pausas
       const r = salvo.respostas || {};
       let h = [];
-      const bot = (t) => (h = emendar(h, { de: "bot", texto: preencher(t, r) }));
+      const bot = (t) =>
+        (h = emendar(h, { de: "bot", texto: preencher(t, r) }));
       ABERTURA.forEach(bot);
       for (let i = 0; i < salvo.passo; i += 1) {
         const p = TRILHA[i];
         p.falas.forEach(bot);
-        if (r[p.id]) h = emendar(h, { de: "eu", texto: mostrarResposta(p, r[p.id]) });
+        if (r[p.id])
+          h = emendar(h, { de: "eu", texto: mostrarResposta(p, r[p.id]) });
         (p.depois || []).forEach(bot);
       }
       TRILHA[salvo.passo].falas.forEach(bot);
@@ -199,7 +215,7 @@ export default function Gargalo() {
         milestoneEnviado: milestoneEnviado.current,
         kommoLeadId: getKommoLeadId(),
       },
-      PROGRESSO_CHAVE
+      PROGRESSO_CHAVE,
     );
   }, [passo, respostas, fim, total]);
 
@@ -210,7 +226,10 @@ export default function Gargalo() {
 
   useEffect(() => {
     if (!docaAberta) return;
-    const t = setTimeout(() => inputRef.current?.focus({ preventScroll: true }), 120);
+    const t = setTimeout(
+      () => inputRef.current?.focus({ preventScroll: true }),
+      120,
+    );
     return () => clearTimeout(t);
   }, [docaAberta]);
 
@@ -239,14 +258,22 @@ export default function Gargalo() {
         telefone: somenteDigitos(respostasFinais.telefone),
       };
       track("Lead", { qualificado: aprovado, score: payload.score }, user);
-      if (aprovado) track("CompleteRegistration", { qualificado: true, score: payload.score }, user);
+      if (aprovado)
+        track(
+          "CompleteRegistration",
+          { qualificado: true, score: payload.score },
+          user,
+        );
 
       limparProgresso(PROGRESSO_CHAVE);
       setPasso(total);
-      const ok = await dizer(FECHO[aprovado ? "aprovado" : "reprovado"].falas, respostasFinais);
+      const ok = await dizer(
+        FECHO[aprovado ? "aprovado" : "reprovado"].falas,
+        respostasFinais,
+      );
       if (ok) setFim({ aprovado });
     },
-    [dizer, total]
+    [dizer, total],
   );
 
   const dispararMilestone = useCallback((respostasAtuais) => {
@@ -260,7 +287,11 @@ export default function Gargalo() {
     });
     enviarLead(payload).then(() => {
       const salvo = carregarProgresso(PROGRESSO_CHAVE);
-      if (salvo) salvarProgresso({ ...salvo, kommoLeadId: getKommoLeadId() }, PROGRESSO_CHAVE);
+      if (salvo)
+        salvarProgresso(
+          { ...salvo, kommoLeadId: getKommoLeadId() },
+          PROGRESSO_CHAVE,
+        );
     });
     track("InitiateCheckout", { etapa: "milestone_instagram" });
   }, []);
@@ -283,7 +314,10 @@ export default function Gargalo() {
       setRespostas(atualizadas);
       setDocaAberta(false);
       setErro("");
-      if (v) setHistorico((h) => emendar(h, { de: "eu", texto: mostrarResposta(atual, v) }));
+      if (v)
+        setHistorico((h) =>
+          emendar(h, { de: "eu", texto: mostrarResposta(atual, v) }),
+        );
 
       if (atual.isMilestone) dispararMilestone(atualizadas);
 
@@ -304,7 +338,18 @@ export default function Gargalo() {
       if (vivo(token)) abrirPasso(passo + 1, atualizadas);
       return undefined;
     },
-    [atual, docaAberta, respostas, passo, total, dispararMilestone, dizer, finalizar, abrirPasso, vivo]
+    [
+      atual,
+      docaAberta,
+      respostas,
+      passo,
+      total,
+      dispararMilestone,
+      dizer,
+      finalizar,
+      abrirPasso,
+      vivo,
+    ],
   );
 
   const enviarTexto = (e) => {
@@ -325,7 +370,10 @@ export default function Gargalo() {
 
     if (atual.tipo === "chips") {
       return (
-        <S.Doca onSubmit={(e) => e.preventDefault()} aria-label={preencher(atual.falas[0], respostas)}>
+        <S.Doca
+          onSubmit={(e) => e.preventDefault()}
+          aria-label={preencher(atual.falas[0], respostas)}
+        >
           <S.Chips role="group">
             {atual.choices.map((c) => (
               <S.Chip key={c.id} type="button" onClick={() => responder(c.id)}>
@@ -349,7 +397,8 @@ export default function Gargalo() {
               placeholder={atual.placeholder}
               onChange={(e) => digitar(e.target.value)}
               onKeyDown={(e) => {
-                if (e.key === "Enter" && (e.metaKey || e.ctrlKey)) enviarTexto(e);
+                if (e.key === "Enter" && (e.metaKey || e.ctrlKey))
+                  enviarTexto(e);
               }}
             />
             <div className="acoes">
@@ -358,7 +407,11 @@ export default function Gargalo() {
                   {atual.pular}
                 </S.Pular>
               )}
-              <S.Enviar type="submit" disabled={!valor.trim()} aria-label="Enviar">
+              <S.Enviar
+                type="submit"
+                disabled={!valor.trim()}
+                aria-label="Enviar"
+              >
                 <Seta />
               </S.Enviar>
             </div>
@@ -369,7 +422,11 @@ export default function Gargalo() {
     }
 
     const inputMode =
-      atual.tipo === "telefone" ? "tel" : atual.tipo === "email" ? "email" : "text";
+      atual.tipo === "telefone"
+        ? "tel"
+        : atual.tipo === "email"
+          ? "email"
+          : "text";
 
     return (
       <S.Doca onSubmit={enviarTexto}>
@@ -379,10 +436,22 @@ export default function Gargalo() {
           <input
             id={`campo-${atual.id}`}
             ref={inputRef}
-            type={atual.tipo === "email" ? "email" : atual.tipo === "telefone" ? "tel" : "text"}
+            type={
+              atual.tipo === "email"
+                ? "email"
+                : atual.tipo === "telefone"
+                  ? "tel"
+                  : "text"
+            }
             inputMode={inputMode}
             autoComplete={
-              atual.id === "nome" ? "name" : atual.id === "email" ? "email" : atual.id === "telefone" ? "tel" : "off"
+              atual.id === "nome"
+                ? "name"
+                : atual.id === "email"
+                  ? "email"
+                  : atual.id === "telefone"
+                    ? "tel"
+                    : "off"
             }
             autoCapitalize={atual.tipo === "texto" ? "words" : "none"}
             value={valor}
@@ -404,78 +473,92 @@ export default function Gargalo() {
   return (
     <>
       <S.Tokens />
-      <S.Page className={`toka ${TEMA}`}>
-        <S.Barra aria-hidden="true">
-          <div style={{ width: `${(respondidos / total) * 100}%` }} />
-        </S.Barra>
+      {/* o DS escreve ".toka .faixa-clara" (descendente), então a faixa
+          não pode estar no mesmo elemento que ".toka" */}
+      <div className="toka">
+        <S.Page className={TEMA}>
+          <S.Barra aria-hidden="true">
+            <div style={{ width: `${(respondidos / total) * 100}%` }} />
+          </S.Barra>
 
-        <S.Topo>
-          <div className="marca">
-            <img src={logo} alt="Toka" />
-            <h1>{TOPO.titulo}</h1>
-          </div>
-          <S.Pilula data-bump={bump} aria-live="polite">
-            {respondidos} de {total}
-          </S.Pilula>
-        </S.Topo>
+          <S.Topo>
+            <div className="marca">
+              <img src={logo} alt="Toka" />
+              <h1>{TOPO.titulo}</h1>
+            </div>
+            <S.Pilula data-bump={bump} aria-live="polite">
+              {respondidos} de {total}
+            </S.Pilula>
+          </S.Topo>
 
-        <S.Fio aria-live="polite">
-          {historico.map((fala, i) =>
-            fala.de === "eu" ? (
-              <S.Linha key={i} $eu>
-                <S.Bolha $eu>{fala.texto}</S.Bolha>
-              </S.Linha>
-            ) : (
-              <S.Linha key={i} $continua={fala.continua}>
+          <S.Fio aria-live="polite">
+            {historico.map((fala, i) =>
+              fala.de === "eu" ? (
+                <S.Linha key={i} $eu>
+                  <S.Bolha $eu>{fala.texto}</S.Bolha>
+                </S.Linha>
+              ) : (
+                <S.Linha key={i} $continua={fala.continua}>
+                  <S.Avatar aria-hidden="true">
+                    {AUTOR.foto ? (
+                      <img src={AUTOR.foto} alt="" />
+                    ) : (
+                      AUTOR.inicial
+                    )}
+                  </S.Avatar>
+                  <S.Bolha>
+                    <Fala texto={fala.texto} />
+                  </S.Bolha>
+                </S.Linha>
+              ),
+            )}
+
+            {digitando && (
+              <S.Linha
+                $continua={historico[historico.length - 1]?.de === "bot"}
+              >
                 <S.Avatar aria-hidden="true">
                   {AUTOR.foto ? <img src={AUTOR.foto} alt="" /> : AUTOR.inicial}
                 </S.Avatar>
-                <S.Bolha>
-                  <Fala texto={fala.texto} />
-                </S.Bolha>
+                <S.Digitando aria-label={`${AUTOR.nome} está digitando`}>
+                  <i />
+                  <i />
+                  <i />
+                </S.Digitando>
               </S.Linha>
-            )
-          )}
+            )}
 
-          {digitando && (
-            <S.Linha $continua={historico[historico.length - 1]?.de === "bot"}>
-              <S.Avatar aria-hidden="true">
-                {AUTOR.foto ? <img src={AUTOR.foto} alt="" /> : AUTOR.inicial}
-              </S.Avatar>
-              <S.Digitando aria-label={`${AUTOR.nome} está digitando`}>
-                <i />
-                <i />
-                <i />
-              </S.Digitando>
-            </S.Linha>
-          )}
+            {doca()}
 
-          {doca()}
+            {fim && (
+              <S.Fim>
+                {fim.aprovado ? (
+                  <S.Cta
+                    as="a"
+                    href={linkWhatsApp(primeiroNome(respostas.nome))}
+                    target="_blank"
+                    rel="noreferrer"
+                    $tamanho="medio"
+                    onClick={() => track("Contact", { canal: "whatsapp" })}
+                  >
+                    {FECHO.aprovado.botao}
+                  </S.Cta>
+                ) : (
+                  <S.Cta
+                    type="button"
+                    $tamanho="medio"
+                    onClick={() => navigate("/obrigado")}
+                  >
+                    {FECHO.reprovado.botao}
+                  </S.Cta>
+                )}
+              </S.Fim>
+            )}
 
-          {fim && (
-            <S.Fim>
-              {fim.aprovado ? (
-                <S.Cta
-                  as="a"
-                  href={linkWhatsApp(primeiroNome(respostas.nome))}
-                  target="_blank"
-                  rel="noreferrer"
-                  $tamanho="medio"
-                  onClick={() => track("Contact", { canal: "whatsapp" })}
-                >
-                  {FECHO.aprovado.botao}
-                </S.Cta>
-              ) : (
-                <S.Cta type="button" $tamanho="medio" onClick={() => navigate("/obrigado")}>
-                  {FECHO.reprovado.botao}
-                </S.Cta>
-              )}
-            </S.Fim>
-          )}
-
-          <S.Sentinela ref={fimRef} />
-        </S.Fio>
-      </S.Page>
+            <S.Sentinela ref={fimRef} />
+          </S.Fio>
+        </S.Page>
+      </div>
     </>
   );
 }
