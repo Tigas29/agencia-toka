@@ -11,11 +11,13 @@
     "vende_protocolo_completo": 2448194,
     "score_rotulo": 2448196,
     "motivo_reprovacao": 2448198,
+    "especialidade": 2447782,
     "score": 2448200,
     "instagram": 2448202,
     "site_atual": 2448204,
     "desafio_principal": 2448206,
-    "lead_id": 2448208
+    "lead_id": 2448208,
+    "origem_paciente": 2456202
   },
   "enums": {
     "procedimento_principal": {
@@ -78,6 +80,14 @@
       "volume_abaixo_do_corte": 1842554,
       "dono_de_rede": 1842556,
       "nao_vende_protocolo_completo": 1842558
+    },
+    "origem_paciente": {
+      "Indicação de paciente ou colega": 1855324,
+      "Instagram, sem anúncio": 1855326,
+      "Anúncio (Meta ou Google)": 1855328,
+      "Google, busca e ficha": 1855330,
+      "Convênio": 1855332,
+      "Não sei dizer": 1855334
     }
   }
 }

@@ -145,6 +145,23 @@ const CAMPOS = [
       "nao_vende_protocolo_completo",
     ],
   },
+  // /gargalo (17/set/2026). Rótulos em sincronia com src/components/gargalo/spec.js.
+  // "Especialidade" já existia na conta como TEXTO (o SDR da Ana grava
+  // nele). O script só o localiza pelo nome e mapeia; nada de select.
+  { chave: "especialidade", name: "Especialidade", type: "text" },
+  {
+    chave: "origem_paciente",
+    name: "De onde vem o paciente",
+    type: "select",
+    enums: [
+      "Indicação de paciente ou colega",
+      "Instagram, sem anúncio",
+      "Anúncio (Meta ou Google)",
+      "Google, busca e ficha",
+      "Convênio",
+      "Não sei dizer",
+    ],
+  },
   { chave: "score", name: "Score da aplicação", type: "numeric" },
   { chave: "instagram", name: "Instagram", type: "text" },
   { chave: "site_atual", name: "Site atual", type: "url" },

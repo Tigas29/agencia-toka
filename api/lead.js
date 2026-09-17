@@ -1,5 +1,5 @@
 /**
- * Recebe o lead de /aplicacao e entrega no Kommo da Toka.
+ * Recebe o lead de /aplicacao e de /gargalo e entrega no Kommo da Toka.
  *
  * Roda no servidor da Vercel, e não no navegador, porque a chamada ao
  * Kommo carrega o token. Do lado do cliente ele ficaria legível no
@@ -75,8 +75,25 @@ const selecao = (chave, rotulo) => {
  */
 const semEmoji = (s) => (s || "").replace(/[^\p{L}\p{N}$.,\s-]/gu, "").trim();
 
+/**
+ * Cada formulário tem a própria tag e o próprio nome de card, para o
+ * funil separar de onde o médico veio sem abrir o card. O campo
+ * `origem` do payload decide; sem ele, é a /aplicacao de sempre.
+ */
+const ORIGENS = {
+  "form-gargalo": { tag: "aplicacao-gargalo", nome: "Gargalo" },
+  padrao: { tag: "aplicacao-blefaro", nome: "Aplicação blefaro" },
+};
+const origemDe = (p) => ORIGENS[p.origem] || ORIGENS.padrao;
+
 const camposDoLead = (p) => {
   const lista = [
+    // /gargalo. "Especialidade" é o campo de texto que o SDR já usa na
+    // conta (2447782), por isso vai como texto e não como enum. O select
+    // de origem só existe no mapa depois de kommo-criar-campos.mjs
+    // rodar; antes disso `selecao` devolve null e o card entra igual.
+    texto(CAMPOS.especialidade, p.especialidade_label),
+    selecao("origem_paciente", p.origem_paciente_label),
     selecao("procedimento_principal", p.procedimento_principal_label),
     selecao("registro_profissional", p.registro_profissional_label),
     selecao("urgencia", semEmoji(p.urgencia_label)),
@@ -141,11 +158,12 @@ const buscarPorLeadId = async (leadId) => {
 const criarLead = async (p, { aprovado, incompleto }) => {
   const contatoId = await criarContato(p);
 
-  const tags = [{ name: "aplicacao-blefaro" }];
+  const origem = origemDe(p);
+  const tags = [{ name: origem.tag }];
   tags.push({ name: incompleto ? "incompleto" : aprovado ? "qualificado" : "reprovado" });
 
   const lead = {
-    name: `Aplicação blefaro · ${p.nome || "sem nome"}`,
+    name: `${origem.nome} · ${p.nome || "sem nome"}`,
     pipeline_id: PIPELINE,
     status_id: !incompleto && !aprovado ? STATUS_INVALIDO : STATUS_ENTRADA,
     custom_fields_values: camposDoLead(p),
@@ -160,16 +178,17 @@ const criarLead = async (p, { aprovado, incompleto }) => {
 };
 
 const atualizarLead = async (id, p, { aprovado }) => {
+  const origem = origemDe(p);
   await kommo(`/leads/${id}`, {
     method: "PATCH",
     body: JSON.stringify({
-      name: `Aplicação blefaro · ${p.nome || "sem nome"}`,
+      name: `${origem.nome} · ${p.nome || "sem nome"}`,
       status_id: aprovado ? STATUS_ENTRADA : STATUS_INVALIDO,
       custom_fields_values: camposDoLead(p),
       _embedded: {
         // substitui as tags: sai 'incompleto', entra o veredito
         tags: [
-          { name: "aplicacao-blefaro" },
+          { name: origem.tag },
           { name: aprovado ? "qualificado" : "reprovado" },
         ],
       },

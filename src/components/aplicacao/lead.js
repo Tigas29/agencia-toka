@@ -152,25 +152,28 @@ export function track(evento, dados = {}, userData = null) {
 
 const PROGRESSO = "toka-aplicacao-progresso-v1";
 
-export function salvarProgresso(estado) {
+/* A chave é parâmetro porque a /gargalo guarda o próprio progresso com
+   as mesmas funções: dois formulários no mesmo domínio não podem
+   retomar um o rascunho do outro. */
+export function salvarProgresso(estado, chave = PROGRESSO) {
   try {
-    localStorage.setItem(PROGRESSO, JSON.stringify(estado));
+    localStorage.setItem(chave, JSON.stringify(estado));
   } catch {
     /* modo privado do Safari, por exemplo */
   }
 }
 
-export function carregarProgresso() {
+export function carregarProgresso(chave = PROGRESSO) {
   try {
-    return JSON.parse(localStorage.getItem(PROGRESSO) || "null");
+    return JSON.parse(localStorage.getItem(chave) || "null");
   } catch {
     return null;
   }
 }
 
-export function limparProgresso() {
+export function limparProgresso(chave = PROGRESSO) {
   try {
-    localStorage.removeItem(PROGRESSO);
+    localStorage.removeItem(chave);
   } catch {
     /* idem */
   }
