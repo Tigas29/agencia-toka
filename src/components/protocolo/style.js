@@ -7,13 +7,10 @@ export const Bloco = styled(Section)`
 `;
 
 export const Titulo1 = styled(H1)`
-  font-size: clamp(2rem, 7.6vw, 3.5rem);
-  max-width: 20ch;
+  font-size: clamp(1.75rem, 1.4rem + 2vw, 2.9rem);
+  line-height: 1.12;
+  text-wrap: balance;
   margin-bottom: 18px;
-
-  ${Media.PhoneLarge} {
-    max-width: 100%;
-  }
 `;
 
 export const Titulo2 = styled(H2)`
@@ -99,62 +96,7 @@ export const HeroGrade = styled.div`
   }
 `;
 
-export const Lista = styled.ol`
-  list-style: none;
-  counter-reset: item;
-  padding: 0;
-  margin: 28px 0 0;
-  max-width: 44rem;
 
-  li {
-    counter-increment: item;
-    position: relative;
-    padding: 0 0 0 46px;
-    margin: 0 0 20px;
-    font-size: 1.04rem;
-    line-height: 1.55;
-    color: var(--tinta-corpo);
-
-    &::before {
-      content: counter(item);
-      ${numerais};
-      position: absolute;
-      left: 0;
-      top: -0.1em;
-      font-family: "EB Garamond", Georgia, serif;
-      font-size: 1.9rem;
-      line-height: 1.2;
-      color: var(--acento);
-    }
-
-    strong {
-      color: var(--tinta);
-      font-weight: 600;
-    }
-  }
-`;
-
-export const Quem = styled.div`
-  display: flex;
-  gap: 28px;
-  align-items: center;
-
-  img {
-    flex: none;
-    width: 132px;
-    height: 132px;
-    border-radius: 50%;
-    object-fit: cover;
-    object-position: center top;
-    border: 1px solid var(--linha);
-  }
-
-  ${Media.PhoneLarge} {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 20px;
-  }
-`;
 
 export const Garantia = styled.div`
   display: flex;
@@ -255,6 +197,253 @@ export const Barra = styled.div`
       flex: 1;
       padding: 13px 16px;
       font-size: 0.9rem;
+    }
+  }
+`;
+
+/* ---------- Rodada 2: pecas, pilha e autoridade ---------- */
+
+export const Pecas = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 56px;
+  margin-top: 36px;
+`;
+
+export const Peca = styled.article`
+  display: grid;
+  gap: 22px;
+  align-items: center;
+
+  .rotulo {
+    font-family: "Poppins", sans-serif;
+    font-size: 0.7rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--acento);
+    margin: 0 0 10px;
+  }
+
+  h3 {
+    font-family: "EB Garamond", Georgia, serif;
+    font-weight: 400;
+    font-size: clamp(1.6rem, 5.4vw, 2.2rem);
+    line-height: 1.1;
+    color: var(--tinta);
+    margin: 0 0 12px;
+  }
+
+  p.texto {
+    margin: 0;
+    font-size: 1.02rem;
+    color: var(--tinta-corpo);
+    max-width: 34rem;
+  }
+
+  @media (min-width: 881px) {
+    grid-template-columns: 1fr 1fr;
+    gap: 64px;
+
+    &.inverte > :first-child {
+      order: 2;
+    }
+  }
+`;
+
+export const Pilha = styled.div`
+  margin-top: 64px;
+  border-radius: 24px;
+  padding: 34px 26px 30px;
+  background: var(--fundo);
+  color: var(--tinta-corpo);
+
+  h3 {
+    font-family: "EB Garamond", Georgia, serif;
+    font-weight: 400;
+    font-size: clamp(1.7rem, 5.6vw, 2.4rem);
+    line-height: 1.1;
+    color: var(--tinta);
+    margin: 0 0 22px;
+  }
+
+  ul {
+    list-style: none;
+    margin: 0 0 26px;
+    padding: 0;
+  }
+
+  li {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 13px 0;
+    border-top: 1px solid var(--linha);
+    opacity: 0;
+    transform: translateY(12px);
+    transition: opacity 420ms ease, transform 420ms ease;
+    transition-delay: calc(var(--i) * 140ms);
+
+    span.t {
+      flex: 1;
+      font-size: 1rem;
+      line-height: 1.4;
+      color: var(--tinta);
+    }
+  }
+
+  &.on li {
+    opacity: 1;
+    transform: none;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    li {
+      opacity: 1;
+      transform: none;
+      transition: none;
+    }
+  }
+
+  .fecho {
+    border-top: 1px solid var(--linha);
+    padding-top: 24px;
+    max-width: 420px;
+  }
+
+  @media (min-width: 881px) {
+    padding: 48px 56px;
+  }
+`;
+
+export const Check = styled.svg`
+  flex: none;
+  width: 22px;
+  height: 22px;
+`;
+
+export const Autoridade = styled.div`
+  display: grid;
+  gap: 36px;
+
+  figure {
+    margin: 0;
+  }
+
+  figure img {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 4 / 5;
+    object-fit: cover;
+    border-radius: 22px;
+  }
+
+  figcaption {
+    margin-top: 12px;
+    font-size: 0.86rem;
+    color: var(--tinta-fraca);
+  }
+
+  @media (min-width: 881px) {
+    grid-template-columns: 0.8fr 1.2fr;
+    gap: 72px;
+    align-items: start;
+
+    figure {
+      position: sticky;
+      top: 40px;
+    }
+  }
+`;
+
+export const Linha = styled.ol`
+  list-style: none;
+  margin: 28px 0 0;
+  padding: 0 0 0 26px;
+  position: relative;
+
+  &::before {
+    content: "";
+    position: absolute;
+    left: 4px;
+    top: 8px;
+    bottom: 8px;
+    width: 1px;
+    background: var(--acento);
+  }
+
+  li {
+    position: relative;
+    margin: 0 0 24px;
+  }
+
+  li:last-child {
+    margin-bottom: 0;
+  }
+
+  li::before {
+    content: "";
+    position: absolute;
+    left: -26px;
+    top: 7px;
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: var(--acento);
+  }
+
+  .rotulo {
+    display: block;
+    font-family: "Poppins", sans-serif;
+    font-size: 0.72rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--acento);
+    margin-bottom: 4px;
+  }
+
+  .desc {
+    color: var(--tinta-corpo);
+    font-size: 1.02rem;
+    line-height: 1.5;
+  }
+`;
+
+export const Numeros = styled.div`
+  display: grid;
+  gap: 0;
+  margin: 36px 0 28px;
+  border-top: 1px solid var(--linha);
+
+  div {
+    padding: 16px 0;
+    border-bottom: 1px solid var(--linha);
+  }
+
+  .n {
+    ${numerais};
+    display: block;
+    font-family: "EB Garamond", Georgia, serif;
+    font-size: 2rem;
+    line-height: 1.1;
+    color: var(--acento);
+  }
+
+  .l {
+    display: block;
+    margin-top: 4px;
+    font-size: 0.86rem;
+    color: var(--tinta-fraca);
+  }
+
+  @media (min-width: 881px) {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 28px;
+    border-top: 0;
+
+    div {
+      border-bottom: 0;
+      border-top: 1px solid var(--linha);
     }
   }
 `;

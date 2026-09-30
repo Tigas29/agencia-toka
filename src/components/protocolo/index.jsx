@@ -1,13 +1,13 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Navigate, useParams } from "react-router-dom";
-import { Inner, Lead, Microcopy, Page, Texto, Tokens } from "../../estilo/ds";
+import { Inner, Lead, Microcopy, Page, Tokens } from "../../estilo/ds";
 import logoToka from "../../assets/landingpage/logo.svg";
-import tiago from "../../assets/protocolo/tiago-rosto.webp";
 import mockupFisio from "../../assets/protocolo/mockup-fisio.webp";
 import mockupEstetica from "../../assets/protocolo/mockup-estetica.webp";
 import mockupPilates from "../../assets/protocolo/mockup-pilates.webp";
 import { buscarProtocolo } from "./dados";
 import { cliqueComprar, linkCheckout } from "./checkout";
+import { SecaoAutoridade, SecaoPecas } from "./secoes";
 import {
   Barra,
   Bloco,
@@ -16,10 +16,8 @@ import {
   Garantia,
   HeroGrade,
   Kicker,
-  Lista,
   Mockup,
   Preco,
-  Quem,
   Titulo1,
   Titulo2,
   Topo,
@@ -35,13 +33,6 @@ import {
  */
 
 const MOCKUPS = { fisio: mockupFisio, estetica: mockupEstetica, pilates: mockupPilates };
-
-/** Texto com trechos entre ** em negrito. */
-function Rico({ texto }) {
-  return texto.split("**").map((parte, i) =>
-    i % 2 ? <strong key={i}>{parte}</strong> : parte
-  );
-}
 
 function definirMeta(nome, conteudo) {
   let el = document.head.querySelector(`meta[name="${nome}"]`);
@@ -118,8 +109,8 @@ export default function PaginaProtocolo() {
   };
 
   const botao = (extra = {}) => (
-    <Botao href={href} onClick={aoClicar} {...extra}>
-      {d.hero.cta}
+    <Botao href={href} onClick={aoClicar}>
+      {extra.children || d.hero.cta}
     </Botao>
   );
 
@@ -167,40 +158,13 @@ export default function PaginaProtocolo() {
           </Inner>
         </Bloco>
 
-        <Bloco className="faixa-clara">
-          <Inner>
-            <Titulo2>{d.recebe.titulo}</Titulo2>
-            <Lista>
-              {d.recebe.itens.map((t) => (
-                <li key={t}>
-                  <Rico texto={t} />
-                </li>
-              ))}
-            </Lista>
-          </Inner>
-        </Bloco>
+        <SecaoPecas d={{ ...d, botaoPilha: botao({ children: d.pilha.cta }) }} />
 
-        <Bloco className="faixa-escura">
-          <Inner>
-            <Titulo2>{d.paginas.titulo}</Titulo2>
-            <Lista>
-              {d.paginas.itens.map((t) => (
-                <li key={t}>{t}</li>
-              ))}
-            </Lista>
-          </Inner>
-        </Bloco>
+        <SecaoAutoridade d={d} />
 
         <Bloco className="faixa-clara">
           <Inner>
-            <Quem>
-              <img src={tiago} alt="Tiago Santos" width="132" height="132" />
-              <div>
-                <Titulo2>{d.quem.titulo}</Titulo2>
-                <Texto style={{ marginBottom: 0 }}>{d.quem.texto}</Texto>
-              </div>
-            </Quem>
-            <Garantia>
+            <Garantia style={{ marginTop: 0, paddingTop: 0, borderTop: 0 }}>
               <Selo7 />
               <p>{d.garantia}</p>
             </Garantia>
