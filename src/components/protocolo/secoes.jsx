@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { Inner, Lead } from "../../estilo/ds";
-import fotoQuem from "./fotoQuem";
+import { colagem, legendaColagem } from "./fotoQuem";
 import {
   IlustraAula,
   IlustraExemplo,
@@ -113,8 +113,22 @@ export function SecaoAutoridade({ d }) {
       <Inner>
         <Autoridade>
           <figure>
-            <img src={fotoQuem} width="900" height="1125" alt="Tiago Santos" />
-            <figcaption>Tiago Santos · fundador da Toka</figcaption>
+            <div className="colagem">
+              {colagem.map((f, i) => (
+                <img
+                  key={f.alt}
+                  src={f.src}
+                  alt={f.alt}
+                  className={i === 0 ? "principal" : undefined}
+                  loading="lazy"
+                  decoding="async"
+                />
+              ))}
+            </div>
+            <figcaption>
+              Tiago Santos · fundador da Toka
+              <span>{legendaColagem}</span>
+            </figcaption>
           </figure>
           <div>
             <Kicker>{q.kicker}</Kicker>

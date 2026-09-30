@@ -329,12 +329,24 @@ export const Autoridade = styled.div`
     margin: 0;
   }
 
-  figure img {
+  .colagem {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+
+  .colagem img {
     display: block;
     width: 100%;
     height: auto;
-    aspect-ratio: 4 / 5;
+    aspect-ratio: 1 / 1;
     object-fit: cover;
+    border-radius: 14px;
+  }
+
+  .colagem img.principal {
+    grid-column: 1 / -1;
+    aspect-ratio: 4 / 5;
     border-radius: 22px;
   }
 
@@ -342,6 +354,13 @@ export const Autoridade = styled.div`
     margin-top: 12px;
     font-size: 0.86rem;
     color: var(--tinta-fraca);
+  }
+
+  figcaption span {
+    display: block;
+    margin-top: 2px;
+    font-size: 0.78rem;
+    opacity: 0.8;
   }
 
   @media (min-width: 881px) {
