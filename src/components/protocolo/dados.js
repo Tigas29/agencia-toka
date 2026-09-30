@@ -16,7 +16,11 @@ const PROTOCOLO = {
     },
     "cena": {
       "titulo": "R$ 2.880 pode sair pela porta num “vou pensar”",
-      "texto": "Você faz a avaliação, explica o que encontrou e fala um valor solto. A paciente concorda e some: ela decide em casa, com quem divide a conta, e leva só um número na cabeça. A proposta existe para ela levar o papel, e não a lembrança."
+      "texto": "Você faz a avaliação, explica o que encontrou e fala um valor solto. A paciente concorda e some: ela decide em casa, com quem divide a conta, e leva só um número na cabeça. A proposta existe para ela levar o papel, e não a lembrança.",
+      "conversa": {
+        "voce": "A sessão fica R$ 120.",
+        "ela": "Vou pensar."
+      }
     },
     "recebe": {
       "kicker": "O que vem dentro",
@@ -159,7 +163,11 @@ const PROTOCOLO = {
     },
     "cena": {
       "titulo": "R$ 1.920 pode sair pela porta num “vou pensar”",
-      "texto": "Você faz a avaliação, explica o que encontrou e fala um valor solto. A cliente amou e some: ela decide em casa, com quem divide a conta, e leva só um número na cabeça. A proposta existe para ela levar o papel, e não a lembrança."
+      "texto": "Você faz a avaliação, explica o que encontrou e fala um valor solto. A cliente amou e some: ela decide em casa, com quem divide a conta, e leva só um número na cabeça. A proposta existe para ela levar o papel, e não a lembrança.",
+      "conversa": {
+        "voce": "A sessão fica R$ 240.",
+        "ela": "Vou pensar."
+      }
     },
     "recebe": {
       "kicker": "O que vem dentro",
@@ -302,7 +310,11 @@ const PROTOCOLO = {
     },
     "cena": {
       "titulo": "R$ 2.760 pode sair pela porta num “vou ver minha agenda”",
-      "texto": "Você conduz a aula experimental, mostra o que observou e fala uma mensalidade solta. A aluna adorou e some: ela decide em casa, olhando a própria agenda, e leva só um número na cabeça. A proposta existe para ela levar o papel, e não a lembrança."
+      "texto": "Você conduz a aula experimental, mostra o que observou e fala uma mensalidade solta. A aluna adorou e some: ela decide em casa, olhando a própria agenda, e leva só um número na cabeça. A proposta existe para ela levar o papel, e não a lembrança.",
+      "conversa": {
+        "voce": "A mensalidade fica R$ 460.",
+        "ela": "Vou ver minha agenda."
+      }
     },
     "recebe": {
       "kicker": "O que vem dentro",

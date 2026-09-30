@@ -6,7 +6,8 @@ import mockupFisio from "../../assets/protocolo/mockup-fisio.webp";
 import mockupEstetica from "../../assets/protocolo/mockup-estetica.webp";
 import mockupPilates from "../../assets/protocolo/mockup-pilates.webp";
 import { buscarProtocolo } from "./dados";
-import { cliqueComprar, linkCheckout } from "./checkout";
+import { cliqueComprar, iniciarClarity, linkCheckout } from "./checkout";
+import { Cena } from "./cena";
 import { SecaoAutoridade, SecaoPecas } from "./secoes";
 import {
   Barra,
@@ -66,6 +67,10 @@ export default function PaginaProtocolo() {
   const [barra, setBarra] = useState(false);
 
   const href = useMemo(() => (d ? linkCheckout(d.checkout, d.slug) : ""), [d]);
+
+  useEffect(() => {
+    if (d) iniciarClarity(d.slug);
+  }, [d]);
 
   useEffect(() => {
     if (!d) return;
@@ -146,30 +151,20 @@ export default function PaginaProtocolo() {
                 </Preco>
                 {botao()}
                 <Microcopy>{d.hero.micro}</Microcopy>
+                <Garantia>
+                  <Selo7 />
+                  <p>{d.garantia}</p>
+                </Garantia>
               </div>
             </HeroGrade>
           </Inner>
         </Bloco>
 
-        <Bloco className="faixa-escura">
-          <Inner>
-            <Titulo2>{d.cena.titulo}</Titulo2>
-            <Lead>{d.cena.texto}</Lead>
-          </Inner>
-        </Bloco>
+        <Cena d={d} />
 
         <SecaoPecas d={{ ...d, botaoPilha: botao({ children: d.pilha.cta }) }} />
 
         <SecaoAutoridade d={d} />
-
-        <Bloco className="faixa-clara">
-          <Inner>
-            <Garantia style={{ marginTop: 0, paddingTop: 0, borderTop: 0 }}>
-              <Selo7 />
-              <p>{d.garantia}</p>
-            </Garantia>
-          </Inner>
-        </Bloco>
 
         <Bloco className="faixa-escura">
           <Inner>

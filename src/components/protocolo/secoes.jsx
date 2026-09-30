@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { Inner, Lead } from "../../estilo/ds";
-import tiagoRetrato from "../../assets/protocolo/tiago-retrato.webp";
+import fotoQuem from "./fotoQuem";
 import {
   IlustraAula,
   IlustraExemplo,
@@ -113,7 +113,7 @@ export function SecaoAutoridade({ d }) {
       <Inner>
         <Autoridade>
           <figure>
-            <img src={tiagoRetrato} width="900" height="1125" alt="Tiago Santos" />
+            <img src={fotoQuem} width="900" height="1125" alt="Tiago Santos" />
             <figcaption>Tiago Santos · fundador da Toka</figcaption>
           </figure>
           <div>

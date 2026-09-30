@@ -102,8 +102,8 @@ export const Garantia = styled.div`
   display: flex;
   align-items: center;
   gap: 18px;
-  margin-top: 40px;
-  padding-top: 30px;
+  margin-top: 26px;
+  padding-top: 22px;
   border-top: 1px solid var(--linha);
 
   p {
