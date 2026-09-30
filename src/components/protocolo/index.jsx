@@ -2,7 +2,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { Navigate, useParams } from "react-router-dom";
 import { Inner, Lead, Microcopy, Page, Texto, Tokens } from "../../estilo/ds";
 import logoToka from "../../assets/landingpage/logo.svg";
-import tiago from "../../assets/landingpage/05.WhyWorks/Tiago.webp";
+import tiago from "../../assets/protocolo/tiago-rosto.webp";
 import mockupFisio from "../../assets/protocolo/mockup-fisio.webp";
 import mockupEstetica from "../../assets/protocolo/mockup-estetica.webp";
 import mockupPilates from "../../assets/protocolo/mockup-pilates.webp";
