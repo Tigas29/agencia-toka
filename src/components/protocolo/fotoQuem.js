@@ -1,1 +1,1 @@
-export { default } from "../../assets/protocolo/tiago-governante.webp";
+export { default } from "../../assets/protocolo/tiago-real.webp";
