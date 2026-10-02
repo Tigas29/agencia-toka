@@ -13,6 +13,7 @@ const Lp = lazy(() => import("./pages/Lp/index"));
 const Habitat = lazy(() => import("./pages/habitat/index"));
 const Proposta = lazy(() => import("./pages/proposta/index"));
 const Protocolo = lazy(() => import("./pages/protocolo/index"));
+const ProtocoloDemo = lazy(() => import("./pages/protocolo/demo"));
 
 /* Home v2: a mesma casa na fundação de marca nova, no ar em paralelo com
    a de `/` para as duas poderem ser lidas lado a lado antes da troca. */
@@ -31,6 +32,7 @@ export function Router() {
         <Route path="/LandingPage" element={<Lp />} />
         <Route path="/habitat" element={<Habitat />} />
         <Route path="/proposta/:cliente" element={<Proposta />} />
+        <Route path="/protocolo/:nicho/demo" element={<ProtocoloDemo />} />
         <Route path="/protocolo/:nicho" element={<Protocolo />} />
         <Route path="/v2" element={<HomeV2 />} />
         <Route path="/" element={<Home />} />
