@@ -369,16 +369,34 @@ export default function Conversa({ d, demo }) {
   const lerLogo = (ev) => {
     const arq = ev.target.files?.[0];
     ev.target.value = "";
-    if (!arq || !arq.type.startsWith("image/")) return;
+    if (!arq) return;
+    /* No maximo uma bolha de erro: a nova substitui a anterior. */
+    const falha = () => {
+      removerTipos("erroLogo");
+      adicionar({ tipo: "erroLogo" });
+    };
+    const aceitar = (dados) => {
+      removerTipos("erroLogo");
+      atualizar({ logo: dados });
+    };
+    if (!["image/png", "image/jpeg", "image/webp"].includes(arq.type)) {
+      falha();
+      return;
+    }
     const leitor = new FileReader();
+    leitor.onerror = falha;
     leitor.onload = () => {
       const bruto = String(leitor.result);
       const img = new Image();
       img.onload = () => {
-        /* Reduz para caber leve no PDF; SVG e imagens pequenas passam direto. */
+        if (!img.width || !img.height) {
+          falha();
+          return;
+        }
+        /* Reduz para caber leve no PDF. */
         const maxLado = 600;
-        if (arq.type === "image/svg+xml" || Math.max(img.width, img.height) <= maxLado) {
-          atualizar({ logo: bruto });
+        if (Math.max(img.width, img.height) <= maxLado) {
+          aceitar(bruto);
           return;
         }
         const k = maxLado / Math.max(img.width, img.height);
@@ -386,9 +404,10 @@ export default function Conversa({ d, demo }) {
         c.width = Math.round(img.width * k);
         c.height = Math.round(img.height * k);
         c.getContext("2d").drawImage(img, 0, 0, c.width, c.height);
-        atualizar({ logo: c.toDataURL(arq.type === "image/jpeg" ? "image/jpeg" : "image/png", 0.9) });
+        aceitar(c.toDataURL(arq.type === "image/jpeg" ? "image/jpeg" : "image/png", 0.9));
       };
-      img.onerror = () => atualizar({ logo: bruto });
+      /* Nao decodificou: nao grava o logo. */
+      img.onerror = falha;
       img.src = bruto;
     };
     leitor.readAsDataURL(arq);
@@ -437,6 +456,8 @@ export default function Conversa({ d, demo }) {
         return <Nota>Exemplo fictício · o que você digitar fica só no seu aparelho</Nota>;
       case "bot":
         return <Bot>{it.texto}</Bot>;
+      case "erroLogo":
+        return <Bot role="alert">Não consegui abrir essa imagem. Tenta um PNG ou JPG?</Bot>;
       case "pessoa":
         return <Pessoa>{it.texto}</Pessoa>;
       case "logo":
@@ -704,7 +725,7 @@ export default function Conversa({ d, demo }) {
           </Barra>
         )}
 
-        <input ref={arquivoInput} type="file" accept="image/*" hidden onChange={lerLogo} />
+        <input ref={arquivoInput} type="file" accept="image/png,image/jpeg,image/webp" hidden onChange={lerLogo} />
       </Tela>
 
       {pdf.estado === "gerando" && <AreaPdf ref={areaPdf} p={p} e={dadosFolha} marca={demo.exportar.marcaDagua} faixa={demo.exportar.faixa} />}
