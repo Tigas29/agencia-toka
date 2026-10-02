@@ -1,17 +1,13 @@
-import { Fragment, useState } from "react";
-import { Cartao, Cartoes, CampoInline, Folha } from "./style";
+import { Cartao, Cartoes, Folha } from "./style";
+import { reais } from "./formato";
+import { varsTema } from "./tema";
 
-/* ---------- formatacao ---------- */
-
-const soDigitos = (v, max) => String(v).replace(/\D/g, "").slice(0, max);
-
-function reais(n) {
-  const inteiro = Math.abs(n % 1) < 0.005;
-  return n.toLocaleString("pt-BR", {
-    minimumFractionDigits: inteiro ? 0 : 2,
-    maximumFractionDigits: 2,
-  });
-}
+/**
+ * As quatro folhas da proposta, so para ler: quem escolhe os valores e a
+ * cor e a conversa. `e` = { prof, logo, pessoa, valor[], cor }, `p` = a
+ * proposta montada (proposta.js). `pdf` renderiza no tamanho A4 fixo que
+ * vira imagem na exportacao.
+ */
 
 /** Valor de cada parcela, ou null quando nao ha divisao que faca sentido. */
 function parcela(total, vezes) {
@@ -21,52 +17,8 @@ function parcela(total, vezes) {
   return t / n;
 }
 
-/* ---------- campo editavel inline ---------- */
-
-/**
- * Texto: aceita o que a pessoa digitar. Numero: so digitos, e o milhar
- * aparece quando o campo perde o foco (formatar enquanto digita joga o
- * cursor para o fim).
- */
-export function Campo({ valor, aoMudar, rotulo, numero = false, milhar = false, max = 40, minimo = 3 }) {
-  const [foco, setFoco] = useState(false);
-  const mostrado = numero && milhar && !foco && valor !== "" ? reais(Number(valor)) : valor;
-  const ch = Math.max(String(mostrado).length, minimo) + 0.7;
-  return (
-    <CampoInline
-      type="text"
-      value={mostrado}
-      aria-label={rotulo}
-      inputMode={numero ? "numeric" : "text"}
-      autoComplete="off"
-      autoCorrect="off"
-      spellCheck={false}
-      maxLength={numero ? undefined : max}
-      style={{ width: `${ch}ch` }}
-      onFocus={(ev) => {
-        setFoco(true);
-        /* Seleciona tudo: quem vem trocar o valor digita por cima. */
-        const el = ev.target;
-        setTimeout(() => el.select(), 0);
-      }}
-      onBlur={() => setFoco(false)}
-      onChange={(e) => aoMudar(numero ? soDigitos(e.target.value, max) : e.target.value)}
-    />
-  );
-}
-
-/** Troca "{qtd}" no texto pelo campo da quantidade. */
-function comQtd(texto, campo) {
-  const partes = texto.split("{qtd}");
-  return partes.map((parte, i) => (
-    <Fragment key={i}>
-      {parte}
-      {i < partes.length - 1 ? campo : null}
-    </Fragment>
-  ));
-}
-
-/* ---------- as quatro folhas ---------- */
+/** Troca "{qtd}" pelo numero do caso. */
+const comQtd = (texto, qtd) => texto.replaceAll("{qtd}", qtd);
 
 function Topo({ p, e }) {
   return (
@@ -89,17 +41,27 @@ function Pe({ p, e, n }) {
   );
 }
 
-export function Folha1({ p, e, mudar }) {
+function FolhaBase({ e, pdf, children, ...resto }) {
   return (
-    <Folha>
-      <div className="logo">seu logo</div>
+    <Folha $pdf={pdf} style={varsTema(e.cor)} data-folha {...resto}>
+      {children}
+    </Folha>
+  );
+}
+
+export function Folha1({ p, e, pdf }) {
+  return (
+    <FolhaBase e={e} pdf={pdf}>
+      {e.logo ? (
+        <img className="logo-img" src={e.logo} alt="" style={{ alignSelf: "flex-start", maxWidth: 200, maxHeight: 72, objectFit: "contain" }} />
+      ) : (
+        <div className="logo">seu logo</div>
+      )}
       <h3 className="titulo-capa">{p.tituloCapa}</h3>
       <div>
         <div className="linha">
           <span className="k">{p.pessoa}</span>
-          <span className="v">
-            <Campo valor={e.pessoa} aoMudar={(v) => mudar({ pessoa: v })} rotulo={`Nome da ${p.pessoa.toLowerCase()}`} />
-          </span>
+          <span className="v">{e.pessoa}</span>
         </div>
         <div className="linha">
           <span className="k">{p.dataRotulo}</span>
@@ -109,23 +71,22 @@ export function Folha1({ p, e, mudar }) {
       <div className="espaco" />
       <div className="assina">
         <div className="nome">
-          {p.profissao}{" "}
-          <Campo valor={e.prof} aoMudar={(v) => mudar({ prof: v })} rotulo="Seu nome" />
+          {p.profissao} {e.prof}
         </div>
         {p.registro && <div className="miudo">{p.registro}</div>}
         <div className="miudo">{p.contato}</div>
       </div>
-    </Folha>
+    </FolhaBase>
   );
 }
 
-export function Folha2({ p, e }) {
+export function Folha2({ p, e, pdf }) {
   const a = p.avaliacao;
   return (
-    <Folha>
+    <FolhaBase e={e} pdf={pdf}>
       <Topo p={p} e={e} />
       <h3>{a.titulo}</h3>
-      <p className="rotulo" style={{ marginTop: 4 }}>O que te trouxe aqui</p>
+      <p className="rotulo" style={{ marginTop: 4 }}>{a.trouxeRotulo}</p>
       <p className="quote">“{a.trouxe}”</p>
       <p className="rotulo">{a.achadosRotulo}</p>
       <ol className="itens">
@@ -148,76 +109,64 @@ export function Folha2({ p, e }) {
       <p className="fecho">{a.fecho}</p>
       <div className="espaco" />
       <Pe p={p} e={e} n={2} />
-    </Folha>
+    </FolhaBase>
   );
 }
 
-function Cartao3({ o, i, p, e, mudarLista }) {
+function Cartao3({ o, i, p, e }) {
   const parcelado = p.plano.modo === "parcelado";
   const valor = e.valor[i];
-  const vezes = e.parcelas[i];
-  const cada = parcelado ? parcela(valor, vezes) : null;
-  const qtd = (
-    <Campo valor={e.qtd[i]} numero max={3} minimo={2} rotulo={`Opção ${i + 1}: quantidade`} aoMudar={(v) => mudarLista("qtd", i, v)} />
-  );
+  const cada = parcelado ? parcela(valor, o.parcelas) : null;
   return (
     <Cartao className={o.recomendada ? "rec" : ""}>
       {o.recomendada && <span className="selo">A que eu recomendo</span>}
       <div className="op">Opção {i + 1}</div>
-      <div className="tit">{comQtd(o.titulo, qtd)}</div>
+      <div className="tit">{comQtd(o.titulo, o.qtd)}</div>
       <div className="det">
         {o.detalhe.map((linha) => (
-          <div key={linha}>{comQtd(linha, qtd)}</div>
+          <div key={linha}>{comQtd(linha, o.qtd)}</div>
         ))}
       </div>
       <div className="quem">{o.quem}</div>
       <div className="valor">
-        <div className="k">{parcelado ? "Valor" : "Mensalidade"}</div>
-        <div className="v">
-          R${" "}
-          <Campo
-            valor={valor}
-            numero
-            milhar
-            max={6}
-            minimo={3}
-            rotulo={`Opção ${i + 1}: ${parcelado ? "valor total" : "mensalidade"}`}
-            aoMudar={(v) => mudarLista("valor", i, v)}
-          />
-          {!parcelado && <span style={{ fontSize: "0.95rem", marginLeft: "0.35em" }}>por mês</span>}
-        </div>
-        {parcelado && (
-          <div className="parc">
-            ou{" "}
-            <Campo
-              valor={vezes}
-              numero
-              max={2}
-              minimo={1}
-              rotulo={`Opção ${i + 1}: número de parcelas`}
-              aoMudar={(v) => mudarLista("parcelas", i, v)}
-            />
-            x{cada !== null ? ` de R$ ${reais(cada)}` : ""}
-          </div>
+        {o.semValor ? (
+          <>
+            <div className="k">Valor</div>
+            <div className="v" style={{ fontSize: "1.4rem" }}>{o.semValor}</div>
+          </>
+        ) : (
+          <>
+            <div className="k">{parcelado ? "Valor" : "Mensalidade"}</div>
+            <div className="v">
+              R$ {reais(Number(valor))}
+              {!parcelado && <span style={{ fontSize: "0.95rem", marginLeft: "0.35em" }}>por mês</span>}
+            </div>
+            {parcelado && cada !== null && (
+              <div className="parc">
+                ou {o.parcelas}x de R$ {reais(cada)}
+              </div>
+            )}
+          </>
         )}
       </div>
     </Cartao>
   );
 }
 
-export function Folha3({ p, e, mudar, mudarLista }) {
+export function Folha3({ p, e, pdf }) {
   const pl = p.plano;
   return (
-    <Folha>
+    <FolhaBase e={e} pdf={pdf}>
       <Topo p={p} e={e} />
       <h3>{pl.titulo}</h3>
-      <Cartoes>
+      {pl.sub && <p className="sub">{pl.sub}</p>}
+      <Cartoes $pdf={pdf}>
         {pl.opcoes.map((o, i) => (
-          <Cartao3 key={i} o={o} i={i} p={p} e={e} mudarLista={mudarLista} />
+          <Cartao3 key={i} o={o} i={i} p={p} e={e} />
         ))}
       </Cartoes>
       <div className="incluido">
-        <b>Incluído nos três</b>
+        <b>{pl.incluidoTitulo}</b>
         <ul>
           {pl.incluido.map((t) => (
             <li key={t}>{t}</li>
@@ -225,9 +174,8 @@ export function Folha3({ p, e, mudar, mudarLista }) {
         </ul>
       </div>
       <p className="nota">
-        {pl.avulsaPrefixo} R${" "}
-        <Campo valor={e.avulsa} numero milhar max={5} minimo={2} rotulo="Valor da avulsa" aoMudar={(v) => mudar({ avulsa: v })} />
-        . {pl.rodape}
+        {pl.avulsaPrefixo} R$ {reais(Number(e.avulsa))}
+        {pl.avulsaSufixo}. {pl.rodape}
       </p>
       <div className="espaco" />
       <div className="assinaturas">
@@ -235,14 +183,14 @@ export function Folha3({ p, e, mudar, mudarLista }) {
         <div>{p.profissao} · {e.prof || "..."}</div>
       </div>
       <Pe p={p} e={e} n={3} />
-    </Folha>
+    </FolhaBase>
   );
 }
 
-export function Folha4({ p, e }) {
+export function Folha4({ p, e, pdf }) {
   const r = p.regras;
   return (
-    <Folha>
+    <FolhaBase e={e} pdf={pdf}>
       <Topo p={p} e={e} />
       <h3>{r.titulo}</h3>
       <ul className="regras">
@@ -258,6 +206,11 @@ export function Folha4({ p, e }) {
       </div>
       <div className="espaco" />
       <Pe p={p} e={e} n={4} />
-    </Folha>
+    </FolhaBase>
   );
+}
+
+export function FolhaN({ n, ...props }) {
+  const C = [Folha1, Folha2, Folha3, Folha4][n];
+  return <C {...props} />;
 }

@@ -1,119 +1,49 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { Media } from "../../../estilo/ds";
 
 /* As folhas sao papel branco com tinta propria, iguais as do documento
-   que a pessoa recebe. Nao herdam os tokens da faixa. */
-const TINTA = "#16203A";
+   que a pessoa recebe. Nao herdam os tokens da pagina. A cor escolhida na
+   conversa entra pelas variaveis --f-* (ver tema.js). */
 const CORPO = "#3E4657";
 const FRACA = "#6B6F78";
-const LINHA = "#E3DFD6";
-const OURO = "#8A6A2A";
-const MARCA = "#F6E6B0";
 
-export const Folhas = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 40px;
-`;
+/* A4 a 96 dpi (794 x 1123), sempre no desenho largo: o PDF nao pode depender
+   da largura da janela de quem exporta. Reserva a faixa navy de 45px no pe
+   (34px a 595 de largura no canvas PDF-marca, escalado). */
+const PDF = css`
+  /* && sobe a especificidade: o @media (min-width: 720px) da folha de tela
+     nao pode vencer quando o PDF e gerado numa janela larga. */
+  && {
+  width: 794px;
+  height: 1123px;
+  box-sizing: border-box;
+  border-radius: 0;
+  box-shadow: none;
+  padding: 56px 56px 77px;
+  min-height: 0;
+  overflow: hidden;
+  font-size: 0.94rem;
 
-/* Barra fina que acompanha a rolagem: a dica e o botao de voltar. */
-export const Ferramentas = styled.div`
-  position: sticky;
-  top: 8px;
-  z-index: 15;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  max-width: 720px;
-  width: 100%;
-  margin: 0 auto;
-  padding: 8px 8px 8px 14px;
-  border-radius: 22px;
-  background: #fff;
-  border: 1px solid ${LINHA};
-  box-shadow: 0 10px 24px -14px rgba(18, 26, 48, 0.4);
-  font-size: 0.84rem;
-  line-height: 1.3;
-  color: ${CORPO};
-
-  .dica {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    min-width: 0;
+  h3 {
+    font-size: 2.7rem;
   }
 
-  ${Media.PhoneLarge} {
-    font-size: 0.78rem;
-    padding: 7px 7px 7px 12px;
-
-    .amostra {
-      display: none;
-    }
+  .titulo-capa {
+    font-size: 3.9rem;
   }
 
-  .amostra {
-    flex: none;
-    width: 22px;
-    height: 12px;
-    border-radius: 3px;
-    background: ${MARCA};
+  .linha .k {
+    width: 11em;
   }
 
-  button {
-    flex: none;
-    font-family: "Poppins", sans-serif;
-    font-size: 0.78rem;
-    color: ${TINTA};
-    background: transparent;
-    border: 1px solid ${LINHA};
-    border-radius: 999px;
-    padding: 9px 14px;
-    cursor: pointer;
-    transition: opacity 200ms ease, border-color 200ms ease;
+  .assinaturas {
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
   }
 
-  button:hover:not(:disabled) {
-    border-color: ${TINTA};
+  .incluido ul {
+    grid-template-columns: 1fr 1fr;
   }
-
-  button:disabled {
-    opacity: 0.45;
-    cursor: default;
-  }
-
-  button:focus-visible {
-    outline: 2px solid ${TINTA};
-    outline-offset: 2px;
-  }
-`;
-
-export const Pagina = styled.section`
-  max-width: 720px;
-  width: 100%;
-  margin: 0 auto;
-
-  .legenda {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 12px;
-    margin: 0 2px 12px;
-    font-family: "Poppins", sans-serif;
-    font-size: 0.72rem;
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
-    color: var(--tinta-fraca);
-  }
-
-  .etiqueta {
-    font-weight: 500;
-    letter-spacing: 0.1em;
-    color: #121A30;
-    background: #E0B65A;
-    padding: 6px 12px;
-    border-radius: 6px;
   }
 `;
 
@@ -143,7 +73,7 @@ export const Folha = styled.div`
   .garamond {
     font-family: "EB Garamond", Georgia, serif;
     font-weight: 400;
-    color: ${TINTA};
+    color: var(--f-tinta, #16203A);
     font-variant-numeric: lining-nums proportional-nums;
     font-feature-settings: "lnum" 1;
   }
@@ -160,12 +90,12 @@ export const Folha = styled.div`
 
   .topo {
     padding-bottom: 14px;
-    border-bottom: 1px solid ${LINHA};
+    border-bottom: 1px solid var(--f-linha, #E3DFD6);
     margin-bottom: 26px;
     color: ${FRACA};
 
     .ouro {
-      color: ${OURO};
+      color: var(--f-acento, #8A6A2A);
     }
 
     span:last-child {
@@ -177,7 +107,7 @@ export const Folha = styled.div`
   .pe {
     margin-top: auto;
     padding-top: 14px;
-    border-top: 1px solid ${LINHA};
+    border-top: 1px solid var(--f-linha, #E3DFD6);
     font-size: 0.74rem;
     letter-spacing: 0;
     text-transform: none;
@@ -200,7 +130,7 @@ export const Folha = styled.div`
     font-size: 0.64rem;
     letter-spacing: 0.2em;
     text-transform: uppercase;
-    color: ${OURO};
+    color: var(--f-acento, #8A6A2A);
     margin: 26px 0 10px;
   }
 
@@ -225,10 +155,10 @@ export const Folha = styled.div`
     align-items: baseline;
     gap: 12px;
     padding: 14px 0;
-    border-top: 1px solid ${LINHA};
+    border-top: 1px solid var(--f-linha, #E3DFD6);
 
     &:last-of-type {
-      border-bottom: 1px solid ${LINHA};
+      border-bottom: 1px solid var(--f-linha, #E3DFD6);
     }
 
     .k {
@@ -244,7 +174,7 @@ export const Folha = styled.div`
     .v {
       font-family: "EB Garamond", Georgia, serif;
       font-size: 1.45rem;
-      color: ${TINTA};
+      color: var(--f-tinta, #16203A);
       min-width: 0;
       flex: 1;
     }
@@ -257,7 +187,7 @@ export const Folha = styled.div`
       font-family: "EB Garamond", Georgia, serif;
       font-size: 1.5rem;
       line-height: 1.3;
-      color: ${TINTA};
+      color: var(--f-tinta, #16203A);
     }
 
     .miudo {
@@ -273,7 +203,7 @@ export const Folha = styled.div`
     font-style: italic;
     font-size: 1.4rem;
     line-height: 1.35;
-    color: ${TINTA};
+    color: var(--f-tinta, #16203A);
     margin: 0;
     padding: 0 0 8px;
   }
@@ -287,22 +217,22 @@ export const Folha = styled.div`
       display: flex;
       gap: 18px;
       padding: 13px 0;
-      border-top: 1px solid ${LINHA};
+      border-top: 1px solid var(--f-linha, #E3DFD6);
       font-family: "EB Garamond", Georgia, serif;
       font-size: 1.22rem;
       line-height: 1.32;
-      color: ${TINTA};
+      color: var(--f-tinta, #16203A);
     }
 
     li:last-child {
-      border-bottom: 1px solid ${LINHA};
+      border-bottom: 1px solid var(--f-linha, #E3DFD6);
     }
 
     .n {
       flex: none;
       font-size: 1rem;
       line-height: 1.6;
-      color: ${OURO};
+      color: var(--f-acento, #8A6A2A);
       font-variant-numeric: lining-nums;
     }
   }
@@ -348,8 +278,8 @@ export const Folha = styled.div`
     margin-top: 22px;
     padding: 16px 18px 14px;
     border-radius: 8px;
-    background: #FBFAF5;
-    border: 1px solid ${LINHA};
+    background: var(--f-suave, #FBFAF5);
+    border: 1px solid var(--f-linha, #E3DFD6);
 
     b {
       display: block;
@@ -357,7 +287,7 @@ export const Folha = styled.div`
       font-weight: 600;
       letter-spacing: 0.2em;
       text-transform: uppercase;
-      color: ${OURO};
+      color: var(--f-acento, #8A6A2A);
       margin-bottom: 8px;
     }
 
@@ -389,7 +319,7 @@ export const Folha = styled.div`
       width: 5px;
       height: 5px;
       border-radius: 50%;
-      background: ${OURO};
+      background: var(--f-acento, #8A6A2A);
     }
   }
 
@@ -407,18 +337,18 @@ export const Folha = styled.div`
 
     li {
       padding: 13px 0;
-      border-top: 1px solid ${LINHA};
+      border-top: 1px solid var(--f-linha, #E3DFD6);
     }
 
     li:last-child {
-      border-bottom: 1px solid ${LINHA};
+      border-bottom: 1px solid var(--f-linha, #E3DFD6);
     }
 
     b {
       font-family: "EB Garamond", Georgia, serif;
       font-weight: 500;
       font-size: 1.1rem;
-      color: ${TINTA};
+      color: var(--f-tinta, #16203A);
       margin-right: 4px;
     }
   }
@@ -427,8 +357,8 @@ export const Folha = styled.div`
     margin-top: 22px;
     padding: 16px 18px;
     border-radius: 8px;
-    background: #FBFAF5;
-    border: 1px solid ${LINHA};
+    background: var(--f-suave, #FBFAF5);
+    border: 1px solid var(--f-linha, #E3DFD6);
 
     b {
       display: block;
@@ -436,16 +366,18 @@ export const Folha = styled.div`
       font-weight: 600;
       letter-spacing: 0.2em;
       text-transform: uppercase;
-      color: ${OURO};
+      color: var(--f-acento, #8A6A2A);
       margin-bottom: 6px;
     }
   }
+
+  ${(p) => p.$pdf && PDF}
 `;
 
 export const Cartoes = styled.div`
   display: grid;
-  grid-template-columns: 1fr;
-  gap: 22px;
+  grid-template-columns: ${(p) => (p.$pdf ? "repeat(3, 1fr)" : "1fr")};
+  gap: ${(p) => (p.$pdf ? "12px" : "22px")};
 
   @media (min-width: 720px) {
     grid-template-columns: repeat(3, 1fr);
@@ -457,14 +389,14 @@ export const Cartao = styled.div`
   position: relative;
   display: flex;
   flex-direction: column;
-  border: 1px solid ${LINHA};
+  border: 1px solid var(--f-linha, #E3DFD6);
   border-radius: 8px;
   padding: 18px 16px 16px;
   background: #fff;
 
   &.rec {
-    border-color: ${TINTA};
-    background: #FBFAF5;
+    border-color: var(--f-tinta, #16203A);
+    background: var(--f-suave, #FBFAF5);
   }
 
   .selo {
@@ -476,7 +408,7 @@ export const Cartao = styled.div`
     font-size: 0.56rem;
     letter-spacing: 0.2em;
     text-transform: uppercase;
-    color: ${OURO};
+    color: var(--f-acento, #8A6A2A);
   }
 
   &.rec .selo {
@@ -495,7 +427,7 @@ export const Cartao = styled.div`
     font-family: "EB Garamond", Georgia, serif;
     font-size: 1.7rem;
     line-height: 1.08;
-    color: ${TINTA};
+    color: var(--f-tinta, #16203A);
     margin-bottom: 8px;
   }
 
@@ -504,7 +436,7 @@ export const Cartao = styled.div`
     color: ${CORPO};
     line-height: 1.5;
     padding-bottom: 12px;
-    border-bottom: 1px solid ${LINHA};
+    border-bottom: 1px solid var(--f-linha, #E3DFD6);
   }
 
   .quem {
@@ -516,7 +448,7 @@ export const Cartao = styled.div`
   }
 
   .valor {
-    border-top: 1px solid ${LINHA};
+    border-top: 1px solid var(--f-linha, #E3DFD6);
     padding-top: 12px;
   }
 
@@ -532,7 +464,7 @@ export const Cartao = styled.div`
     font-family: "EB Garamond", Georgia, serif;
     font-size: 1.95rem;
     line-height: 1.1;
-    color: ${TINTA};
+    color: var(--f-tinta, #16203A);
     font-variant-numeric: lining-nums;
   }
 
@@ -540,81 +472,5 @@ export const Cartao = styled.div`
     font-size: 0.82rem;
     color: ${CORPO};
     margin-top: 4px;
-  }
-`;
-
-/* O campo editavel. Fundo de marca-texto, sem borda de formulario: na
-   folha ele tem que parecer o proprio texto. Em 16px no minimo, porque
-   o iOS da zoom na tela em campo menor que isso. */
-export const CampoInline = styled.input`
-  font: inherit;
-  font-size: max(1em, 16px);
-  letter-spacing: inherit;
-  text-transform: inherit;
-  color: inherit;
-  background: ${MARCA};
-  border: 0;
-  border-radius: 3px;
-  padding: 0 0.22em;
-  margin: 0 -0.1em;
-  vertical-align: baseline;
-  outline: none;
-  max-width: 100%;
-  min-width: 2ch;
-  transition: box-shadow 160ms ease;
-  box-shadow: inset 0 -2px 0 rgba(138, 106, 42, 0.45);
-
-  &:hover {
-    box-shadow: inset 0 -2px 0 rgba(138, 106, 42, 0.8);
-  }
-
-  &:focus {
-    box-shadow: 0 0 0 2px ${OURO};
-    background: #FBEFC4;
-  }
-
-  @supports (field-sizing: content) {
-    field-sizing: content;
-    width: auto !important;
-  }
-`;
-
-export const Alem = styled.div`
-  display: grid;
-  gap: 32px;
-  align-items: center;
-
-  @media (min-width: 881px) {
-    grid-template-columns: 1fr 1fr;
-    gap: 64px;
-  }
-
-  ol {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-  }
-
-  li {
-    display: flex;
-    gap: 18px;
-    padding: 16px 0;
-    border-top: 1px solid var(--linha);
-    color: var(--tinta);
-    font-size: 1.04rem;
-    line-height: 1.5;
-  }
-
-  li:last-child {
-    border-bottom: 1px solid var(--linha);
-  }
-
-  .n {
-    flex: none;
-    font-family: "EB Garamond", Georgia, serif;
-    font-size: 1.5rem;
-    line-height: 1.2;
-    color: var(--acento);
-    font-variant-numeric: lining-nums;
   }
 `;
