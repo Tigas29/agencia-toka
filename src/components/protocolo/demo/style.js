@@ -344,6 +344,55 @@ export const Folha = styled.div`
     }
   }
 
+  .incluido {
+    margin-top: 22px;
+    padding: 16px 18px 14px;
+    border-radius: 8px;
+    background: #FBFAF5;
+    border: 1px solid ${LINHA};
+
+    b {
+      display: block;
+      font-size: 0.64rem;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: ${OURO};
+      margin-bottom: 8px;
+    }
+
+    ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 4px 28px;
+
+      @media (min-width: 720px) {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    li {
+      position: relative;
+      padding-left: 16px;
+      font-size: 0.88rem;
+      color: ${CORPO};
+    }
+
+    li::before {
+      content: "";
+      position: absolute;
+      left: 2px;
+      top: 0.65em;
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: ${OURO};
+    }
+  }
+
   .nota {
     margin: 22px 0 0;
     font-size: 0.86rem;

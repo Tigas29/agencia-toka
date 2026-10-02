@@ -8,7 +8,7 @@
         {
           "type": "header",
           "key": "user-agent",
-          "value": ".*(facebookexternalhit|WhatsApp|Instagram|Twitterbot|TelegramBot|LinkedInBot|Slackbot).*"
+          "value": ".*(facebookexternalhit|WhatsApp|Twitterbot|TelegramBot|LinkedInBot|Slackbot).*"
         }
       ],
       "missing": [{ "type": "query", "key": "semcard" }],

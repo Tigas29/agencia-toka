@@ -7,10 +7,14 @@
  * so nesta rota. O Googlebot nao esta na lista: ele recebe a mesma pagina
  * que qualquer pessoa.
  *
- * O navegador interno do Instagram tambem tem "Instagram" no user-agent e
- * cairia aqui. Para esse caso o script abaixo manda a pessoa para a mesma
- * URL com `semcard=1`, e a condicao `missing` do rewrite deixa a pagina de
- * verdade passar. Leitor de previa nao executa o script e fica com o card.
+ * "Instagram" NAO esta na lista de user-agents: o navegador interno do
+ * Instagram (por onde chega o clique da DM) leva esse nome no user-agent e
+ * precisa receber a pagina de verdade. A previa do link no Instagram e
+ * buscada pelo facebookexternalhit, que continua na lista. Como rede de
+ * seguranca, o script abaixo manda quem cair aqui por engano (algum leitor
+ * que execute JavaScript) para a mesma URL com `semcard=1`, e a condicao
+ * `missing` do rewrite deixa a pagina passar. Leitor de previa nao executa
+ * o script e fica com o card.
  */
 import DEMO from "../src/components/protocolo/demo/dados-demo.js";
 

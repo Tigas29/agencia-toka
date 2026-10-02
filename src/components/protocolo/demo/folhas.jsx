@@ -184,7 +184,7 @@ function Cartao3({ o, i, p, e, mudarLista }) {
             rotulo={`Opção ${i + 1}: ${parcelado ? "valor total" : "mensalidade"}`}
             aoMudar={(v) => mudarLista("valor", i, v)}
           />
-          {!parcelado && <span style={{ fontSize: "0.95rem" }}> /mês</span>}
+          {!parcelado && <span style={{ fontSize: "0.95rem", marginLeft: "0.35em" }}>por mês</span>}
         </div>
         {parcelado && (
           <div className="parc">
@@ -216,6 +216,14 @@ export function Folha3({ p, e, mudar, mudarLista }) {
           <Cartao3 key={i} o={o} i={i} p={p} e={e} mudarLista={mudarLista} />
         ))}
       </Cartoes>
+      <div className="incluido">
+        <b>Incluído nos três</b>
+        <ul>
+          {pl.incluido.map((t) => (
+            <li key={t}>{t}</li>
+          ))}
+        </ul>
+      </div>
       <p className="nota">
         {pl.avulsaPrefixo} R${" "}
         <Campo valor={e.avulsa} numero milhar max={5} minimo={2} rotulo="Valor da avulsa" aoMudar={(v) => mudar({ avulsa: v })} />
