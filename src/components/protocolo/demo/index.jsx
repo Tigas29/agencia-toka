@@ -3,15 +3,14 @@ import { Navigate, useParams } from "react-router-dom";
 import { buscarProtocolo } from "../dados";
 import { iniciarClarity } from "../checkout";
 import { buscarDemo } from "./dados-demo";
-import Conversa from "./conversa";
+import Tour from "./tour";
 
 /**
  * Demo do low ticket Protocolo de Proposta: /protocolo/:nicho/demo.
- * A pessoa chega por link no chat (DM, WhatsApp) antes do checkout e monta a
- * propria proposta numa conversa: nome, caso, valor, cor, e a proposta chega
- * como arquivo (visualizador + PDF com marca d'agua) seguida de um guia de
- * fechamento simulado. O estado vive so em memoria: nada vai para
- * localStorage e nada e enviado.
+ * A pessoa chega por link no chat (DM, WhatsApp) antes do checkout e percorre
+ * um tour guiado de 5 passos: cada passo mostra uma parte da proposta, diz por
+ * que ela ajuda a paciente a decidir e deixa a profissional personalizar ali.
+ * O estado vive so em memoria: nada vai para localStorage e nada e enviado.
  *
  * Nenhum InitiateCheckout aqui: a campanha otimiza por ele no checkout.
  */
@@ -52,5 +51,5 @@ function Demo({ d, demo }) {
     };
   }, [demo]);
 
-  return <Conversa d={d} demo={demo} />;
+  return <Tour d={d} demo={demo} />;
 }

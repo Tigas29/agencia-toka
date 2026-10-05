@@ -2,6 +2,10 @@
    verbatim. `de: "nota"` e a linha de cena entre parenteses do original (ex.: dois dias depois).
    `guia` e o JSON que a IA real devolve; EXEMPLO-PENDENTE ate o Tiago/Ana colar as saidas reais. */
 
+/** Quando a IA do guia existir e as saidas reais estiverem coladas em `guia`, trocar para true:
+ *  a tela "pronta" passa a mostrar CartoesGuia no lugar das mensagens prontas (guia-respostas.js). */
+export const GUIA_IA_PRONTO = false;
+
 const PENDENTE = (n) => ({
   aviso: "",
   caso: { resumo: `EXEMPLO-PENDENTE: resumo do caso ${n}`, fraseDela: `EXEMPLO-PENDENTE: frase dela ${n}` },
