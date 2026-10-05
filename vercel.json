@@ -2,6 +2,18 @@
   "rewrites": [
     { "source": "/demo", "destination": "https://toka-demo-dash.vercel.app/demo" },
     { "source": "/demo/:path*", "destination": "https://toka-demo-dash.vercel.app/demo/:path*" },
+    {
+      "source": "/protocolo/:nicho(fisio|pilates|estetica)/demo",
+      "has": [
+        {
+          "type": "header",
+          "key": "user-agent",
+          "value": ".*(facebookexternalhit|WhatsApp|Twitterbot|TelegramBot|LinkedInBot|Slackbot).*"
+        }
+      ],
+      "missing": [{ "type": "query", "key": "semcard" }],
+      "destination": "/api/og-protocolo?nicho=:nicho"
+    },
     { "source": "/((?!api/|demo).*)", "destination": "/" }
   ]
 }

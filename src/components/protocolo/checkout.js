@@ -12,7 +12,12 @@
  */
 import { capturarUtm } from "../habitat/lead";
 
-export function linkCheckout(base, nicho) {
+/**
+ * `utmContent` e o utm_content padrao, usado so quando a entrada nao trouxe
+ * um (na demo, o handle da DM vem na query e passa adiante). Sem o terceiro
+ * argumento o comportamento e o da landing: lp-protocolo-<nicho>.
+ */
+export function linkCheckout(base, nicho, utmContent = `lp-protocolo-${nicho}`) {
   try {
     const url = new URL(base);
     const utm = capturarUtm();
@@ -20,7 +25,7 @@ export function linkCheckout(base, nicho) {
       if (valor) url.searchParams.set(chave, valor);
     });
     if (!url.searchParams.get("utm_content")) {
-      url.searchParams.set("utm_content", `lp-protocolo-${nicho}`);
+      url.searchParams.set("utm_content", utmContent);
     }
     return url.toString();
   } catch {
@@ -28,10 +33,11 @@ export function linkCheckout(base, nicho) {
   }
 }
 
-export function cliqueComprar(nicho) {
+/** `origem` so vai no evento quando informada (a demo manda "demo"). */
+export function cliqueComprar(nicho, origem) {
   try {
     if (typeof window.fbq === "function") {
-      window.fbq("trackCustom", "CliqueComprarProtocolo", { nicho });
+      window.fbq("trackCustom", "CliqueComprarProtocolo", origem ? { nicho, origem } : { nicho });
     }
   } catch {
     /* rastreio nunca trava a compra */
@@ -52,7 +58,7 @@ export function cliqueComprar(nicho) {
  */
 const CLARITY_ID = "yqj8anl35r";
 
-export function iniciarClarity(nicho) {
+export function iniciarClarity(nicho, pagina = "protocolo") {
   try {
     if (typeof window.clarity !== "function") {
       (function (c, l, a, r, i) {
@@ -69,7 +75,16 @@ export function iniciarClarity(nicho) {
       })(window, document, "clarity", "script", CLARITY_ID);
     }
     window.clarity("set", "nicho", nicho);
-    window.clarity("set", "pagina", "protocolo");
+    window.clarity("set", "pagina", pagina);
+  } catch {
+    /* silencioso */
+  }
+}
+
+/** Evento Clarity avulso (a demo usa `demo_editou`). Silencioso. */
+export function eventoClarity(nome) {
+  try {
+    if (typeof window.clarity === "function") window.clarity("event", nome);
   } catch {
     /* silencioso */
   }
