@@ -27,7 +27,7 @@ const COMUM = {
   oferta: {
     titulo: "A versão editável, sem marca, de R$ 47 por R$ 27",
     itens: [
-      "Google Slides, PPTX para Canva e PDF, mensagens prontas e aula de 30 min em gravação, liberada até 6/10.",
+      "Google Slides, PPTX para Canva e PDF, mensagens prontas e aula de 30 min em gravação, liberada em até 5 dias após a compra.",
     ],
     cta: "Quero o protocolo por R$ 27",
     micro: "7 dias de garantia · De R$ 47 por R$ 27",

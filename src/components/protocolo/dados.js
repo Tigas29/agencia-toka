@@ -68,8 +68,8 @@ const PROTOCOLO = {
         },
         {
           "titulo": "A videoaula de 30 minutos",
-          "texto": "A avaliação inteira, da primeira pergunta até a proposta na mão da paciente. Ainda não está gravada: a liberação é até 6 de outubro, e o acesso chega por e-mail.",
-          "selo": "Em gravação · liberada até 6/10"
+          "texto": "A avaliação inteira, da primeira pergunta até a proposta na mão da paciente. Ainda não está gravada: a liberação é em até 5 dias depois da compra, e o acesso chega por e-mail.",
+          "selo": "Em gravação · liberada em até 5 dias"
         }
       ]
     },
@@ -122,7 +122,7 @@ const PROTOCOLO = {
       },
       {
         "p": "Quando a aula sai?",
-        "r": "Ainda vou gravar. Ela é liberada até 6 de outubro, e o acesso chega por e-mail."
+        "r": "Ainda vou gravar. Ela é liberada em até 5 dias depois da compra, e o acesso chega por e-mail."
       },
       {
         "p": "Serve se eu atendo sozinha?",
@@ -145,7 +145,7 @@ const PROTOCOLO = {
         "Um exemplo preenchido",
         "As mensagens prontas para o “vou pensar” e para os dias seguintes",
         "O guia de uma página",
-        "A videoaula de 30 minutos, liberada até 6 de outubro"
+        "A videoaula de 30 minutos, liberada em até 5 dias após a compra"
       ],
       "preco": "De R$ 47 por R$ 27",
       "cta": "Quero o protocolo por R$ 27"
@@ -215,8 +215,8 @@ const PROTOCOLO = {
         },
         {
           "titulo": "A videoaula de 30 minutos",
-          "texto": "A avaliação inteira, da primeira pergunta até a proposta na mão da cliente. Ainda não está gravada: a liberação é até 6 de outubro, e o acesso chega por e-mail.",
-          "selo": "Em gravação · liberada até 6/10"
+          "texto": "A avaliação inteira, da primeira pergunta até a proposta na mão da cliente. Ainda não está gravada: a liberação é em até 5 dias depois da compra, e o acesso chega por e-mail.",
+          "selo": "Em gravação · liberada em até 5 dias"
         }
       ]
     },
@@ -269,7 +269,7 @@ const PROTOCOLO = {
       },
       {
         "p": "Quando a aula sai?",
-        "r": "Ainda vou gravar. Ela é liberada até 6 de outubro, e o acesso chega por e-mail."
+        "r": "Ainda vou gravar. Ela é liberada em até 5 dias depois da compra, e o acesso chega por e-mail."
       },
       {
         "p": "Serve se eu atendo sozinha?",
@@ -292,7 +292,7 @@ const PROTOCOLO = {
         "Um exemplo preenchido",
         "As mensagens prontas para o “vou pensar” e para os dias seguintes",
         "O guia de uma página",
-        "A videoaula de 30 minutos, liberada até 6 de outubro"
+        "A videoaula de 30 minutos, liberada em até 5 dias após a compra"
       ],
       "preco": "De R$ 47 por R$ 27",
       "cta": "Quero o protocolo por R$ 27"
@@ -362,8 +362,8 @@ const PROTOCOLO = {
         },
         {
           "titulo": "A videoaula de 30 minutos",
-          "texto": "A aula experimental inteira, da primeira pergunta até a proposta na mão da aluna. Ainda não está gravada: a liberação é até 6 de outubro, e o acesso chega por e-mail.",
-          "selo": "Em gravação · liberada até 6/10"
+          "texto": "A aula experimental inteira, da primeira pergunta até a proposta na mão da aluna. Ainda não está gravada: a liberação é em até 5 dias depois da compra, e o acesso chega por e-mail.",
+          "selo": "Em gravação · liberada em até 5 dias"
         }
       ]
     },
@@ -416,7 +416,7 @@ const PROTOCOLO = {
       },
       {
         "p": "Quando a aula sai?",
-        "r": "Ainda vou gravar. Ela é liberada até 6 de outubro, e o acesso chega por e-mail."
+        "r": "Ainda vou gravar. Ela é liberada em até 5 dias depois da compra, e o acesso chega por e-mail."
       },
       {
         "p": "Serve se eu dou aula sozinha?",
@@ -439,7 +439,7 @@ const PROTOCOLO = {
         "Um exemplo preenchido",
         "As mensagens prontas para o “vou ver minha agenda” e para os dias seguintes",
         "O guia de uma página",
-        "A videoaula de 30 minutos, liberada até 6 de outubro"
+        "A videoaula de 30 minutos, liberada em até 5 dias após a compra"
       ],
       "preco": "De R$ 47 por R$ 27",
       "cta": "Quero o protocolo por R$ 27"
