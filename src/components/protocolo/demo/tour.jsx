@@ -6,7 +6,7 @@ import GUIA_EXEMPLOS, { GUIA_IA_PRONTO } from "./guia-exemplos";
 import { respostasDoCaso } from "./guia-respostas";
 import { reais } from "./formato";
 import { reduzMovimento } from "./movimento";
-import { Mt, MiniFolha, PaginaPapel } from "./papel";
+import { LinhasOpcoes, Mt, MiniFolha, PaginaPapel } from "./papel";
 import { AreaPdf } from "./pdf";
 import { ehInstagram, entregarPdf, gerarBlobPdf, nomeArquivo } from "./pdf-export";
 import { CASOS, faixaAvulsa, montarProposta, primeiroNome, valoresPara } from "./proposta";
@@ -122,7 +122,7 @@ function BarraProgresso({ passo, rotulos }) {
 
 /* ---------- o papel ---------- */
 
-function Papel({ passo, p, e, desktop, aoMudarValor }) {
+function Papel({ passo, p, e, desktop, aoMudarValor, compacto = false }) {
   const n = passo - 1;
   const ref = useRef(null);
   useLayoutEffect(() => {
@@ -131,12 +131,12 @@ function Papel({ passo, p, e, desktop, aoMudarValor }) {
     const folha = el.querySelector("[data-folha-papel]");
     const marcas = el.querySelectorAll(".mt");
     const tl = gsap.timeline();
-    tl.fromTo(folha, { y: 26, opacity: 0.2 }, { y: 0, opacity: 1, duration: 0.3, ease: "power2.out", clearProps: "transform,opacity" });
+    if (folha) tl.fromTo(folha, { y: 26, opacity: 0.2 }, { y: 0, opacity: 1, duration: 0.3, ease: "power2.out", clearProps: "transform,opacity" });
     tl.fromTo(marcas, { backgroundSize: "0% 100%" }, { backgroundSize: "100% 100%", duration: 0.35, stagger: 0.07, ease: "power2.out", clearProps: "backgroundSize" }, 0.15);
     return () => tl.kill();
   }, [passo]);
   return (
-    <PapelPainel ref={ref} aria-label="A sua proposta até aqui">
+    <PapelPainel ref={ref} aria-label="A sua proposta até aqui" style={compacto ? { marginTop: 16, minHeight: 0, borderRadius: 16, paddingBottom: 4 } : undefined}>
       <div className="cab">
         <span className="t">A sua proposta até aqui</span>
         <span className="pg">
@@ -148,12 +148,18 @@ function Papel({ passo, p, e, desktop, aoMudarValor }) {
           Página {passo} de 4
         </span>
       </div>
+      {compacto ? (
+        <LinhasOpcoes p={p} e={e} aoMudarValor={aoMudarValor} />
+      ) : (
+      <>
       <div aria-hidden="true">
         {Array.from({ length: n }, (_, k) => (
           <div key={k} className="aba" style={{ marginInline: (n - k) * (desktop ? 10 : 8) }} />
         ))}
       </div>
       <PaginaPapel n={n} p={p} e={e} amplo={desktop} editavel={passo === 3} aoMudarValor={aoMudarValor} className="folha" data-folha-papel />
+      </>
+      )}
     </PapelPainel>
   );
 }
@@ -591,7 +597,6 @@ export default function Tour({ d, demo }) {
     if (passo === ABERTURA) {
       return (
         <Abertura>
-          <p className="eyebrow">5 passos · 1 minuto</p>
           <h1 ref={titulo} tabIndex={-1}>{demo.abertura.titulo}</h1>
           <p className="sub">{demo.abertura.sub}</p>
           <ol aria-label="Os 5 passos">
@@ -626,6 +631,7 @@ export default function Tour({ d, demo }) {
           <Titulo ref={titulo} tabIndex={-1}>{cfg.titulo}</Titulo>
           <Porque>{cfg.porque}</Porque>
           {controle()}
+          {passo === 3 && !desktop && <Papel passo={passo} p={p} e={papelProp} desktop={false} aoMudarValor={mudarValor} compacto />}
           {botoes}
         </>
       );
@@ -753,7 +759,7 @@ export default function Tour({ d, demo }) {
         </Topo>
         {emPasso || passo === PRONTA ? <BarraProgresso passo={passo} rotulos={rotulos} /> : null}
         <Palco ref={palco}>{tela()}</Palco>
-        {emPasso && !desktop && <Papel passo={passo} p={p} e={papelProp} desktop={false} aoMudarValor={mudarValor} />}
+        {emPasso && !desktop && passo !== 3 && <Papel passo={passo} p={p} e={papelProp} desktop={false} aoMudarValor={mudarValor} />}
       </Coluna>
       {emPasso && desktop && <Papel passo={passo} p={p} e={papelProp} desktop aoMudarValor={mudarValor} />}
 

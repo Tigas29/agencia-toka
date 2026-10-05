@@ -819,3 +819,136 @@ export function MiniFolha({ n, p, e }) {
     </Mini>
   );
 }
+
+/* ---------- linhas compactas das 3 opcoes (passo 3, celular) ---------- */
+
+export const LinhasStyle = styled.div`
+  --u: 1px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding-bottom: 12px;
+  font-family: "Nunito Sans", sans-serif;
+  color: ${CORPO};
+
+  .l3 {
+    min-height: 44px;
+    box-sizing: border-box;
+    padding: 4px 12px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    background: #fff;
+    border: 1px solid rgba(22, 32, 58, 0.12);
+    border-radius: 10px;
+  }
+
+  .l3.rec {
+    border-color: var(--f-acento, ${OURO_ESC});
+    background: var(--f-suave, #fff);
+  }
+
+  .l3 .t {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    font-size: 13px;
+    line-height: 1.25;
+    font-weight: 600;
+  }
+
+  .l3 .t small {
+    font-family: "Poppins", sans-serif;
+    font-size: 8.5px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: ${FRACA};
+  }
+
+  .l3 .v {
+    flex: none;
+    font-family: "EB Garamond", Georgia, serif;
+    font-size: 22px;
+    line-height: 1.1;
+    color: ${TINTA_PADRAO};
+    font-variant-numeric: lining-nums tabular-nums;
+    white-space: nowrap;
+  }
+
+  .l3 .v .mes {
+    font-family: "Nunito Sans", sans-serif;
+    font-size: 11px;
+    color: ${FRACA};
+    margin-left: 3px;
+  }
+
+  .mt {
+    background-image: linear-gradient(${MT}, ${MT});
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    border-radius: 3px;
+    padding: 0 3px;
+    color: ${TINTA_PADRAO};
+  }
+
+  label.mt {
+    display: inline-flex;
+    align-items: baseline;
+    cursor: text;
+  }
+
+  .campo-valor {
+    box-sizing: content-box;
+    margin: 0;
+    padding: 2px 0;
+    border: 0;
+    border-bottom: 1.5px solid ${OURO_ESC};
+    background: transparent;
+    font: inherit;
+    color: inherit;
+    min-width: 0;
+    border-radius: 0;
+  }
+
+  .campo-valor:focus {
+    outline: none;
+    border-bottom-color: ${TINTA_PADRAO};
+    background: rgba(255, 255, 255, 0.55);
+  }
+`;
+
+/** As 3 opcoes em linha, com o valor (editavel) a direita: cabem acima da dobra. */
+export function LinhasOpcoes({ p, e, aoMudarValor }) {
+  const parcelado = p.plano.modo === "parcelado";
+  return (
+    <LinhasStyle style={varsTema(e.cor)}>
+      {p.plano.opcoes.map((o, i) => (
+        <div key={i} className={`l3${o.recomendada ? " rec" : ""}`}>
+          <span className="t">
+            <small>Opção {i + 1}{o.recomendada ? " · a que eu recomendo" : ""}</small>
+            {comQtd(o.titulo, o.qtd)}
+          </span>
+          <span className="v">
+            {o.semValor ? (
+              o.semValor
+            ) : (
+              <>
+                <label className="mt">
+                  R$&nbsp;
+                  <InputValor
+                    valor={e.valor[i] ?? ""}
+                    rotulo={`Opção ${i + 1}: ${parcelado ? "valor total" : "mensalidade"}`}
+                    aoMudar={(v) => aoMudarValor(i, v)}
+                  />
+                </label>
+                {!parcelado && <span className="mes">/mês</span>}
+              </>
+            )}
+          </span>
+        </div>
+      ))}
+    </LinhasStyle>
+  );
+}

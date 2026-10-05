@@ -649,18 +649,8 @@ export const Abertura = styled.div`
   display: flex;
   flex-direction: column;
 
-  .eyebrow {
-    margin: 0;
-    font-family: "EB Garamond", Georgia, serif;
-    font-weight: 500;
-    font-size: 42px;
-    line-height: 1;
-    color: ${OURO_ESC};
-    ${num}
-  }
-
   h1 {
-    margin: 14px 0 0;
+    margin: 6px 0 0;
     font-family: "EB Garamond", Georgia, serif;
     font-weight: 500;
     font-size: 30px;
@@ -722,9 +712,6 @@ export const Abertura = styled.div`
   }
 
   ${DESKTOP} {
-    .eyebrow {
-      font-size: 48px;
-    }
     h1 {
       font-size: 40px;
     }
