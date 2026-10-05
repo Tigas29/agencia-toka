@@ -11,7 +11,7 @@ import { AreaPdf } from "./pdf";
 import { ehInstagram, entregarPdf, gerarBlobPdf, nomeArquivo } from "./pdf-export";
 import { CASOS, faixaAvulsa, montarProposta, primeiroNome, valoresPara } from "./proposta";
 import {
-  Abertura, Acoes, AcoesAbertura, BarraProximo, Controle, Coluna, CtaNavy, Giro, Guia, Numero, Oferta, Palco,
+  Abertura, Acoes, AcoesAbertura, BarraProximo, Controle, Coluna, CtaNavy, FaixaCompra, Giro, Guia, Numero, Oferta, Palco,
   PapelPainel, Porque, Progresso, Pronta, Proximo, Pular, Raiz, Titulo, Topo, Voltar, VoltarLink,
 } from "./tour-style";
 import Visualizador from "./visualizador";
@@ -446,8 +446,14 @@ export default function Tour({ d, demo }) {
     setViz(n);
   };
 
-  const aoClicarCta = (ev) => {
-    cliqueComprar(nicho, "demo");
+  /* Clique na faixa de compra durante o tour: origem separada do botao do fim, e a tela vai para o Clarity. */
+  const aoClicarFaixa = (ev) => {
+    eventoClarity(passo === PRONTA ? "comprar_durante_pronta" : `comprar_durante_passo_${passo}`);
+    aoClicarCta(ev, "demo-durante");
+  };
+
+  const aoClicarCta = (ev, origem = "demo") => {
+    cliqueComprar(nicho, origem);
     if (ev.ctrlKey || ev.metaKey || ev.shiftKey || ev.button !== 0) return;
     ev.preventDefault();
     setTimeout(() => window.location.assign(href), 180);
@@ -753,6 +759,15 @@ export default function Tour({ d, demo }) {
   return (
     <Raiz data-fase={fase}>
       <Coluna>
+        {(emPasso || passo === PRONTA) && (
+          <FaixaCompra href={href} onClick={aoClicarFaixa} aria-label={demo.compra.rotulo}>
+            <span className="preco">{demo.compra.preco}</span>
+            <span className="ir">
+              {demo.compra.cta}
+              <Seta tam={16} />
+            </span>
+          </FaixaCompra>
+        )}
         <Topo>
           <span className="marca">TOKA</span>
           {topoDireita()}

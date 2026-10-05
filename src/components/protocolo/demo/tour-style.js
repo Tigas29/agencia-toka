@@ -95,6 +95,51 @@ export const Coluna = styled.div`
   }
 `;
 
+/* Faixa de compra (05/out): o link do checkout visivel durante o tour, nao so na
+   ultima tela. Sticky dentro da Coluna, entao no desktop nao cobre o papel. */
+export const FaixaCompra = styled.a`
+  position: sticky;
+  top: 0;
+  z-index: 6;
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  min-height: 44px;
+  padding: env(safe-area-inset-top) 20px 0;
+  background: ${NAVY};
+  color: #f4f3ee;
+  font-family: "Poppins", sans-serif;
+  font-size: 13px;
+  line-height: 1.2;
+  text-decoration: none;
+
+  .preco {
+    white-space: nowrap;
+  }
+
+  .ir {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: ${OURO};
+    font-weight: 600;
+    white-space: nowrap;
+  }
+
+  &:active .ir {
+    opacity: 0.8;
+  }
+
+  ${DESKTOP} {
+    margin-top: 0;
+    border-radius: 0 0 14px 14px;
+    padding: 0 20px;
+    font-size: 14px;
+  }
+`;
+
 export const Topo = styled.header`
   flex: none;
   height: 48px;

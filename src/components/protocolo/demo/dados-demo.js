@@ -14,6 +14,8 @@ const COMUM = {
   voltar: "Voltar",
   pular: "Ir direto ao resultado",
   abertura: { cta: "Começar o passo a passo" },
+  /* Faixa de compra fixa durante o tour (05/out, pedido do Tiago): mesmas palavras da oferta. */
+  compra: { preco: "De R$ 47 por R$ 27", cta: "Quero o protocolo", rotulo: "Quero o protocolo por R$ 27" },
   pronta: {
     baixar: "Baixar PDF de demonstração",
     baixarNota: "O PDF sai com a marca DEMONSTRAÇÃO em todas as páginas.",
