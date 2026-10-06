@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useLayoutEffect } from "react";
 import { Navigate, useParams } from "react-router-dom";
 import { buscarProtocolo } from "../dados";
 import { iniciarClarity } from "../checkout";
@@ -37,7 +37,8 @@ export default function PaginaDemo() {
 }
 
 function Demo({ d, demo }) {
-  useEffect(() => {
+  /* Layout effect: roda antes dos effects do Tour (filho), senao passo_abertura se perde. */
+  useLayoutEffect(() => {
     iniciarClarity(d.slug, "demo");
   }, [d.slug]);
 
