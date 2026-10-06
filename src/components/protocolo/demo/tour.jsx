@@ -583,7 +583,7 @@ export default function Tour({ d, demo }) {
     if (emPasso) {
       return (
         <Pular type="button" onClick={pular}>
-          {demo.pular}
+          {demo.irDireto}
           <Duplo />
         </Pular>
       );
@@ -596,6 +596,7 @@ export default function Tour({ d, demo }) {
         </VoltarLink>
       );
     }
+    if (passo === ABERTURA) return <span className="apoio">{demo.abertura.apoio}</span>;
     return null;
   };
 
@@ -603,25 +604,29 @@ export default function Tour({ d, demo }) {
     if (passo === ABERTURA) {
       return (
         <Abertura>
+          <div className="folha-ab" role="img" aria-label="Exemplo da página 3 da proposta: as 3 opções">
+            <span className="selo">Exemplo</span>
+            <div className="vista" aria-hidden="true">
+              <PaginaPapel n={2} p={p} e={dadosFolha} />
+            </div>
+          </div>
+          <p className="pg" aria-hidden="true">
+            <span className="gl">
+              {[0, 1, 2, 3].map((i) => (
+                <i key={i} className={i === 2 ? "on" : ""} />
+              ))}
+            </span>
+            página 3 de 4
+          </p>
           <h1 ref={titulo} tabIndex={-1}>{demo.abertura.titulo}</h1>
           <p className="sub">{demo.abertura.sub}</p>
-          <ol aria-label="Os 5 passos">
-            {rotulos.map((r, i) => (
-              <li key={r}>
-                <span className="n">{i + 1}</span>
-                <span className="r">{r}</span>
-                <span className="p">{PAGINAS[i]}</span>
-              </li>
-            ))}
-          </ol>
           <AcoesAbertura>
-            <CtaNavy type="button" onClick={() => ir(1)}>
+            <CtaNavy type="button" onClick={() => { eventoClarity("abertura_comecar"); ir(1); }}>
               {demo.abertura.cta}
               <Seta />
             </CtaNavy>
-            <button type="button" className="pular" onClick={pular}>
+            <button type="button" className="pular" onClick={() => { eventoClarity("abertura_ver_paginas"); pular(); }}>
               {demo.pular}
-              <Duplo />
             </button>
           </AcoesAbertura>
         </Abertura>

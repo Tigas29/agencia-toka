@@ -12,8 +12,9 @@
 const COMUM = {
   proximo: "Próximo",
   voltar: "Voltar",
-  pular: "Ir direto ao resultado",
-  abertura: { cta: "Começar o passo a passo" },
+  pular: "Ver as 4 páginas prontas",
+  irDireto: "Ir direto ao resultado",
+  abertura: { cta: "Montar a minha", apoio: "5 passos, cerca de 1 minuto" },
   /* Faixa de compra fixa durante o tour (05/out, pedido do Tiago): mesmas palavras da oferta. */
   compra: { preco: "De R$ 47 por R$ 27", cta: "Quero o protocolo", rotulo: "Quero o protocolo por R$ 27" },
   pronta: {
@@ -41,7 +42,7 @@ const DEMO = {
     ...COMUM,
     slug: "fisio",
     pessoa: "a paciente",
-    abertura: { ...COMUM.abertura, titulo: "Monte a sua proposta de plano em 5 passos", sub: "Cada passo mostra uma parte da proposta e diz por que ela ajuda a paciente a decidir. Leva cerca de 1 minuto." },
+    abertura: { ...COMUM.abertura, titulo: "A proposta estruturada que você envia depois da avaliação", sub: "Teste a ferramenta com o seu nome e o valor da sua sessão." },
     passos: [
       { rotulo: "Capa", titulo: "Coloque o seu nome e o seu logo na capa", porque: "A paciente leva o papel para casa. A capa diz de quem é o plano, e é esse nome que ela procura para responder.", campo: "Seu nome e sobrenome", campoLogo: "Enviar o seu logo (fica só no seu aparelho)" },
       { rotulo: "A frase dela", titulo: "Escolha um caso e veja a frase da paciente", porque: "A página 2 abre com a queixa nas palavras dela. Ao ler a própria frase no papel, ela vê que foi ouvida.", campo: "Escolha um caso" },
@@ -105,7 +106,7 @@ const DEMO = {
     ...COMUM,
     slug: "pilates",
     pessoa: "a aluna",
-    abertura: { ...COMUM.abertura, titulo: "Monte a sua proposta de plano em 5 passos", sub: "Cada passo mostra uma parte da proposta e diz por que ela ajuda a aluna a decidir. Leva cerca de 1 minuto." },
+    abertura: { ...COMUM.abertura, titulo: "A proposta de plano que você entrega depois da experimental", sub: "Capa com o seu nome, a frase da aluna, 3 planos e as regras." },
     passos: [
       { rotulo: "Capa", titulo: "Coloque o seu nome e o seu logo na capa", porque: "A aluna leva o papel para casa. A capa diz de quem é o plano, e é esse nome que ela procura para responder.", campo: "Seu nome e sobrenome", campoLogo: "Enviar o logo do studio (fica só no seu aparelho)" },
       { rotulo: "A frase dela", titulo: "Escolha um caso e veja a frase da aluna", porque: "A página 2 abre com o que a trouxe até você, nas palavras dela. Ao ler a própria frase, ela vê que foi ouvida.", campo: "Escolha um caso" },

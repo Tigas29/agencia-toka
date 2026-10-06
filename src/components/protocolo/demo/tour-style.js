@@ -156,6 +156,12 @@ export const Topo = styled.header`
     color: ${TINTA};
   }
 
+  .apoio {
+    font-size: 13px;
+    padding-right: 8px;
+    color: ${FRACA};
+  }
+
   ${DESKTOP} {
     padding: 20px 0 0;
     height: 64px;
@@ -695,65 +701,77 @@ export const Abertura = styled.div`
   flex-direction: column;
 
   h1 {
-    margin: 6px 0 0;
+    margin: 14px 0 0;
     font-family: "EB Garamond", Georgia, serif;
     font-weight: 500;
-    font-size: 30px;
+    font-size: 28px;
     line-height: 1.1;
     color: ${TINTA};
   }
 
   .sub {
-    margin: 12px 0 0;
-    font-size: 16px;
-    line-height: 1.5;
+    margin: 8px 0 0;
+    font-size: 15px;
+    line-height: 1.45;
     color: ${CORPO};
   }
 
-  ol {
-    margin: 24px 0 0;
-    padding: 4px 18px;
-    list-style: none;
+  .folha-ab {
+    position: relative;
+    margin-top: 4px;
+    border-radius: 6px;
+    box-shadow: 0 14px 30px rgba(18, 26, 48, 0.14);
+    transform: rotate(-0.8deg);
+    overflow: hidden;
     background: #fff;
-    border: 1px solid rgba(22, 32, 58, 0.08);
-    border-radius: 18px;
-    box-shadow: 0 8px 24px rgba(18, 26, 48, 0.06);
   }
 
-  li {
-    min-height: 58px;
+  .folha-ab .vista {
+    pointer-events: none;
+    user-select: none;
+  }
+
+  .folha-ab .selo {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    z-index: 1;
+    padding: 2px 9px;
+    border: 1px solid ${OURO_ESC};
+    border-radius: 999px;
+    background: #fbf7ea;
+    font-family: "Poppins", sans-serif;
+    font-size: 9.5px;
+    font-weight: 600;
+    letter-spacing: 1.4px;
+    text-transform: uppercase;
+    color: ${OURO_ESC};
+  }
+
+  .pg {
+    margin: 12px 0 0;
     display: flex;
     align-items: center;
-    gap: 14px;
-  }
-
-  li + li {
-    border-top: 1px solid rgba(22, 32, 58, 0.08);
-  }
-
-  li .n {
-    width: 22px;
-    font-family: "EB Garamond", Georgia, serif;
-    font-weight: 500;
-    font-size: 28px;
-    line-height: 1;
-    color: ${OURO_ESC};
-    ${num}
-  }
-
-  li .r {
-    flex-grow: 1;
-    font-size: 17px;
-    font-weight: 600;
-  }
-
-  li .p {
-    font-family: "Poppins", sans-serif;
-    font-size: 10.5px;
-    font-weight: 500;
-    letter-spacing: 1px;
-    text-transform: uppercase;
+    justify-content: center;
+    gap: 8px;
+    font-size: 13px;
     color: ${FRACA};
+  }
+
+  .pg .gl {
+    display: inline-flex;
+    gap: 5px;
+  }
+
+  .pg i {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: rgba(22, 32, 58, 0.18);
+  }
+
+  .pg i.on {
+    background: ${NAVY};
   }
 
   ${DESKTOP} {
@@ -765,7 +783,7 @@ export const Abertura = styled.div`
 
 export const AcoesAbertura = styled.div`
   margin-top: auto;
-  padding: 24px 0 20px;
+  padding: 16px 0 16px;
   display: flex;
   flex-direction: column;
   gap: 4px;
