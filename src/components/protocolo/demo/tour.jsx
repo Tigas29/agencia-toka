@@ -6,7 +6,7 @@ import GUIA_EXEMPLOS, { GUIA_IA_PRONTO } from "./guia-exemplos";
 import { respostasDoCaso } from "./guia-respostas";
 import { reais } from "./formato";
 import { reduzMovimento } from "./movimento";
-import { LinhasOpcoes, Mt, MiniFolha, PaginaPapel } from "./papel";
+import { FolhaOpcoesLeitura, LinhasOpcoes, Mt, MiniFolha, PaginaPapel } from "./papel";
 import { AreaPdf } from "./pdf";
 import { ehInstagram, entregarPdf, gerarBlobPdf, nomeArquivo } from "./pdf-export";
 import { CASOS, faixaAvulsa, montarProposta, primeiroNome, valoresPara } from "./proposta";
@@ -607,7 +607,7 @@ export default function Tour({ d, demo }) {
           <div className="folha-ab" role="img" aria-label="Exemplo da página 3 da proposta: as 3 opções">
             <span className="selo">Exemplo</span>
             <div className="vista" aria-hidden="true">
-              <PaginaPapel n={2} p={p} e={dadosFolha} />
+              <FolhaOpcoesLeitura p={p} e={dadosFolha} />
             </div>
           </div>
           <p className="pg" aria-hidden="true">

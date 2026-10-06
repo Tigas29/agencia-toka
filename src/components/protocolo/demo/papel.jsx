@@ -920,7 +920,7 @@ export const LinhasStyle = styled.div`
 `;
 
 /** As 3 opcoes em linha, com o valor (editavel) a direita: cabem acima da dobra. */
-export function LinhasOpcoes({ p, e, aoMudarValor }) {
+export function LinhasOpcoes({ p, e, aoMudarValor, leitura = false }) {
   const parcelado = p.plano.modo === "parcelado";
   return (
     <LinhasStyle style={varsTema(e.cor)}>
@@ -933,6 +933,11 @@ export function LinhasOpcoes({ p, e, aoMudarValor }) {
           <span className="v">
             {o.semValor ? (
               o.semValor
+            ) : leitura ? (
+              <>
+                R$&nbsp;{reais(Number(e.valor[i]))}
+                {!parcelado && <span className="mes">/mês</span>}
+              </>
             ) : (
               <>
                 <label className="mt">
@@ -950,5 +955,16 @@ export function LinhasOpcoes({ p, e, aoMudarValor }) {
         </div>
       ))}
     </LinhasStyle>
+  );
+}
+
+/** Pagina 3 (as 3 opcoes) so para ler: a folha da abertura da demo, sem campos. */
+export function FolhaOpcoesLeitura({ p, e }) {
+  return (
+    <Pg style={{ ...varsTema(e.cor), padding: "10px 12px 0" }}>
+      <Topo p={p} e={e} />
+      <h3 className="g" style={{ margin: "8px 0 8px", fontSize: 22, fontWeight: 400 }}>{p.plano.titulo}</h3>
+      <LinhasOpcoes p={p} e={e} leitura />
+    </Pg>
   );
 }

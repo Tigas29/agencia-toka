@@ -697,6 +697,7 @@ export const Voltar = styled.button`
 /* ---------- abertura (E1) ---------- */
 
 export const Abertura = styled.div`
+  flex: 1;
   display: flex;
   flex-direction: column;
 
