@@ -111,9 +111,11 @@ function Privacidade() {
       <p>
         A Toka administra contas de anúncio no Google para clientes e usa a API do Google Ads para
         ler os números dessas contas: investimento, cliques, impressões e conversões por campanha.
-        O acesso é só de leitura, vale apenas para as contas que a pessoa autorizou na tela de
-        permissão do Google e serve para montar relatórios e painéis para o próprio dono da conta.
-        Esses dados não são vendidos nem usados para anunciar ou para qualquer outro fim.
+        Também devolve ao Google, sem nome, telefone ou e-mail, o código do clique de quem virou
+        conversa, agendamento ou comparecimento, para o anúncio aprender com o resultado real.
+        Isso vale apenas para as contas que a pessoa autorizou na tela de permissão do Google e
+        serve para montar relatórios e painéis para o próprio dono da conta e melhorar os anúncios
+        dele. Esses dados não são vendidos nem usados para qualquer outro fim.
       </p>
       <p>
         O uso e a transferência, pela Toka, de informações recebidas das APIs do Google seguem a{" "}
@@ -181,7 +183,8 @@ function Termos() {
       <h2>Ferramentas ligadas ao Google</h2>
       <p>
         A Toka usa ferramentas próprias que se conectam à API do Google Ads para ler os dados das
-        contas de anúncio que administra para os clientes. Quem autorizou o acesso pode removê-lo
+        contas de anúncio que administra para os clientes e informar ao Google quais cliques viraram
+        contato, sem dado pessoal. Quem autorizou o acesso pode removê-lo
         quando quiser, em{" "}
         <a href={PERMISSOES_GOOGLE} target="_blank" rel="noreferrer">
           myaccount.google.com/permissions
